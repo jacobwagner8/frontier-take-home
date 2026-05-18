@@ -75,7 +75,9 @@ export function lessonReducer(
   }
 }
 
-/** Convenience: where does a given step sit in the linear progress bar? */
+/** Convenience: where does a given step sit in the linear progress bar?
+ * Remediation steps collapse onto their parent MCQ. `intro` is 0/total
+ * (lesson not started), `done` is total/total (lesson complete). */
 export function progressFor(step: LessonStep): {
   current: number;
   total: number;
@@ -91,7 +93,9 @@ export function progressFor(step: LessonStep): {
     remediation1: "mcq1",
     remediation2: "mcq2",
   };
+  const total = visible.length;
+  if (step === "done") return { current: total, total };
   const effective = remediationOf[step] ?? step;
   const idx = visible.indexOf(effective);
-  return { current: idx < 0 ? 0 : idx + 1, total: visible.length };
+  return { current: idx < 0 ? 0 : idx + 1, total };
 }

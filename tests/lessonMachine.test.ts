@@ -3,6 +3,7 @@ import {
   initialLessonState,
   lessonReducer,
   LessonState,
+  progressFor,
 } from "@/lib/lessonMachine";
 import { curriculum } from "@/lib/curriculum";
 
@@ -62,6 +63,18 @@ describe("lessonReducer", () => {
     expect(next.step).toBe("mcq2");
   });
 
+  it("mcq2 → remediation2 when answered incorrectly, tracks wrong option", () => {
+    const state: LessonState = { ...initialLessonState, step: "mcq2" };
+    const wrong = curriculum.mcq2.options.find((o) => !o.isCorrect)!;
+    const next = lessonReducer(state, {
+      type: "ANSWER_MCQ",
+      mcqId: "mcq2",
+      optionId: wrong.id,
+    });
+    expect(next.step).toBe("remediation2");
+    expect(next.lastWrongOptionId).toBe(wrong.id);
+  });
+
   it("mcq2 correct → voiceTutor", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq2" };
     const correctId = curriculum.mcq2.options.find((o) => o.isCorrect)!.id;
@@ -83,5 +96,27 @@ describe("lessonReducer", () => {
     const state: LessonState = { ...initialLessonState, step: "done" };
     const next = lessonReducer(state, { type: "RESTART_LESSON" });
     expect(next.step).toBe("intro");
+  });
+});
+
+describe("progressFor", () => {
+  it("returns 0/5 for intro (lesson not started)", () => {
+    expect(progressFor("intro")).toEqual({ current: 0, total: 5 });
+  });
+
+  it("returns 1/5 for reading1", () => {
+    expect(progressFor("reading1")).toEqual({ current: 1, total: 5 });
+  });
+
+  it("collapses remediation1 onto mcq1 (2/5)", () => {
+    expect(progressFor("remediation1")).toEqual({ current: 2, total: 5 });
+  });
+
+  it("collapses remediation2 onto mcq2 (4/5)", () => {
+    expect(progressFor("remediation2")).toEqual({ current: 4, total: 5 });
+  });
+
+  it("returns 5/5 for done (lesson complete)", () => {
+    expect(progressFor("done")).toEqual({ current: 5, total: 5 });
   });
 });
