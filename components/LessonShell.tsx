@@ -17,6 +17,7 @@ export function LessonShell({ children, progress }: LessonShellProps) {
           <div
             className="mt-2 h-1 w-full bg-slate-200 rounded overflow-hidden"
             role="progressbar"
+            aria-label="Lesson progress"
             aria-valuemin={0}
             aria-valuemax={progress.total}
             aria-valuenow={progress.current}
