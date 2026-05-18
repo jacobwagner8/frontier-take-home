@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { MCQ, MCQOption } from "@/lib/curriculum.types";
 
 interface Props {
@@ -10,32 +10,42 @@ interface Props {
 
 export function MCQuestionScreen({ mcq, onAnswer }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const promptId = useId();
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">{mcq.prompt}</h2>
-      <ul role="radiogroup" aria-label={mcq.prompt} className="flex flex-col gap-2">
+      <h2 id={promptId} className="text-lg font-semibold">
+        {mcq.prompt}
+      </h2>
+      <div
+        role="radiogroup"
+        aria-labelledby={promptId}
+        className="flex flex-col gap-2"
+      >
         {mcq.options.map((opt) => {
           const isSelected = selectedId === opt.id;
           return (
-            <li key={opt.id}>
-              <button
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                onClick={() => setSelectedId(opt.id)}
-                className={`w-full text-left px-4 py-3 rounded-lg border text-base transition ${
-                  isSelected
-                    ? "border-slate-900 bg-slate-100"
-                    : "border-slate-200"
-                }`}
-              >
-                {opt.text}
-              </button>
-            </li>
+            <label
+              key={opt.id}
+              className={`flex items-center gap-3 cursor-pointer w-full px-4 py-3 rounded-lg border text-base transition ${
+                isSelected
+                  ? "border-slate-900 bg-slate-100"
+                  : "border-slate-200"
+              }`}
+            >
+              <input
+                type="radio"
+                name={mcq.id}
+                value={opt.id}
+                checked={isSelected}
+                onChange={() => setSelectedId(opt.id)}
+                className="accent-slate-900"
+              />
+              <span>{opt.text}</span>
+            </label>
           );
         })}
-      </ul>
+      </div>
       <button
         type="button"
         disabled={!selectedId}
