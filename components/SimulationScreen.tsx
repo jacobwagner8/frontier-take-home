@@ -117,6 +117,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             stroke="#475569"
             strokeWidth="4"
             strokeDasharray="6 4"
+            className="current-flow-n"
           />
           <text
             x="400"
@@ -135,6 +136,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             stroke="#16a34a"
             strokeWidth="4"
             strokeDasharray="6 4"
+            className={secondBond ? "current-flow-egc" : ""}
           />
           <text
             x="400"
@@ -145,6 +147,18 @@ export function SimulationScreen({ onAdvance }: Props) {
           >
             EGC feeder
           </text>
+          {secondBond && (
+            <text
+              x="400"
+              y="325"
+              textAnchor="middle"
+              fontSize="12"
+              fill="#dc2626"
+              fontWeight="600"
+            >
+              ⚠ Current now flowing on the EGC
+            </text>
+          )}
 
           {/* Subpanel */}
           <rect
