@@ -14,7 +14,11 @@ export function RemediationScreen({
   onAskFollowUp,
 }: Props) {
   return (
-    <section className="flex flex-col gap-4">
+    <section
+      role="status"
+      aria-live="polite"
+      className="flex flex-col gap-4"
+    >
       <div className="text-xs uppercase tracking-wide text-rose-600 font-semibold">
         Not quite
       </div>
