@@ -13,7 +13,7 @@ export function MCQuestionScreen({ mcq, onAnswer }: Props) {
   const promptId = useId();
 
   return (
-    <section className="flex flex-col gap-5">
+    <section className="flex flex-col gap-5 w-full max-w-2xl mx-auto">
       <h2
         id={promptId}
         className="text-xl font-semibold text-text-strong leading-snug tracking-[-0.005em]"
