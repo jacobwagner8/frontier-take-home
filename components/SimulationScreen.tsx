@@ -64,7 +64,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             x="160"
             y="140"
             textAnchor="middle"
-            fontSize="12"
+            fontSize="14"
             fill="#475569"
           >
             Neutral bus
@@ -81,7 +81,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             x="160"
             y="300"
             textAnchor="middle"
-            fontSize="12"
+            fontSize="14"
             fill="#16a34a"
           >
             EGC bus
@@ -101,7 +101,7 @@ export function SimulationScreen({ onAdvance }: Props) {
           <text
             x="270"
             y="220"
-            fontSize="11"
+            fontSize="13"
             fill="#dc2626"
             fontWeight="600"
           >
@@ -123,7 +123,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             x="400"
             y="140"
             textAnchor="middle"
-            fontSize="12"
+            fontSize="14"
             fill="#475569"
           >
             Neutral feeder
@@ -142,7 +142,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             x="400"
             y="305"
             textAnchor="middle"
-            fontSize="12"
+            fontSize="14"
             fill="#16a34a"
           >
             EGC feeder
@@ -152,7 +152,7 @@ export function SimulationScreen({ onAdvance }: Props) {
               x="400"
               y="325"
               textAnchor="middle"
-              fontSize="12"
+              fontSize="14"
               fill="#dc2626"
               fontWeight="600"
             >
@@ -213,7 +213,7 @@ export function SimulationScreen({ onAdvance }: Props) {
               <text
                 x="730"
                 y="235"
-                fontSize="11"
+                fontSize="13"
                 fill="#dc2626"
                 fontWeight="600"
               >
@@ -222,7 +222,7 @@ export function SimulationScreen({ onAdvance }: Props) {
               <text
                 x="730"
                 y="250"
-                fontSize="11"
+                fontSize="13"
                 fill="#dc2626"
                 fontWeight="600"
               >
@@ -241,7 +241,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             strokeWidth="2"
             fill="#f1f5f9"
           />
-          <text x="620" y="375" textAnchor="middle" fontSize="11">
+          <text x="620" y="375" textAnchor="middle" fontSize="13">
             Load
           </text>
           <line
@@ -255,14 +255,14 @@ export function SimulationScreen({ onAdvance }: Props) {
         </svg>
       </div>
 
-      <label className="flex items-center gap-3 select-none">
+      <label className="flex items-center gap-3 select-none py-2">
         <input
           type="checkbox"
           checked={secondBond}
           onChange={(e) => setSecondBond(e.target.checked)}
-          className="h-5 w-5 accent-slate-900"
+          className="h-6 w-6 accent-slate-900"
         />
-        <span className="text-sm">
+        <span className="text-base">
           Add a second N-G bond at the subpanel
         </span>
       </label>
