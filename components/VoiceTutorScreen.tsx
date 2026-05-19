@@ -108,21 +108,24 @@ export function VoiceTutorScreen({ onAdvance, onFallbackToText }: Props) {
         your own words.
       </p>
 
+      <p
+        role="status"
+        aria-live="polite"
+        className="text-sm text-slate-500"
+      >
+        {status === "idle" && "Tap Start to begin."}
+        {status === "connecting" && "Connecting..."}
+        {status === "live" && "Listening..."}
+        {status === "stopped" && "Conversation ended."}
+        {status === "error" && (errorMsg ?? "Something went wrong.")}
+      </p>
+
       <div
         role="log"
         aria-live="polite"
         aria-atomic="false"
         className="rounded-lg border border-slate-200 bg-slate-50 p-3 min-h-[140px]"
       >
-        {transcript.length === 0 && (
-          <p className="text-sm text-slate-500">
-            {status === "idle" && "Tap Start to begin."}
-            {status === "connecting" && "Connecting..."}
-            {status === "live" && "Listening..."}
-            {status === "stopped" && "Conversation ended."}
-            {status === "error" && (errorMsg ?? "Something went wrong.")}
-          </p>
-        )}
         {transcript.map((line, i) => (
           <p key={i} className="text-sm leading-relaxed">
             <span className="font-semibold mr-1">
