@@ -5,6 +5,7 @@ import { LessonShell } from "@/components/LessonShell";
 import { ReadingScreen } from "@/components/ReadingScreen";
 import { MCQuestionScreen } from "@/components/MCQuestionScreen";
 import { RemediationScreen } from "@/components/RemediationScreen";
+import { SimulationScreen } from "@/components/SimulationScreen";
 import {
   initialLessonState,
   lessonReducer,
@@ -61,16 +62,7 @@ export default function LessonPage() {
       )}
 
       {state.step === "simulation" && (
-        <div className="flex flex-col gap-4">
-          <p>Simulation coming in Phase 2.</p>
-          <button
-            type="button"
-            onClick={() => dispatch({ type: "ADVANCE" })}
-            className="self-end px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
-          >
-            Skip (temp)
-          </button>
-        </div>
+        <SimulationScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
       )}
 
       {state.step === "mcq2" && (
