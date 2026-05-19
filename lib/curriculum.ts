@@ -55,7 +55,14 @@ Downstream of the main panel — at every subpanel, junction, and device — the
 
   simulationCaptions: {
     oneBond: `With a single bond at the service, normal load current returns to the source through the neutral. The EGC and every bonded metal part — boxes, raceways, the appliance case — sit at the same potential as the panel's ground bus. Touching the case is safe because there's no voltage difference between it and anything else you might touch.`,
-    twoBond: `Add a second bond at the subpanel and the neutral and EGC are now tied together at two points. Normal return current divides between them, with the EGC carrying its share back to the main panel. That continuous current creates voltage drops along the EGC — so "grounded" metal parts are no longer at the same potential, and bonded surfaces at different points in the system sit at different voltages.`,
+    twoBond: {
+      mechanism:
+        "The EGC is now a return route alongside the neutral — a parallel path back to the source.",
+      consequence:
+        "Normal load return current divides between the two paths, so the EGC carries continuous current that it was never sized or insulated to handle.",
+      hazard:
+        'Voltage drops along the EGC put grounded metal at different points of the system at different potentials — two "grounded" surfaces a person can touch are no longer at the same voltage.',
+    },
   },
 
   mcq2: {

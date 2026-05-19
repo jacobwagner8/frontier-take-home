@@ -19,8 +19,12 @@ describe("SimulationScreen toggle behavior", () => {
 
     await user.click(screen.getByRole("checkbox"));
 
+    expect(screen.getByText(/What changed\?/i)).toBeInTheDocument();
     expect(
-      screen.getByText(curriculum.simulationCaptions.twoBond),
+      screen.getByText(curriculum.simulationCaptions.twoBond.mechanism),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(curriculum.simulationCaptions.twoBond.hazard),
     ).toBeInTheDocument();
     expect(
       screen.getByText(/Current now flowing on the EGC/i),

@@ -10,9 +10,7 @@ interface Props {
 
 export function SimulationScreen({ onAdvance }: Props) {
   const [secondBond, setSecondBond] = useState(false);
-  const caption = secondBond
-    ? curriculum.simulationCaptions.twoBond
-    : curriculum.simulationCaptions.oneBond;
+  const { oneBond, twoBond } = curriculum.simulationCaptions;
 
   return (
     <section className="flex flex-col gap-5">
@@ -22,7 +20,7 @@ export function SimulationScreen({ onAdvance }: Props) {
 
       <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
         <svg
-          viewBox="0 0 360 220"
+          viewBox="0 0 360 245"
           className="w-full h-auto"
           role="img"
           aria-label={
@@ -185,6 +183,37 @@ export function SimulationScreen({ onAdvance }: Props) {
               />
               <circle cx="317" cy="90" r="1.5" fill="var(--color-surface)" />
               <circle cx="317" cy="150" r="1.5" fill="var(--color-surface)" />
+
+              {/* Callout naming the schema */}
+              <line
+                x1="317"
+                y1="152"
+                x2="317"
+                y2="226"
+                stroke="var(--color-danger)"
+                strokeWidth="1"
+                strokeDasharray="2 2"
+              />
+              <line
+                x1="200"
+                y1="226"
+                x2="317"
+                y2="226"
+                stroke="var(--color-danger)"
+                strokeWidth="1"
+                strokeDasharray="2 2"
+              />
+              <text
+                x="200"
+                y="240"
+                textAnchor="middle"
+                fontSize="9"
+                fill="var(--color-danger)"
+                fontWeight="700"
+                letterSpacing="0.08em"
+              >
+                PARALLEL RETURN PATH
+              </text>
             </>
           )}
 
@@ -246,15 +275,45 @@ export function SimulationScreen({ onAdvance }: Props) {
         />
       </div>
 
-      <div className="flex gap-3 p-4 bg-surface-muted rounded-2xl">
-        <div className="w-[3px] bg-brand rounded-sm flex-shrink-0" />
-        <p
-          className="text-[14px] leading-[1.55] text-text-muted"
+      {secondBond ? (
+        <div
+          className="flex flex-col gap-3 p-4 bg-surface-muted rounded-2xl"
           aria-live="polite"
         >
-          {caption}
-        </p>
-      </div>
+          <div className="text-[11px] uppercase tracking-[0.08em] text-text-strong font-semibold">
+            What changed?
+          </div>
+          <ul className="flex flex-col gap-2.5">
+            {(
+              [
+                { label: "Mechanism", text: twoBond.mechanism },
+                { label: "Consequence", text: twoBond.consequence },
+                { label: "Hazard", text: twoBond.hazard },
+              ] as const
+            ).map((point) => (
+              <li
+                key={point.label}
+                className="flex gap-3 text-[14px] leading-[1.55] text-text-muted"
+              >
+                <span className="font-semibold text-text-strong shrink-0 w-[6.5rem]">
+                  {point.label}
+                </span>
+                <span>{point.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="flex gap-3 p-4 bg-surface-muted rounded-2xl">
+          <div className="w-[3px] bg-brand rounded-sm flex-shrink-0" />
+          <p
+            className="text-[14px] leading-[1.55] text-text-muted"
+            aria-live="polite"
+          >
+            {oneBond}
+          </p>
+        </div>
+      )}
 
       <button
         type="button"

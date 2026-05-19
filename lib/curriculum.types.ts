@@ -27,7 +27,11 @@ export interface Curriculum {
   mcq1: MCQ;
   simulationCaptions: {
     oneBond: string;
-    twoBond: string;
+    twoBond: {
+      mechanism: string;
+      consequence: string;
+      hazard: string;
+    };
   };
   mcq2: MCQ;
   voiceTutor: {
