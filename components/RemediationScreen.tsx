@@ -1,18 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import type { MCQOption } from "@/lib/curriculum.types";
+import { FollowUpChat } from "./FollowUpChat";
 
 interface Props {
   wrongOption: MCQOption;
   onAdvance: () => void;
-  onAskFollowUp?: () => void;
 }
 
-export function RemediationScreen({
-  wrongOption,
-  onAdvance,
-  onAskFollowUp,
-}: Props) {
+export function RemediationScreen({ wrongOption, onAdvance }: Props) {
+  const [chatOpen, setChatOpen] = useState(false);
+
   return (
     <section
       role="status"
@@ -26,10 +25,10 @@ export function RemediationScreen({
         {wrongOption.remediation}
       </p>
       <div className="flex gap-2 justify-end">
-        {onAskFollowUp && (
+        {wrongOption.misconceptionTag && (
           <button
             type="button"
-            onClick={onAskFollowUp}
+            onClick={() => setChatOpen(true)}
             className="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-medium"
           >
             Ask a follow-up
@@ -43,6 +42,12 @@ export function RemediationScreen({
           Try again
         </button>
       </div>
+      {chatOpen && wrongOption.misconceptionTag && (
+        <FollowUpChat
+          misconceptionTag={wrongOption.misconceptionTag}
+          onClose={() => setChatOpen(false)}
+        />
+      )}
     </section>
   );
 }
