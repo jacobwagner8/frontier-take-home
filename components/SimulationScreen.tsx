@@ -20,13 +20,13 @@ export function SimulationScreen({ onAdvance }: Props) {
 
       <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
         <svg
-          viewBox="0 0 360 245"
+          viewBox="0 0 360 320"
           className="w-full h-auto"
           role="img"
           aria-label={
             secondBond
-              ? "Diagram with a second neutral-to-ground bond at the subpanel; current now flows on both the neutral feeder and the EGC feeder."
-              : "Diagram with a single neutral-to-ground bond at the main panel; current flows only on the neutral feeder."
+              ? "Diagram with a second neutral-to-ground bond at the subpanel; current now flows on both the neutral feeder and the EGC feeder. Downstream, an appliance bonded to the subpanel EGC sits at about 5 V above earth, while a nearby sink stays at 0 V via its own water-pipe ground. A person touching both is now part of a circuit between them."
+              : "Diagram with a single neutral-to-ground bond at the main panel; current flows only on the neutral feeder. Downstream, an appliance bonded to the subpanel EGC and a nearby sink grounded to earth are at the same potential, so a person touching both is safe."
           }
         >
           {/* Main panel */}
@@ -217,42 +217,245 @@ export function SimulationScreen({ onAdvance }: Props) {
             </>
           )}
 
-          {/* Load */}
+          {/* === DOWNSTREAM SCENE === */}
+          {/* Branch-circuit neutral from subpanel to appliance */}
+          <line
+            x1="320"
+            y1="90"
+            x2="338"
+            y2="90"
+            stroke="var(--color-neutral-wire)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className="current-flow-n"
+          />
+          <line
+            x1="338"
+            y1="90"
+            x2="338"
+            y2="285"
+            stroke="var(--color-neutral-wire)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className="current-flow-n"
+          />
+          <line
+            x1="338"
+            y1="285"
+            x2="255"
+            y2="285"
+            stroke="var(--color-neutral-wire)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className="current-flow-n"
+          />
+
+          {/* Branch-circuit EGC from subpanel EGC bus to appliance metal frame */}
+          <line
+            x1="320"
+            y1="150"
+            x2="348"
+            y2="150"
+            stroke="var(--color-brand)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className={secondBond ? "current-flow-egc" : ""}
+          />
+          <line
+            x1="348"
+            y1="150"
+            x2="348"
+            y2="268"
+            stroke="var(--color-brand)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className={secondBond ? "current-flow-egc" : ""}
+          />
+          <line
+            x1="348"
+            y1="268"
+            x2="255"
+            y2="268"
+            stroke="var(--color-brand)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            className={secondBond ? "current-flow-egc" : ""}
+          />
+
+          {/* Appliance */}
+          <rect
+            x="205"
+            y="265"
+            width="50"
+            height="40"
+            rx="3"
+            fill="var(--color-surface-muted)"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
+          />
+          <circle
+            cx="230"
+            cy="285"
+            r="6"
+            fill="none"
+            stroke="var(--color-text)"
+            strokeWidth="0.8"
+          />
           <text
-            x="280"
-            y="216"
+            x="230"
+            y="316"
             textAnchor="middle"
             fontSize="9"
             fill="var(--color-text-strong)"
             fontWeight="600"
           >
-            Load
+            Appliance
           </text>
+          {secondBond && (
+            <text
+              x="230"
+              y="259"
+              textAnchor="middle"
+              fontSize="9"
+              fill="var(--color-danger)"
+              fontWeight="700"
+            >
+              ≈ 5 V
+            </text>
+          )}
+
+          {/* Person */}
+          <circle
+            cx="280"
+            cy="272"
+            r="4"
+            fill="none"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="280"
+            y1="276"
+            x2="280"
+            y2="298"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          {/* Arms — turn red when there's a voltage between the things being touched */}
+          <line
+            x1="280"
+            y1="283"
+            x2="258"
+            y2="290"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
+          />
+          <line
+            x1="280"
+            y1="283"
+            x2="302"
+            y2="290"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
+          />
+          <line
+            x1="280"
+            y1="298"
+            x2="275"
+            y2="312"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="280"
+            y1="298"
+            x2="285"
+            y2="312"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          {secondBond && (
+            <text
+              x="294"
+              y="270"
+              textAnchor="middle"
+              fontSize="11"
+              fill="var(--color-danger)"
+              fontWeight="700"
+            >
+              ⚡
+            </text>
+          )}
+
+          {/* Sink (true earth via local water pipe) */}
           <rect
-            x="262"
-            y="190"
-            width="36"
-            height="18"
-            rx="3"
+            x="305"
+            y="270"
+            width="40"
+            height="32"
+            rx="2"
             fill="var(--color-surface-muted)"
             stroke="var(--color-text)"
             strokeWidth="1.2"
           />
-          <circle
-            cx="280"
-            cy="199"
-            r="3"
-            fill="none"
+          <text
+            x="325"
+            y="316"
+            textAnchor="middle"
+            fontSize="9"
+            fill="var(--color-text-strong)"
+            fontWeight="600"
+          >
+            Sink
+          </text>
+          <text
+            x="325"
+            y="262"
+            textAnchor="middle"
+            fontSize="8"
+            fill="var(--color-text-muted)"
+            fontWeight="600"
+          >
+            0 V (earth)
+          </text>
+          {/* Pipe + ground symbol */}
+          <line
+            x1="325"
+            y1="302"
+            x2="325"
+            y2="307"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="318"
+            y1="307"
+            x2="332"
+            y2="307"
+            stroke="var(--color-text)"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="320"
+            y1="310"
+            x2="330"
+            y2="310"
             stroke="var(--color-text)"
             strokeWidth="1"
           />
           <line
-            x1="280"
-            y1="152"
-            x2="280"
-            y2="190"
-            stroke="var(--color-neutral-wire)"
-            strokeWidth="1.5"
+            x1="322"
+            y1="313"
+            x2="328"
+            y2="313"
+            stroke="var(--color-text)"
+            strokeWidth="1"
           />
         </svg>
       </div>
