@@ -16,33 +16,44 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
       messages: msgs,
     }),
   });
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const titleId = useId();
 
   useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    dialog.showModal();
     inputRef.current?.focus();
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+    return () => {
+      if (dialog.open) dialog.close();
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, []);
+
+  function requestClose() {
+    dialogRef.current?.close();
+  }
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      onClick={(e) => {
+        // Click on the dialog's backdrop has target === the dialog itself
+        // (clicks on inner content have inner targets).
+        if (e.target === dialogRef.current) requestClose();
+      }}
       aria-labelledby={titleId}
-      className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-2"
+      className="w-full max-w-md max-h-[80dvh] bg-white rounded-2xl p-0 m-auto backdrop:bg-black/40"
     >
-      <div className="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl flex flex-col max-h-[80dvh]">
+      <div className="flex flex-col max-h-[80dvh]">
         <header className="px-4 py-3 border-b border-slate-200 flex justify-between items-center">
           <h3 id={titleId} className="font-semibold text-sm">
             Ask a follow-up
           </h3>
           <button
             type="button"
-            onClick={onClose}
+            onClick={requestClose}
             aria-label="Close follow-up chat"
             className="text-slate-500 text-sm"
           >
@@ -96,6 +107,6 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
           </button>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }
