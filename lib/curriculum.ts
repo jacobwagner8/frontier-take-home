@@ -62,7 +62,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "Nothing — the second bond is redundant",
         isCorrect: false,
         misconceptionTag: "redundancy_is_harmless",
-        remediation: `Redundant paths in a circuit aren't passive — they're parallel. Two conductors tied at both ends share current proportional to their conductance. The moment the second bond is in, every bonded metal raceway and EGC starts carrying continuous load current. They were never sized or insulated for that, and the voltage drops they produce show up as touch voltage on appliance cases and water pipes.`,
+        remediation: `Redundant paths in a circuit aren't passive — they're parallel. Two conductors tied at both ends share current proportional to their conductance. The moment the second bond is in, every bonded metal raceway and EGC starts carrying continuous load current — what the NEC calls "objectionable current" (250.6). They were never sized or insulated for that, and the voltage drops they produce show up as touch voltage on appliance cases and water pipes.`,
       },
       {
         id: "mcq2_b",
