@@ -26,7 +26,7 @@ export function Toggle({ checked, onChange, label, name }: Props) {
           className="peer sr-only"
         />
         <span
-          className="absolute inset-0 rounded-full bg-border peer-checked:bg-brand transition-colors"
+          className="absolute inset-0 rounded-full bg-border peer-checked:bg-brand peer-focus-visible:ring-2 peer-focus-visible:ring-brand peer-focus-visible:ring-offset-2 transition-colors"
           aria-hidden="true"
         />
         <span
