@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { curriculum } from "@/lib/curriculum";
+import { Toggle } from "./Toggle";
 
 interface Props {
   onAdvance: () => void;
@@ -14,14 +15,14 @@ export function SimulationScreen({ onAdvance }: Props) {
     : curriculum.simulationCaptions.oneBond;
 
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold">
+    <section className="flex flex-col gap-5">
+      <h2 className="text-xl font-semibold text-text-strong leading-tight tracking-[-0.005em]">
         See what happens with two bonds
       </h2>
 
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-2">
+      <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
         <svg
-          viewBox="0 0 800 500"
+          viewBox="0 0 360 220"
           className="w-full h-auto"
           role="img"
           aria-label={
@@ -31,253 +32,237 @@ export function SimulationScreen({ onAdvance }: Props) {
           }
         >
           {/* Main panel */}
-          <rect
-            x="40"
-            y="60"
-            width="240"
-            height="380"
-            rx="8"
-            stroke="#0f172a"
-            strokeWidth="3"
-            fill="white"
-          />
           <text
-            x="160"
-            y="90"
+            x="80"
+            y="18"
             textAnchor="middle"
-            fontSize="18"
-            fontWeight="600"
+            fontSize="10"
+            fill="var(--color-text-strong)"
+            fontWeight="700"
+            letterSpacing="0.06em"
           >
             MAIN PANEL
           </text>
-
-          {/* N bus + EGC bus inside main */}
-          <line
-            x1="80"
-            y1="150"
-            x2="240"
-            y2="150"
-            stroke="#475569"
-            strokeWidth="4"
+          <rect
+            x="20"
+            y="26"
+            width="120"
+            height="156"
+            rx="6"
+            fill="var(--color-surface)"
+            stroke="var(--color-text)"
+            strokeWidth="2"
           />
+          <rect x="28" y="34" width="104" height="6" fill="var(--color-brand)" />
+
+          {/* Breaker rows */}
+          <rect x="28" y="46" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="78" y="46" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="28" y="60" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="78" y="60" width="44" height="10" rx="2" fill="var(--color-border)" />
+
+          {/* Neutral bus */}
+          <rect x="28" y="86" width="104" height="8" rx="2" fill="var(--color-neutral-wire)" />
+          {[36, 56, 76, 96, 116].map((cx) => (
+            <circle key={`n-${cx}`} cx={cx} cy="90" r="1.2" fill="var(--color-surface)" />
+          ))}
           <text
-            x="160"
-            y="140"
+            x="80"
+            y="106"
             textAnchor="middle"
-            fontSize="14"
-            fill="#475569"
+            fontSize="8"
+            fill="var(--color-text-muted)"
           >
             Neutral bus
           </text>
-          <line
-            x1="80"
-            y1="280"
-            x2="240"
-            y2="280"
-            stroke="#16a34a"
-            strokeWidth="4"
-          />
+
+          {/* EGC bus */}
+          <rect x="28" y="144" width="104" height="8" rx="2" fill="var(--color-brand)" />
+          {[36, 56, 76, 96, 116].map((cx) => (
+            <circle key={`e-${cx}`} cx={cx} cy="148" r="1.2" fill="var(--color-surface)" />
+          ))}
           <text
-            x="160"
-            y="300"
+            x="80"
+            y="164"
             textAnchor="middle"
-            fontSize="14"
-            fill="#16a34a"
+            fontSize="8"
+            fill="var(--color-brand)"
           >
             EGC bus
           </text>
 
-          {/* Always-on main bonding jumper */}
-          <line
-            x1="240"
-            y1="150"
-            x2="240"
-            y2="280"
-            stroke="#dc2626"
-            strokeWidth="3"
-          />
-          <circle cx="240" cy="150" r="5" fill="#dc2626" />
-          <circle cx="240" cy="280" r="5" fill="#dc2626" />
+          {/* Main bonding jumper */}
+          <rect x="132" y="88" width="6" height="64" rx="2" fill="var(--color-danger)" />
+          <circle cx="135" cy="90" r="1.5" fill="var(--color-surface)" />
+          <circle cx="135" cy="150" r="1.5" fill="var(--color-surface)" />
           <text
-            x="270"
-            y="220"
-            fontSize="13"
-            fill="#dc2626"
-            fontWeight="600"
+            x="148"
+            y="124"
+            fontSize="8"
+            fill="var(--color-danger)"
+            fontWeight="700"
           >
             Main bond
           </text>
 
-          {/* Feeder wires to subpanel */}
+          {/* Neutral feeder (always animates) */}
           <line
-            x1="280"
-            y1="150"
-            x2="520"
-            y2="150"
-            stroke="#475569"
-            strokeWidth="4"
+            x1="142"
+            y1="90"
+            x2="240"
+            y2="90"
+            stroke="var(--color-neutral-wire)"
+            strokeWidth="3.5"
             strokeDasharray="6 4"
             className="current-flow-n"
           />
           <text
-            x="400"
-            y="140"
+            x="190"
+            y="82"
             textAnchor="middle"
-            fontSize="14"
-            fill="#475569"
+            fontSize="8"
+            fill="var(--color-text-muted)"
           >
             Neutral feeder
           </text>
+
+          {/* EGC feeder (animates only when secondBond) */}
           <line
-            x1="280"
-            y1="280"
-            x2="520"
-            y2="280"
-            stroke="#16a34a"
-            strokeWidth="4"
+            x1="142"
+            y1="150"
+            x2="240"
+            y2="150"
+            stroke="var(--color-brand)"
+            strokeWidth="3.5"
             strokeDasharray="6 4"
             className={secondBond ? "current-flow-egc" : ""}
           />
           <text
-            x="400"
-            y="305"
+            x="190"
+            y="166"
             textAnchor="middle"
-            fontSize="14"
-            fill="#16a34a"
+            fontSize="8"
+            fill="var(--color-brand)"
           >
             EGC feeder
           </text>
           {secondBond && (
             <text
-              x="400"
-              y="325"
+              x="190"
+              y="180"
               textAnchor="middle"
-              fontSize="14"
-              fill="#dc2626"
-              fontWeight="600"
+              fontSize="9"
+              fill="var(--color-danger)"
+              fontWeight="700"
             >
               ⚠ Current now flowing on the EGC
             </text>
           )}
 
           {/* Subpanel */}
-          <rect
-            x="520"
-            y="100"
-            width="200"
-            height="300"
-            rx="8"
-            stroke="#0f172a"
-            strokeWidth="3"
-            fill="white"
-          />
           <text
-            x="620"
-            y="130"
+            x="280"
+            y="32"
             textAnchor="middle"
-            fontSize="16"
-            fontWeight="600"
+            fontSize="10"
+            fill="var(--color-text-strong)"
+            fontWeight="700"
+            letterSpacing="0.06em"
           >
             SUBPANEL
           </text>
-          <line
-            x1="540"
-            y1="180"
-            x2="700"
-            y2="180"
-            stroke="#475569"
-            strokeWidth="3"
+          <rect
+            x="240"
+            y="40"
+            width="80"
+            height="140"
+            rx="5"
+            fill="var(--color-surface)"
+            stroke="var(--color-text)"
+            strokeWidth="2"
           />
-          <line
-            x1="540"
-            y1="280"
-            x2="700"
-            y2="280"
-            stroke="#16a34a"
-            strokeWidth="3"
-          />
+          <rect x="246" y="46" width="68" height="5" fill="var(--color-brand)" />
+          <rect x="246" y="86" width="68" height="6" rx="2" fill="var(--color-neutral-wire)" />
+          <rect x="246" y="146" width="68" height="6" rx="2" fill="var(--color-brand)" />
 
           {/* Optional second bond */}
           {secondBond && (
             <>
-              <line
-                x1="700"
-                y1="180"
-                x2="700"
-                y2="280"
-                stroke="#dc2626"
-                strokeWidth="3"
+              <rect
+                x="314"
+                y="88"
+                width="6"
+                height="64"
+                rx="2"
+                fill="var(--color-danger)"
               />
-              <circle cx="700" cy="180" r="5" fill="#dc2626" />
-              <circle cx="700" cy="280" r="5" fill="#dc2626" />
-              <text
-                x="730"
-                y="235"
-                fontSize="13"
-                fill="#dc2626"
-                fontWeight="600"
-              >
-                Second
-              </text>
-              <text
-                x="730"
-                y="250"
-                fontSize="13"
-                fill="#dc2626"
-                fontWeight="600"
-              >
-                bond
-              </text>
+              <circle cx="317" cy="90" r="1.5" fill="var(--color-surface)" />
+              <circle cx="317" cy="150" r="1.5" fill="var(--color-surface)" />
             </>
           )}
 
           {/* Load */}
-          <rect
-            x="580"
-            y="350"
-            width="80"
-            height="40"
-            stroke="#0f172a"
-            strokeWidth="2"
-            fill="#f1f5f9"
-          />
-          <text x="620" y="375" textAnchor="middle" fontSize="13">
+          <text
+            x="280"
+            y="216"
+            textAnchor="middle"
+            fontSize="9"
+            fill="var(--color-text-strong)"
+            fontWeight="600"
+          >
             Load
           </text>
+          <rect
+            x="262"
+            y="190"
+            width="36"
+            height="18"
+            rx="3"
+            fill="var(--color-surface-muted)"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="280"
+            cy="199"
+            r="3"
+            fill="none"
+            stroke="var(--color-text)"
+            strokeWidth="1"
+          />
           <line
-            x1="620"
-            y1="280"
-            x2="620"
-            y2="350"
-            stroke="#475569"
-            strokeWidth="2"
+            x1="280"
+            y1="152"
+            x2="280"
+            y2="190"
+            stroke="var(--color-neutral-wire)"
+            strokeWidth="1.5"
           />
         </svg>
       </div>
 
-      <label className="flex items-center gap-3 select-none py-2">
-        <input
-          type="checkbox"
+      <div className="rounded-2xl border border-border bg-surface px-4 py-2">
+        <Toggle
           checked={secondBond}
-          onChange={(e) => setSecondBond(e.target.checked)}
-          className="h-6 w-6 accent-slate-900"
+          onChange={setSecondBond}
+          label="Add a second N-G bond at the subpanel"
         />
-        <span className="text-base">
-          Add a second N-G bond at the subpanel
-        </span>
-      </label>
+      </div>
 
-      <p
-        className="text-sm leading-relaxed text-slate-700"
-        aria-live="polite"
-      >
-        {caption}
-      </p>
+      <div className="flex gap-3 p-4 bg-surface-muted rounded-2xl">
+        <div className="w-[3px] bg-brand rounded-sm flex-shrink-0" />
+        <p
+          className="text-[14px] leading-[1.55] text-text-muted"
+          aria-live="polite"
+        >
+          {caption}
+        </p>
+      </div>
 
       <button
         type="button"
         onClick={onAdvance}
-        className="self-end px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
       >
         Continue
       </button>

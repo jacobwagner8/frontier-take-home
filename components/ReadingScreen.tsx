@@ -13,10 +13,12 @@ export function ReadingScreen({
   ctaLabel = "Continue",
 }: Props) {
   return (
-    <article className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">{section.title}</h2>
+    <article className="flex flex-col gap-5">
+      <h2 className="text-xl font-semibold text-text-strong leading-tight tracking-[-0.005em]">
+        {section.title}
+      </h2>
       {section.imageSrc && (
-        <div className="rounded-lg overflow-hidden border border-slate-200">
+        <div className="rounded-2xl overflow-hidden border border-border bg-surface shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
           <Image
             src={section.imageSrc}
             alt={section.imageAlt ?? ""}
@@ -26,11 +28,13 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <p className="leading-relaxed whitespace-pre-wrap">{section.body}</p>
+      <p className="text-[15px] leading-[1.6] text-text whitespace-pre-wrap">
+        {section.body}
+      </p>
       <button
         type="button"
         onClick={onAdvance}
-        className="self-end px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
       >
         {ctaLabel}
       </button>
