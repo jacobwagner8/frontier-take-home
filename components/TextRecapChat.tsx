@@ -26,23 +26,23 @@ export function TextRecapChat({ onDone }: Props) {
         role="log"
         aria-live="polite"
         aria-atomic="false"
-        className="rounded-lg border border-slate-200 bg-slate-50 p-3 min-h-[140px] flex flex-col gap-2"
+        className="rounded-2xl border border-border bg-surface-muted p-4 min-h-[140px] flex flex-col gap-2"
       >
         {messages.length === 0 && (
-          <p className="text-sm text-slate-500">
+          <p className="text-[14px] text-text-subtle">
             Recap what you learned in your own words.
           </p>
         )}
         {messages.map((m, i) => (
-          <p key={i} className="text-sm leading-relaxed">
-            <span className="font-semibold mr-1">
+          <p key={i} className="text-[14px] leading-relaxed text-text">
+            <span className="font-semibold mr-1 text-text-strong">
               {m.role === "user" ? "You:" : "Tutor:"}
             </span>
             {m.content}
           </p>
         ))}
         {busy && (
-          <p className="text-sm text-slate-400" aria-live="polite">
+          <p className="text-[14px] text-text-subtle" aria-live="polite">
             Thinking...
           </p>
         )}
@@ -57,13 +57,13 @@ export function TextRecapChat({ onDone }: Props) {
           }}
           placeholder="Recap what you learned"
           aria-label="Your recap"
-          className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-base"
+          className="flex-1 border border-border rounded-xl px-4 py-3 text-base bg-surface focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         />
         <button
           type="button"
           onClick={send}
           disabled={busy || !input.trim()}
-          className="px-3 py-2 rounded-lg bg-slate-900 text-white font-medium disabled:bg-slate-300"
+          className="px-4 py-3 rounded-xl bg-brand text-white font-semibold disabled:bg-border disabled:text-text-subtle disabled:cursor-not-allowed"
         >
           Send
         </button>
@@ -71,7 +71,7 @@ export function TextRecapChat({ onDone }: Props) {
       <button
         type="button"
         onClick={onDone}
-        className="self-end px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
       >
         Done
       </button>
