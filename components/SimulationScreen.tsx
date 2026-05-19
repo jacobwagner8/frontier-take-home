@@ -146,19 +146,6 @@ export function SimulationScreen({ onAdvance }: Props) {
           >
             EGC feeder
           </text>
-          {secondBond && (
-            <text
-              x="190"
-              y="180"
-              textAnchor="middle"
-              fontSize="9"
-              fill="var(--color-danger)"
-              fontWeight="700"
-            >
-              ⚠ Current now flowing on the EGC
-            </text>
-          )}
-
           {/* Subpanel */}
           <text
             x="280"
@@ -248,6 +235,16 @@ export function SimulationScreen({ onAdvance }: Props) {
           label="Add a second N-G bond at the subpanel"
         />
       </div>
+
+      {secondBond && (
+        <div
+          role="alert"
+          className="flex items-center gap-2 px-4 py-3 rounded-2xl border border-danger/30 bg-danger/10 text-danger text-[13px] font-semibold"
+        >
+          <span aria-hidden="true">⚠</span>
+          <span>Current now flowing on the EGC</span>
+        </div>
+      )}
 
       <div className="flex gap-3 p-4 bg-surface-muted rounded-2xl">
         <div className="w-[3px] bg-brand rounded-sm flex-shrink-0" />
