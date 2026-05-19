@@ -13,17 +13,15 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <section
-      role="status"
-      aria-live="polite"
-      className="flex flex-col gap-4"
-    >
-      <div className="text-xs uppercase tracking-wide text-rose-600 font-semibold">
-        Not quite
+    <section className="flex flex-col gap-4">
+      <div role="status" aria-live="polite" className="flex flex-col gap-4">
+        <div className="text-xs uppercase tracking-wide text-rose-600 font-semibold">
+          Not quite
+        </div>
+        <p className="text-base leading-relaxed whitespace-pre-wrap">
+          {wrongOption.remediation}
+        </p>
       </div>
-      <p className="text-base leading-relaxed whitespace-pre-wrap">
-        {wrongOption.remediation}
-      </p>
       <div className="flex gap-2 justify-end">
         {wrongOption.misconceptionTag && (
           <button
