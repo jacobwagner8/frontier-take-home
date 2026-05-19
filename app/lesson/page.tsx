@@ -87,13 +87,7 @@ export default function LessonPage() {
       )}
 
       {state.step === "voiceTutor" && (
-        <VoiceTutorScreen
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
-          onFallbackToText={() => {
-            // Phase 4 will replace this with the text-chat fallback UI.
-            dispatch({ type: "ADVANCE" });
-          }}
-        />
+        <VoiceTutorScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
       )}
 
       {state.step === "done" && (
