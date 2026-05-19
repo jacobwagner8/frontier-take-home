@@ -37,7 +37,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y="18"
             textAnchor="middle"
             fontSize="10"
-            fill="#0C0A09"
+            fill="var(--color-text-strong)"
             fontWeight="700"
             letterSpacing="0.06em"
           >
@@ -49,57 +49,57 @@ export function SimulationScreen({ onAdvance }: Props) {
             width="120"
             height="156"
             rx="6"
-            fill="#FFFFFF"
-            stroke="#1C1917"
+            fill="var(--color-surface)"
+            stroke="var(--color-text)"
             strokeWidth="2"
           />
-          <rect x="28" y="34" width="104" height="6" fill="#0F766E" />
+          <rect x="28" y="34" width="104" height="6" fill="var(--color-brand)" />
 
           {/* Breaker rows */}
-          <rect x="28" y="46" width="44" height="10" rx="2" fill="#E7E5E4" />
-          <rect x="78" y="46" width="44" height="10" rx="2" fill="#E7E5E4" />
-          <rect x="28" y="60" width="44" height="10" rx="2" fill="#E7E5E4" />
-          <rect x="78" y="60" width="44" height="10" rx="2" fill="#E7E5E4" />
+          <rect x="28" y="46" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="78" y="46" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="28" y="60" width="44" height="10" rx="2" fill="var(--color-border)" />
+          <rect x="78" y="60" width="44" height="10" rx="2" fill="var(--color-border)" />
 
           {/* Neutral bus */}
-          <rect x="28" y="86" width="104" height="8" rx="2" fill="#A8A29E" />
+          <rect x="28" y="86" width="104" height="8" rx="2" fill="var(--color-neutral-wire)" />
           {[36, 56, 76, 96, 116].map((cx) => (
-            <circle key={`n-${cx}`} cx={cx} cy="90" r="1.2" fill="#FFFFFF" />
+            <circle key={`n-${cx}`} cx={cx} cy="90" r="1.2" fill="var(--color-surface)" />
           ))}
           <text
             x="80"
             y="106"
             textAnchor="middle"
             fontSize="8"
-            fill="#57534E"
+            fill="var(--color-text-muted)"
           >
             Neutral bus
           </text>
 
           {/* EGC bus */}
-          <rect x="28" y="144" width="104" height="8" rx="2" fill="#0F766E" />
+          <rect x="28" y="144" width="104" height="8" rx="2" fill="var(--color-brand)" />
           {[36, 56, 76, 96, 116].map((cx) => (
-            <circle key={`e-${cx}`} cx={cx} cy="148" r="1.2" fill="#FFFFFF" />
+            <circle key={`e-${cx}`} cx={cx} cy="148" r="1.2" fill="var(--color-surface)" />
           ))}
           <text
             x="80"
             y="164"
             textAnchor="middle"
             fontSize="8"
-            fill="#0F766E"
+            fill="var(--color-brand)"
           >
             EGC bus
           </text>
 
           {/* Main bonding jumper */}
-          <rect x="132" y="88" width="6" height="64" rx="2" fill="#DC2626" />
-          <circle cx="135" cy="90" r="1.5" fill="#FFFFFF" />
-          <circle cx="135" cy="150" r="1.5" fill="#FFFFFF" />
+          <rect x="132" y="88" width="6" height="64" rx="2" fill="var(--color-danger)" />
+          <circle cx="135" cy="90" r="1.5" fill="var(--color-surface)" />
+          <circle cx="135" cy="150" r="1.5" fill="var(--color-surface)" />
           <text
             x="148"
             y="124"
             fontSize="8"
-            fill="#DC2626"
+            fill="var(--color-danger)"
             fontWeight="700"
           >
             Main bond
@@ -111,7 +111,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y1="90"
             x2="240"
             y2="90"
-            stroke="#A8A29E"
+            stroke="var(--color-neutral-wire)"
             strokeWidth="3.5"
             strokeDasharray="6 4"
             className="current-flow-n"
@@ -121,7 +121,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y="82"
             textAnchor="middle"
             fontSize="8"
-            fill="#57534E"
+            fill="var(--color-text-muted)"
           >
             Neutral feeder
           </text>
@@ -132,7 +132,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y1="150"
             x2="240"
             y2="150"
-            stroke="#0F766E"
+            stroke="var(--color-brand)"
             strokeWidth="3.5"
             strokeDasharray="6 4"
             className={secondBond ? "current-flow-egc" : ""}
@@ -142,7 +142,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y="166"
             textAnchor="middle"
             fontSize="8"
-            fill="#0F766E"
+            fill="var(--color-brand)"
           >
             EGC feeder
           </text>
@@ -152,7 +152,7 @@ export function SimulationScreen({ onAdvance }: Props) {
               y="180"
               textAnchor="middle"
               fontSize="9"
-              fill="#DC2626"
+              fill="var(--color-danger)"
               fontWeight="700"
             >
               ⚠ Current now flowing on the EGC
@@ -165,7 +165,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y="32"
             textAnchor="middle"
             fontSize="10"
-            fill="#0C0A09"
+            fill="var(--color-text-strong)"
             fontWeight="700"
             letterSpacing="0.06em"
           >
@@ -177,13 +177,13 @@ export function SimulationScreen({ onAdvance }: Props) {
             width="80"
             height="140"
             rx="5"
-            fill="#FFFFFF"
-            stroke="#1C1917"
+            fill="var(--color-surface)"
+            stroke="var(--color-text)"
             strokeWidth="2"
           />
-          <rect x="246" y="46" width="68" height="5" fill="#0F766E" />
-          <rect x="246" y="86" width="68" height="6" rx="2" fill="#A8A29E" />
-          <rect x="246" y="146" width="68" height="6" rx="2" fill="#0F766E" />
+          <rect x="246" y="46" width="68" height="5" fill="var(--color-brand)" />
+          <rect x="246" y="86" width="68" height="6" rx="2" fill="var(--color-neutral-wire)" />
+          <rect x="246" y="146" width="68" height="6" rx="2" fill="var(--color-brand)" />
 
           {/* Optional second bond */}
           {secondBond && (
@@ -194,10 +194,10 @@ export function SimulationScreen({ onAdvance }: Props) {
                 width="6"
                 height="64"
                 rx="2"
-                fill="#DC2626"
+                fill="var(--color-danger)"
               />
-              <circle cx="317" cy="90" r="1.5" fill="#FFFFFF" />
-              <circle cx="317" cy="150" r="1.5" fill="#FFFFFF" />
+              <circle cx="317" cy="90" r="1.5" fill="var(--color-surface)" />
+              <circle cx="317" cy="150" r="1.5" fill="var(--color-surface)" />
             </>
           )}
 
@@ -207,7 +207,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y="216"
             textAnchor="middle"
             fontSize="9"
-            fill="#0C0A09"
+            fill="var(--color-text-strong)"
             fontWeight="600"
           >
             Load
@@ -218,8 +218,8 @@ export function SimulationScreen({ onAdvance }: Props) {
             width="36"
             height="18"
             rx="3"
-            fill="#F5F5F4"
-            stroke="#1C1917"
+            fill="var(--color-surface-muted)"
+            stroke="var(--color-text)"
             strokeWidth="1.2"
           />
           <circle
@@ -227,7 +227,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             cy="199"
             r="3"
             fill="none"
-            stroke="#1C1917"
+            stroke="var(--color-text)"
             strokeWidth="1"
           />
           <line
@@ -235,7 +235,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             y1="152"
             x2="280"
             y2="190"
-            stroke="#A8A29E"
+            stroke="var(--color-neutral-wire)"
             strokeWidth="1.5"
           />
         </svg>
