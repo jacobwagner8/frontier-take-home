@@ -11,7 +11,7 @@ Inside the main panel, a main bonding jumper (a screw or strap supplied by the m
 Downstream of the main panel — at every subpanel, junction, and device — the neutral and EGC are kept on separate buses and never tied together again.`,
     imageSrc: "/images/single-bond.svg",
     imageAlt:
-      "Diagram of a residential service panel with the main bonding jumper at one point",
+      "Diagram showing a utility service drop feeding a main panel, where a red main bonding jumper ties the neutral bus to the EGC bus and a grounding electrode conductor runs down to a ground rod. A feeder carries the two hots, neutral, and EGC out to a subpanel whose neutral and EGC buses are kept separate, with a crossed-out connection labeled 'No bond here.'",
   },
 
   mcq1: {
