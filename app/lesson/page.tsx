@@ -6,6 +6,7 @@ import { ReadingScreen } from "@/components/ReadingScreen";
 import { MCQuestionScreen } from "@/components/MCQuestionScreen";
 import { RemediationScreen } from "@/components/RemediationScreen";
 import { SimulationScreen } from "@/components/SimulationScreen";
+import { VoiceTutorScreen } from "@/components/VoiceTutorScreen";
 import {
   initialLessonState,
   lessonReducer,
@@ -86,16 +87,13 @@ export default function LessonPage() {
       )}
 
       {state.step === "voiceTutor" && (
-        <div className="flex flex-col gap-4">
-          <p>Voice tutor coming in Phase 3.</p>
-          <button
-            type="button"
-            onClick={() => dispatch({ type: "ADVANCE" })}
-            className="self-end px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
-          >
-            Skip (temp)
-          </button>
-        </div>
+        <VoiceTutorScreen
+          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onFallbackToText={() => {
+            // Phase 4 will replace this with the text-chat fallback UI.
+            dispatch({ type: "ADVANCE" });
+          }}
+        />
       )}
 
       {state.step === "done" && (
