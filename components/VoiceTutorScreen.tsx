@@ -5,20 +5,22 @@ import {
   startRealtimeSession,
   type RealtimeSession,
 } from "@/lib/realtimeClient";
+import { TextRecapChat } from "./TextRecapChat";
 
 interface Props {
   onAdvance: () => void;
-  onFallbackToText: () => void;
 }
 
 type Status = "idle" | "connecting" | "live" | "error" | "stopped";
+type Mode = "voice" | "text";
 
 interface TranscriptLine {
   role: "user" | "assistant";
   text: string;
 }
 
-export function VoiceTutorScreen({ onAdvance, onFallbackToText }: Props) {
+export function VoiceTutorScreen({ onAdvance }: Props) {
+  const [mode, setMode] = useState<Mode>("voice");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
@@ -103,79 +105,90 @@ export function VoiceTutorScreen({ onAdvance, onFallbackToText }: Props) {
     <section className="flex flex-col gap-4">
       <h2 className="text-lg font-semibold">Talk it back</h2>
       <p className="text-sm text-slate-700">
-        Last step: have a quick voice conversation with the tutor to make sure
-        the concept stuck. Tap Start, allow microphone access, and explain in
-        your own words.
+        {mode === "voice"
+          ? "Last step: have a quick voice conversation with the tutor to make sure the concept stuck. Tap Start, allow microphone access, and explain in your own words."
+          : "Type a recap of what you learned in your own words. The tutor will respond."}
       </p>
 
-      <p
-        role="status"
-        aria-live="polite"
-        className="text-sm text-slate-500"
-      >
-        {status === "idle" && "Tap Start to begin."}
-        {status === "connecting" && "Connecting..."}
-        {status === "live" && "Listening..."}
-        {status === "stopped" && "Conversation ended."}
-        {status === "error" && (errorMsg ?? "Something went wrong.")}
-      </p>
-
-      <div
-        role="log"
-        aria-live="polite"
-        aria-atomic="false"
-        className="rounded-lg border border-slate-200 bg-slate-50 p-3 min-h-[140px]"
-      >
-        {transcript.map((line, i) => (
-          <p key={i} className="text-sm leading-relaxed">
-            <span className="font-semibold mr-1">
-              {line.role === "user" ? "You:" : "Tutor:"}
-            </span>
-            {line.text}
+      {mode === "text" ? (
+        <TextRecapChat onDone={onAdvance} />
+      ) : (
+        <>
+          <p
+            role="status"
+            aria-live="polite"
+            className="text-sm text-slate-500"
+          >
+            {status === "idle" && "Tap Start to begin."}
+            {status === "connecting" && "Connecting..."}
+            {status === "live" && "Listening..."}
+            {status === "stopped" && "Conversation ended."}
+            {status === "error" && (errorMsg ?? "Something went wrong.")}
           </p>
-        ))}
-      </div>
 
-      <div className="flex gap-2 justify-end">
-        {inactive ? (
-          <>
-            <button
-              type="button"
-              onClick={onFallbackToText}
-              className="px-4 py-2.5 rounded-lg border border-slate-300 font-medium"
-            >
-              Type instead
-            </button>
-            <button
-              type="button"
-              onClick={startCall}
-              className="px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
-            >
-              {status === "stopped" || status === "error" ? "Try again" : "Start"}
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              type="button"
-              onClick={stopCall}
-              className="px-4 py-2.5 rounded-lg border border-slate-300 font-medium"
-            >
-              Stop
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                stopCall();
-                onAdvance();
-              }}
-              className="px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
-            >
-              Done
-            </button>
-          </>
-        )}
-      </div>
+          <div
+            role="log"
+            aria-live="polite"
+            aria-atomic="false"
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3 min-h-[140px]"
+          >
+            {transcript.map((line, i) => (
+              <p key={i} className="text-sm leading-relaxed">
+                <span className="font-semibold mr-1">
+                  {line.role === "user" ? "You:" : "Tutor:"}
+                </span>
+                {line.text}
+              </p>
+            ))}
+          </div>
+
+          <div className="flex gap-2 justify-end">
+            {inactive ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopCall();
+                    setMode("text");
+                  }}
+                  className="px-4 py-2.5 rounded-lg border border-slate-300 font-medium"
+                >
+                  Type instead
+                </button>
+                <button
+                  type="button"
+                  onClick={startCall}
+                  className="px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+                >
+                  {status === "stopped" || status === "error"
+                    ? "Try again"
+                    : "Start"}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={stopCall}
+                  className="px-4 py-2.5 rounded-lg border border-slate-300 font-medium"
+                >
+                  Stop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopCall();
+                    onAdvance();
+                  }}
+                  className="px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+                >
+                  Done
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </section>
   );
 }
