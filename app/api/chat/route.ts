@@ -41,6 +41,13 @@ export async function POST(req: Request) {
     );
   }
 
+  if (body.context !== "follow_up" && body.context !== "voice_fallback") {
+    return NextResponse.json(
+      { error: "context must be 'follow_up' or 'voice_fallback'" },
+      { status: 400 },
+    );
+  }
+
   let systemPrompt = buildTutorSystemPrompt();
   if (body.context === "follow_up" && body.misconceptionTag) {
     const tag = body.misconceptionTag;
