@@ -14,11 +14,11 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
 
   return (
     <section className="flex flex-col gap-4">
-      <div role="status" aria-live="polite" className="flex flex-col gap-4">
-        <div className="text-xs uppercase tracking-wide text-rose-600 font-semibold">
+      <div role="status" aria-live="polite" className="flex flex-col gap-3">
+        <div className="text-[11px] uppercase tracking-[0.08em] text-danger font-semibold">
           Not quite
         </div>
-        <p className="text-base leading-relaxed whitespace-pre-wrap">
+        <p className="text-[15px] leading-[1.6] text-text whitespace-pre-wrap">
           {wrongOption.remediation}
         </p>
       </div>
@@ -27,7 +27,7 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
           <button
             type="button"
             onClick={() => setChatOpen(true)}
-            className="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 font-medium"
+            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
           >
             Ask a follow-up
           </button>
@@ -35,7 +35,7 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
         <button
           type="button"
           onClick={onAdvance}
-          className="px-4 py-2.5 rounded-lg bg-slate-900 text-white font-medium"
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
         >
           Try again
         </button>
