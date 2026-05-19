@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { BrandMark } from "./BrandMark";
 
 interface LessonShellProps {
   children: ReactNode;
@@ -7,15 +8,27 @@ interface LessonShellProps {
 
 export function LessonShell({ children, progress }: LessonShellProps) {
   return (
-    <div className="min-h-dvh flex flex-col bg-white text-slate-900">
-      <header className="px-4 pt-4 pb-2">
-        <div className="text-xs uppercase tracking-wide text-slate-500">
-          Electrical Fundamentals
+    <div className="min-h-dvh flex flex-col bg-canvas text-text">
+      <header className="px-4 pt-5 pb-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <BrandMark />
+            <div className="text-[11px] uppercase tracking-[0.06em] text-text-subtle font-semibold">
+              Electrical Fundamentals
+            </div>
+          </div>
+          {progress && (
+            <div className="text-[11px] text-text-subtle tabular-nums">
+              {progress.current} / {progress.total}
+            </div>
+          )}
         </div>
-        <h1 className="text-base font-semibold">Neutral &amp; Ground Bonding</h1>
+        <h1 className="text-sm font-semibold text-text-strong">
+          Neutral &amp; Ground Bonding
+        </h1>
         {progress && (
           <div
-            className="mt-2 h-1 w-full bg-slate-200 rounded overflow-hidden"
+            className="mt-3 h-1 w-full bg-border rounded-full overflow-hidden"
             role="progressbar"
             aria-label="Lesson progress"
             aria-valuemin={0}
@@ -23,7 +36,7 @@ export function LessonShell({ children, progress }: LessonShellProps) {
             aria-valuenow={progress.current}
           >
             <div
-              className="h-full bg-slate-900 transition-all"
+              className="h-full bg-brand rounded-full transition-all"
               style={{
                 width: `${(progress.current / progress.total) * 100}%`,
               }}
@@ -31,7 +44,7 @@ export function LessonShell({ children, progress }: LessonShellProps) {
           </div>
         )}
       </header>
-      <main className="flex-1 px-4 pb-6 flex flex-col gap-4">{children}</main>
+      <main className="flex-1 px-4 pb-8 flex flex-col gap-4">{children}</main>
     </div>
   );
 }
