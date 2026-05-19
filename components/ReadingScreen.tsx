@@ -13,10 +13,13 @@ export function ReadingScreen({
   ctaLabel = "Continue",
 }: Props) {
   return (
-    <article className="flex flex-col gap-5">
+    <article className="flex flex-col gap-5 w-full max-w-2xl mx-auto">
       <h2 className="text-xl font-semibold text-text-strong leading-tight tracking-[-0.005em]">
         {section.title}
       </h2>
+      <p className="text-[15px] leading-[1.6] text-text whitespace-pre-wrap">
+        {section.body}
+      </p>
       {section.imageSrc && (
         <div className="rounded-2xl overflow-hidden border border-border bg-surface shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
           <Image
@@ -28,9 +31,6 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <p className="text-[15px] leading-[1.6] text-text whitespace-pre-wrap">
-        {section.body}
-      </p>
       <button
         type="button"
         onClick={onAdvance}
