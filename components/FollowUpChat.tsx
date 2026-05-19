@@ -42,7 +42,7 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
         if (e.target === dialogRef.current) requestClose();
       }}
       aria-labelledby={titleId}
-      className="w-full max-w-md max-h-[80dvh] bg-surface rounded-3xl p-0 m-auto backdrop:bg-[#1C1917]/40"
+      className="w-full max-w-md max-h-[80dvh] bg-surface rounded-3xl p-0 m-auto backdrop:bg-text/40"
     >
       <div className="flex flex-col max-h-[80dvh]">
         <header className="px-5 py-4 border-b border-border flex justify-between items-center">
