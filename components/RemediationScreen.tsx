@@ -13,7 +13,7 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <section className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
+    <section className="flex flex-col gap-4">
       <div role="status" aria-live="polite" className="flex flex-col gap-3">
         <div className="text-[11px] uppercase tracking-[0.08em] text-danger font-semibold">
           Not quite

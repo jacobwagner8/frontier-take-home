@@ -15,7 +15,7 @@ export function SimulationScreen({ onAdvance }: Props) {
     : curriculum.simulationCaptions.oneBond;
 
   return (
-    <section className="flex flex-col gap-5 w-full max-w-2xl mx-auto">
+    <section className="flex flex-col gap-5">
       <h2 className="text-xl font-semibold text-text-strong leading-tight tracking-[-0.005em]">
         See what happens with two bonds
       </h2>

@@ -44,7 +44,9 @@ export function LessonShell({ children, progress }: LessonShellProps) {
           </div>
         )}
       </header>
-      <main className="flex-1 px-4 pb-8 flex flex-col gap-4">{children}</main>
+      <main className="flex-1 w-full max-w-2xl mx-auto px-4 pb-8 flex flex-col gap-4">
+        {children}
+      </main>
     </div>
   );
 }
