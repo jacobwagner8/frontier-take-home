@@ -218,11 +218,14 @@ export function SimulationScreen({ onAdvance }: Props) {
           )}
 
           {/* === DOWNSTREAM SCENE === */}
+          {/* Left to right: Sink, Person, Appliance.
+              Subpanel branch circuit drops straight down into the appliance from above. */}
+
           {/* Branch-circuit neutral from subpanel to appliance */}
           <line
             x1="320"
             y1="90"
-            x2="338"
+            x2="325"
             y2="90"
             stroke="var(--color-neutral-wire)"
             strokeWidth="2.5"
@@ -230,20 +233,10 @@ export function SimulationScreen({ onAdvance }: Props) {
             className="current-flow-n"
           />
           <line
-            x1="338"
+            x1="325"
             y1="90"
-            x2="338"
-            y2="285"
-            stroke="var(--color-neutral-wire)"
-            strokeWidth="2.5"
-            strokeDasharray="6 4"
-            className="current-flow-n"
-          />
-          <line
-            x1="338"
-            y1="285"
-            x2="255"
-            y2="285"
+            x2="325"
+            y2="265"
             stroke="var(--color-neutral-wire)"
             strokeWidth="2.5"
             strokeDasharray="6 4"
@@ -254,7 +247,7 @@ export function SimulationScreen({ onAdvance }: Props) {
           <line
             x1="320"
             y1="150"
-            x2="348"
+            x2="330"
             y2="150"
             stroke="var(--color-brand)"
             strokeWidth="2.5"
@@ -262,29 +255,151 @@ export function SimulationScreen({ onAdvance }: Props) {
             className={secondBond ? "current-flow-egc" : ""}
           />
           <line
-            x1="348"
+            x1="330"
             y1="150"
-            x2="348"
-            y2="268"
-            stroke="var(--color-brand)"
-            strokeWidth="2.5"
-            strokeDasharray="6 4"
-            className={secondBond ? "current-flow-egc" : ""}
-          />
-          <line
-            x1="348"
-            y1="268"
-            x2="255"
-            y2="268"
+            x2="330"
+            y2="265"
             stroke="var(--color-brand)"
             strokeWidth="2.5"
             strokeDasharray="6 4"
             className={secondBond ? "current-flow-egc" : ""}
           />
 
+          {/* Sink (true earth via local water pipe) */}
+          <rect
+            x="215"
+            y="270"
+            width="40"
+            height="32"
+            rx="2"
+            fill="var(--color-surface-muted)"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <text
+            x="235"
+            y="316"
+            textAnchor="middle"
+            fontSize="9"
+            fill="var(--color-text-strong)"
+            fontWeight="600"
+          >
+            Sink
+          </text>
+          <text
+            x="235"
+            y="262"
+            textAnchor="middle"
+            fontSize="8"
+            fill="var(--color-text-muted)"
+            fontWeight="600"
+          >
+            0 V (earth)
+          </text>
+          {/* Pipe + ground symbol */}
+          <line
+            x1="235"
+            y1="302"
+            x2="235"
+            y2="307"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="228"
+            y1="307"
+            x2="242"
+            y2="307"
+            stroke="var(--color-text)"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="230"
+            y1="310"
+            x2="240"
+            y2="310"
+            stroke="var(--color-text)"
+            strokeWidth="1"
+          />
+          <line
+            x1="232"
+            y1="313"
+            x2="238"
+            y2="313"
+            stroke="var(--color-text)"
+            strokeWidth="1"
+          />
+
+          {/* Person — stands to the left of the appliance, between sink and appliance */}
+          <circle
+            cx="270"
+            cy="272"
+            r="4"
+            fill="none"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="270"
+            y1="276"
+            x2="270"
+            y2="298"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          {/* Arms — turn red when there's a voltage between the things being touched */}
+          <line
+            x1="270"
+            y1="283"
+            x2="255"
+            y2="290"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
+          />
+          <line
+            x1="270"
+            y1="283"
+            x2="285"
+            y2="290"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
+          />
+          <line
+            x1="270"
+            y1="298"
+            x2="265"
+            y2="312"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          <line
+            x1="270"
+            y1="298"
+            x2="275"
+            y2="312"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          {secondBond && (
+            <text
+              x="270"
+              y="264"
+              textAnchor="middle"
+              fontSize="11"
+              fill="var(--color-danger)"
+              fontWeight="700"
+            >
+              ⚡
+            </text>
+          )}
+
           {/* Appliance */}
           <rect
-            x="205"
+            x="285"
             y="265"
             width="50"
             height="40"
@@ -296,7 +411,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             strokeWidth={secondBond ? "1.8" : "1.2"}
           />
           <circle
-            cx="230"
+            cx="310"
             cy="285"
             r="6"
             fill="none"
@@ -304,7 +419,7 @@ export function SimulationScreen({ onAdvance }: Props) {
             strokeWidth="0.8"
           />
           <text
-            x="230"
+            x="310"
             y="316"
             textAnchor="middle"
             fontSize="9"
@@ -315,7 +430,7 @@ export function SimulationScreen({ onAdvance }: Props) {
           </text>
           {secondBond && (
             <text
-              x="230"
+              x="310"
               y="259"
               textAnchor="middle"
               fontSize="9"
@@ -325,138 +440,6 @@ export function SimulationScreen({ onAdvance }: Props) {
               ≈ 5 V
             </text>
           )}
-
-          {/* Person */}
-          <circle
-            cx="280"
-            cy="272"
-            r="4"
-            fill="none"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <line
-            x1="280"
-            y1="276"
-            x2="280"
-            y2="298"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          {/* Arms — turn red when there's a voltage between the things being touched */}
-          <line
-            x1="280"
-            y1="283"
-            x2="258"
-            y2="290"
-            stroke={
-              secondBond ? "var(--color-danger)" : "var(--color-text)"
-            }
-            strokeWidth={secondBond ? "1.8" : "1.2"}
-          />
-          <line
-            x1="280"
-            y1="283"
-            x2="302"
-            y2="290"
-            stroke={
-              secondBond ? "var(--color-danger)" : "var(--color-text)"
-            }
-            strokeWidth={secondBond ? "1.8" : "1.2"}
-          />
-          <line
-            x1="280"
-            y1="298"
-            x2="275"
-            y2="312"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <line
-            x1="280"
-            y1="298"
-            x2="285"
-            y2="312"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          {secondBond && (
-            <text
-              x="294"
-              y="270"
-              textAnchor="middle"
-              fontSize="11"
-              fill="var(--color-danger)"
-              fontWeight="700"
-            >
-              ⚡
-            </text>
-          )}
-
-          {/* Sink (true earth via local water pipe) */}
-          <rect
-            x="305"
-            y="270"
-            width="40"
-            height="32"
-            rx="2"
-            fill="var(--color-surface-muted)"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <text
-            x="325"
-            y="316"
-            textAnchor="middle"
-            fontSize="9"
-            fill="var(--color-text-strong)"
-            fontWeight="600"
-          >
-            Sink
-          </text>
-          <text
-            x="325"
-            y="262"
-            textAnchor="middle"
-            fontSize="8"
-            fill="var(--color-text-muted)"
-            fontWeight="600"
-          >
-            0 V (earth)
-          </text>
-          {/* Pipe + ground symbol */}
-          <line
-            x1="325"
-            y1="302"
-            x2="325"
-            y2="307"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <line
-            x1="318"
-            y1="307"
-            x2="332"
-            y2="307"
-            stroke="var(--color-text)"
-            strokeWidth="1.5"
-          />
-          <line
-            x1="320"
-            y1="310"
-            x2="330"
-            y2="310"
-            stroke="var(--color-text)"
-            strokeWidth="1"
-          />
-          <line
-            x1="322"
-            y1="313"
-            x2="328"
-            y2="313"
-            stroke="var(--color-text)"
-            strokeWidth="1"
-          />
         </svg>
       </div>
 
