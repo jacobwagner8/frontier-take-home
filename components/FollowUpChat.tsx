@@ -39,38 +39,36 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
       ref={dialogRef}
       onClose={onClose}
       onClick={(e) => {
-        // Click on the dialog's backdrop has target === the dialog itself
-        // (clicks on inner content have inner targets).
         if (e.target === dialogRef.current) requestClose();
       }}
       aria-labelledby={titleId}
-      className="w-full max-w-md max-h-[80dvh] bg-white rounded-2xl p-0 m-auto backdrop:bg-black/40"
+      className="w-full max-w-md max-h-[80dvh] bg-surface rounded-3xl p-0 m-auto backdrop:bg-[#1C1917]/40"
     >
       <div className="flex flex-col max-h-[80dvh]">
-        <header className="px-4 py-3 border-b border-slate-200 flex justify-between items-center">
-          <h3 id={titleId} className="font-semibold text-sm">
+        <header className="px-5 py-4 border-b border-border flex justify-between items-center">
+          <h3 id={titleId} className="font-semibold text-base text-text-strong">
             Ask a follow-up
           </h3>
           <button
             type="button"
             onClick={requestClose}
             aria-label="Close follow-up chat"
-            className="text-slate-500 text-sm"
+            className="text-text-subtle text-sm hover:text-text-strong"
           >
             Close
           </button>
         </header>
-        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2">
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
           {messages.length === 0 && (
-            <p className="text-sm text-slate-500">
+            <p className="text-[14px] text-text-subtle">
               Ask anything about why this is wrong.
             </p>
           )}
           {messages.map((m, i) => (
             <div
               key={i}
-              className={`text-sm leading-relaxed ${
-                m.role === "user" ? "text-slate-900" : "text-slate-700"
+              className={`text-[14px] leading-relaxed ${
+                m.role === "user" ? "text-text-strong" : "text-text"
               }`}
             >
               <span className="font-semibold mr-1">
@@ -80,12 +78,12 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
             </div>
           ))}
           {busy && (
-            <p className="text-sm text-slate-400" aria-live="polite">
+            <p className="text-[14px] text-text-subtle" aria-live="polite">
               Thinking...
             </p>
           )}
         </div>
-        <div className="p-3 border-t border-slate-200 flex gap-2">
+        <div className="p-4 border-t border-border flex gap-2">
           <input
             ref={inputRef}
             value={input}
@@ -95,13 +93,13 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
             }}
             placeholder="Type your question"
             aria-label="Your question"
-            className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-base"
+            className="flex-1 border border-border rounded-xl px-4 py-3 text-base bg-canvas focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
           <button
             type="button"
             onClick={send}
             disabled={busy || !input.trim()}
-            className="px-3 py-2 rounded-lg bg-slate-900 text-white font-medium disabled:bg-slate-300"
+            className="px-4 py-3 rounded-xl bg-brand text-white font-semibold disabled:bg-border disabled:text-text-subtle disabled:cursor-not-allowed"
           >
             Send
           </button>
