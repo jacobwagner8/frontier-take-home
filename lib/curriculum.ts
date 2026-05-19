@@ -4,7 +4,7 @@ export const curriculum: Curriculum = {
   reading1: {
     id: "r1",
     title: "One bond, exactly one place",
-    body: `In a US residential service, the utility brings power in on two hot legs and a neutral. The neutral is intentionally tied to earth so the whole system has a defined voltage reference and a low-impedance path back to the source. That neutral-to-ground connection — the system bond — happens at exactly one place: the service disconnect, which is almost always the main panel. NEC 250.24(A)(5) requires it, and prohibits it anywhere else.
+    body: `In a US residential service, the utility brings power in on two hot legs and a neutral. The neutral is intentionally tied to earth so the whole system has a defined voltage reference and a low-impedance path back to the source. That neutral-to-ground connection — the system bond — happens at exactly one place: the service disconnect, which is almost always the main panel. NEC 250.24(A) requires it, and prohibits it anywhere else.
 
 Inside the main panel, a main bonding jumper (a screw or strap supplied by the manufacturer) ties together the neutral bus, the equipment grounding conductor (EGC) bus, the metal enclosure, and the grounding electrode conductor that runs to the ground rod or water-pipe ground. From the panel onward, the neutral carries normal return current back to the source. The EGC is the bare or green wire that connects every metal box, raceway, and appliance frame back to that one bonding point. Under normal conditions the EGC carries no current; it only carries fault current briefly when a hot conductor touches a metal part, long enough to trip the breaker.
 
@@ -88,7 +88,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
 
   voiceTutor: {
     groundingFacts: [
-      "The N-G bond exists at exactly one point: the service disconnect (main panel). NEC 250.24(A)(5) requires this, and NEC 250.142 prohibits using the neutral for equipment grounding downstream of the service.",
+      "The N-G bond exists at exactly one point: the service disconnect (main panel). NEC 250.24(A) requires this, and NEC 250.142 prohibits using the neutral for equipment grounding downstream of the service.",
       "Downstream of the bond, the neutral carries normal return current and the EGC carries fault current only — briefly, when a hot conductor touches a grounded surface, long enough to trip the breaker.",
       "A second N-G bond creates parallel return paths through the EGC and any bonded metal: raceways, water pipes, panel enclosures, the grounding electrode conductor.",
       "Objectionable current on EGCs (NEC 250.6) produces voltage drops on 'grounded' surfaces, creating touch-voltage hazards between bonded metal parts that should be at the same potential.",

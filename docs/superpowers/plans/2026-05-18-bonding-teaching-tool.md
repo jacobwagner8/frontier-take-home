@@ -440,7 +440,7 @@ Read `docs/superpowers/specs/2026-05-18-bonding-teaching-tool-design.md`, sectio
 
 Open browser tabs:
 - Mike Holt — "Bonding vs. Grounding" article series
-- NEC 2023 Article 250.24(A)(5) and 250.142 (if available; otherwise the NEC handbook excerpts on these articles)
+- NEC 2023 Article 250.24(A) and 250.142 (if available; otherwise the NEC handbook excerpts on these articles)
 
 Read through. Note any places where your spec text needs sharpening. Update the spec inline if you discover an inaccuracy.
 
