@@ -13,7 +13,7 @@ export function ReadingScreen({
   ctaLabel = "Continue",
 }: Props) {
   return (
-    <article className="flex flex-col gap-5 w-full max-w-2xl mx-auto">
+    <article className="flex flex-col gap-5">
       <h2 className="text-xl font-semibold text-text-strong leading-tight tracking-[-0.005em]">
         {section.title}
       </h2>
