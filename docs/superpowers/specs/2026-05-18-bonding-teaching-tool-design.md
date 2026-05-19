@@ -40,7 +40,7 @@ The N and the EGC form a parallel pair between the second bond and the main bond
 
 ### Sources to fact-check against
 
-- NEC 2023 Articles 250.24(A)(5), 250.30, 250.142, 250.6
+- NEC 2023 Articles 250.24(A), 250.30, 250.142, 250.6
 - Mike Holt's published material on grounding vs. bonding
 - IAEI articles on subpanel bonding
 
