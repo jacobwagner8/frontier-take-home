@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# superpowers visual companion (mockups; local only)
+.superpowers/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
