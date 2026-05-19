@@ -11,6 +11,7 @@ describe("SimulationScreen toggle behavior", () => {
       screen.getByText(curriculum.simulationCaptions.oneBond),
     ).toBeInTheDocument();
     expect(screen.queryByText(/Current now flowing on the EGC/i)).toBeNull();
+    expect(screen.queryByText(/≈ 5 V/)).toBeNull();
   });
 
   it("swaps caption and reveals the second-bond visual when toggled", async () => {
@@ -29,5 +30,6 @@ describe("SimulationScreen toggle behavior", () => {
     expect(
       screen.getByText(/Current now flowing on the EGC/i),
     ).toBeInTheDocument();
+    expect(screen.getByText(/≈ 5 V/)).toBeInTheDocument();
   });
 });
