@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef } from "react";
+import { useChat } from "@/lib/useChat";
 
 interface Props {
   misconceptionTag: string;
   onClose: () => void;
 }
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export function FollowUpChat({ misconceptionTag, onClose }: Props) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
+  const { messages, input, setInput, busy, send } = useChat({
+    buildBody: (msgs) => ({
+      context: "follow_up",
+      misconceptionTag,
+      messages: msgs,
+    }),
+  });
   const inputRef = useRef<HTMLInputElement>(null);
   const titleId = useId();
 
@@ -27,45 +27,6 @@ export function FollowUpChat({ misconceptionTag, onClose }: Props) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onClose]);
-
-  async function send() {
-    if (!input.trim() || busy) return;
-    const next: Message[] = [
-      ...messages,
-      { role: "user", content: input.trim() },
-    ];
-    setMessages(next);
-    setInput("");
-    setBusy(true);
-    try {
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          context: "follow_up",
-          misconceptionTag,
-          messages: next,
-        }),
-      });
-      if (!resp.ok) throw new Error("chat failed");
-      const data = await resp.json();
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.reply || "(no reply)" },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "Sorry, the follow-up service is unavailable right now. Try again in a moment.",
-        },
-      ]);
-    } finally {
-      setBusy(false);
-    }
-  }
 
   return (
     <div

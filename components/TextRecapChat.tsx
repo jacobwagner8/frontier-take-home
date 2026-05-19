@@ -1,63 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useChat } from "@/lib/useChat";
 
 interface Props {
   onDone: () => void;
 }
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export function TextRecapChat({ onDone }: Props) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
+  const { messages, input, setInput, busy, send } = useChat({
+    buildBody: (msgs) => ({
+      context: "voice_fallback",
+      messages: msgs,
+    }),
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  async function send() {
-    if (!input.trim() || busy) return;
-    const next: Message[] = [
-      ...messages,
-      { role: "user", content: input.trim() },
-    ];
-    setMessages(next);
-    setInput("");
-    setBusy(true);
-    try {
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          context: "voice_fallback",
-          messages: next,
-        }),
-      });
-      if (!resp.ok) throw new Error("chat failed");
-      const data = await resp.json();
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.reply || "(no reply)" },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "Sorry, the chat service is unavailable right now. Try again in a moment.",
-        },
-      ]);
-    } finally {
-      setBusy(false);
-    }
-  }
 
   return (
     <div className="flex flex-col gap-3">
