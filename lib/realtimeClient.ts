@@ -8,6 +8,9 @@ export interface RealtimeSession {
 interface StartArgs {
   ephemeralKey: string;
   onTranscript?: (text: string, role: "user" | "assistant") => void;
+  /** Fires when the assistant finishes a turn — use to close the current
+   * transcript line so the next delta starts a new line. */
+  onAssistantTurnComplete?: () => void;
   onError?: (err: Error) => void;
 }
 
@@ -27,6 +30,7 @@ const SDP_TIMEOUT_MS = 10_000;
 export async function startRealtimeSession({
   ephemeralKey,
   onTranscript,
+  onAssistantTurnComplete,
   onError,
 }: StartArgs): Promise<RealtimeSession> {
   const pc = new RTCPeerConnection();
@@ -55,6 +59,8 @@ export async function startRealtimeSession({
         const msg = JSON.parse(e.data);
         if (msg.type === "response.audio_transcript.delta") {
           onTranscript?.(msg.delta ?? "", "assistant");
+        } else if (msg.type === "response.audio_transcript.done") {
+          onAssistantTurnComplete?.();
         } else if (
           msg.type === "conversation.item.input_audio_transcription.completed"
         ) {

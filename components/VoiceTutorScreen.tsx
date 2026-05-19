@@ -23,6 +23,11 @@ export function VoiceTutorScreen({ onAdvance, onFallbackToText }: Props) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
   const sessionRef = useRef<RealtimeSession | null>(null);
+  /** True while the assistant is mid-turn — incoming deltas append to the
+   * last line. Closed by response.audio_transcript.done so a fresh
+   * assistant turn (with no user transcript between them) starts a new
+   * line instead of merging. */
+  const assistantTurnOpenRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -54,15 +59,23 @@ export function VoiceTutorScreen({ onAdvance, onFallbackToText }: Props) {
         ephemeralKey,
         onTranscript: (text, role) => {
           setTranscript((prev) => {
-            const last = prev[prev.length - 1];
-            if (last && last.role === role && role === "assistant") {
+            if (role === "user") {
+              assistantTurnOpenRef.current = false;
+              return [...prev, { role, text }];
+            }
+            if (assistantTurnOpenRef.current) {
+              const last = prev[prev.length - 1];
               return [
                 ...prev.slice(0, -1),
                 { role, text: last.text + text },
               ];
             }
+            assistantTurnOpenRef.current = true;
             return [...prev, { role, text }];
           });
+        },
+        onAssistantTurnComplete: () => {
+          assistantTurnOpenRef.current = false;
         },
         onError: (err) => {
           setErrorMsg(err.message);
