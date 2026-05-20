@@ -70,6 +70,52 @@ export default function LessonPage() {
         />
       )}
 
+      {state.step === "mcq1b" && (
+        <MCQuestionScreen
+          mcq={curriculum.mcq1b}
+          onAnswer={(opt) => {
+            analytics.recordMcqAttempt("mcq1b", opt.isCorrect);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b", optionId: opt.id });
+          }}
+          onBack={goBack}
+        />
+      )}
+
+      {state.step === "remediation1b" && state.lastWrongOptionId && (
+        <RemediationScreen
+          wrongOption={
+            curriculum.mcq1b.options.find(
+              (o) => o.id === state.lastWrongOptionId,
+            )!
+          }
+          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onChatTurn={() => analytics.recordChatTurn("remediation1b")}
+        />
+      )}
+
+      {state.step === "mcq1c" && (
+        <MCQuestionScreen
+          mcq={curriculum.mcq1c}
+          onAnswer={(opt) => {
+            analytics.recordMcqAttempt("mcq1c", opt.isCorrect);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c", optionId: opt.id });
+          }}
+          onBack={goBack}
+        />
+      )}
+
+      {state.step === "remediation1c" && state.lastWrongOptionId && (
+        <RemediationScreen
+          wrongOption={
+            curriculum.mcq1c.options.find(
+              (o) => o.id === state.lastWrongOptionId,
+            )!
+          }
+          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onChatTurn={() => analytics.recordChatTurn("remediation1c")}
+        />
+      )}
+
       {state.step === "simulation" && (
         <SimulationScreen
           onAdvance={() => dispatch({ type: "ADVANCE" })}

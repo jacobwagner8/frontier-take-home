@@ -18,6 +18,8 @@ const sample: Curriculum = {
       },
     ],
   },
+  mcq1b: { id: "m1b", prompt: "P1b", options: [{ id: "a", text: "t", isCorrect: true }] },
+  mcq1c: { id: "m1c", prompt: "P1c", options: [{ id: "a", text: "t", isCorrect: true }] },
   simulationCaptions: {
     oneBond: "cap1",
     twoBond: { mechanism: "m", consequence: "c", hazard: "h" },

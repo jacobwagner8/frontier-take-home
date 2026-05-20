@@ -53,6 +53,8 @@ export async function POST(req: Request) {
     const tag = body.misconceptionTag;
     const target = [
       ...curriculum.mcq1.options,
+      ...curriculum.mcq1b.options,
+      ...curriculum.mcq1c.options,
       ...curriculum.mcq2.options,
     ].find((o) => !o.isCorrect && o.misconceptionTag === tag);
     if (target) {

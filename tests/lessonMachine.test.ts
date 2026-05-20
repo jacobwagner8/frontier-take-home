@@ -24,7 +24,7 @@ describe("lessonReducer", () => {
     expect(next.step).toBe("mcq1");
   });
 
-  it("mcq1 → simulation when answered correctly", () => {
+  it("mcq1 → mcq1b when answered correctly", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq1" };
     const correctId = curriculum.mcq1.options.find((o) => o.isCorrect)!.id;
     const next = lessonReducer(state, {
@@ -32,7 +32,71 @@ describe("lessonReducer", () => {
       mcqId: "mcq1",
       optionId: correctId,
     });
-    expect(next.step).toBe("simulation");
+    expect(next.step).toBe("mcq1b");
+  });
+
+  it("mcq1b correct → mcq1c; wrong → remediation1b", () => {
+    const state: LessonState = { ...initialLessonState, step: "mcq1b" };
+    const correctId = curriculum.mcq1b.options.find((o) => o.isCorrect)!.id;
+    const wrong = curriculum.mcq1b.options.find((o) => !o.isCorrect)!;
+
+    const onCorrect = lessonReducer(state, {
+      type: "ANSWER_MCQ",
+      mcqId: "mcq1b",
+      optionId: correctId,
+    });
+    expect(onCorrect.step).toBe("mcq1c");
+
+    const onWrong = lessonReducer(state, {
+      type: "ANSWER_MCQ",
+      mcqId: "mcq1b",
+      optionId: wrong.id,
+    });
+    expect(onWrong.step).toBe("remediation1b");
+    expect(onWrong.lastWrongOptionId).toBe(wrong.id);
+  });
+
+  it("mcq1c correct → simulation; wrong → remediation1c", () => {
+    const state: LessonState = { ...initialLessonState, step: "mcq1c" };
+    const correctId = curriculum.mcq1c.options.find((o) => o.isCorrect)!.id;
+    const wrong = curriculum.mcq1c.options.find((o) => !o.isCorrect)!;
+
+    const onCorrect = lessonReducer(state, {
+      type: "ANSWER_MCQ",
+      mcqId: "mcq1c",
+      optionId: correctId,
+    });
+    expect(onCorrect.step).toBe("simulation");
+
+    const onWrong = lessonReducer(state, {
+      type: "ANSWER_MCQ",
+      mcqId: "mcq1c",
+      optionId: wrong.id,
+    });
+    expect(onWrong.step).toBe("remediation1c");
+    expect(onWrong.lastWrongOptionId).toBe(wrong.id);
+  });
+
+  it("remediation1b → mcq1b on ADVANCE (retry)", () => {
+    const state: LessonState = {
+      ...initialLessonState,
+      step: "remediation1b",
+      lastWrongOptionId: "mcq1b_a",
+    };
+    const next = lessonReducer(state, { type: "ADVANCE" });
+    expect(next.step).toBe("mcq1b");
+    expect(next.lastWrongOptionId).toBeUndefined();
+  });
+
+  it("remediation1c → mcq1c on ADVANCE (retry)", () => {
+    const state: LessonState = {
+      ...initialLessonState,
+      step: "remediation1c",
+      lastWrongOptionId: "mcq1c_a",
+    };
+    const next = lessonReducer(state, { type: "ADVANCE" });
+    expect(next.step).toBe("mcq1c");
+    expect(next.lastWrongOptionId).toBeUndefined();
   });
 
   it("mcq1 → remediation1 when answered incorrectly, tracks wrong option", () => {
@@ -104,7 +168,9 @@ describe("lessonReducer GO_BACK", () => {
   const backCases: Array<[LessonStep, LessonStep]> = [
     ["reading1", "intro"],
     ["mcq1", "reading1"],
-    ["simulation", "mcq1"],
+    ["mcq1b", "mcq1"],
+    ["mcq1c", "mcq1b"],
+    ["simulation", "mcq1c"],
     ["mcq2", "simulation"],
     ["voiceTutor", "mcq2"],
   ];
@@ -128,6 +194,8 @@ describe("lessonReducer GO_BACK", () => {
   const noBackSteps: LessonStep[] = [
     "intro",
     "remediation1",
+    "remediation1b",
+    "remediation1c",
     "remediation2",
     "done",
   ];
@@ -140,23 +208,31 @@ describe("lessonReducer GO_BACK", () => {
 });
 
 describe("progressFor", () => {
-  it("returns 0/5 for intro (lesson not started)", () => {
-    expect(progressFor("intro")).toEqual({ current: 0, total: 5 });
+  it("returns 0/7 for intro (lesson not started)", () => {
+    expect(progressFor("intro")).toEqual({ current: 0, total: 7 });
   });
 
-  it("returns 1/5 for reading1", () => {
-    expect(progressFor("reading1")).toEqual({ current: 1, total: 5 });
+  it("returns 1/7 for reading1", () => {
+    expect(progressFor("reading1")).toEqual({ current: 1, total: 7 });
   });
 
-  it("collapses remediation1 onto mcq1 (2/5)", () => {
-    expect(progressFor("remediation1")).toEqual({ current: 2, total: 5 });
+  it("collapses remediation1 onto mcq1 (2/7)", () => {
+    expect(progressFor("remediation1")).toEqual({ current: 2, total: 7 });
   });
 
-  it("collapses remediation2 onto mcq2 (4/5)", () => {
-    expect(progressFor("remediation2")).toEqual({ current: 4, total: 5 });
+  it("collapses remediation1b onto mcq1b (3/7)", () => {
+    expect(progressFor("remediation1b")).toEqual({ current: 3, total: 7 });
   });
 
-  it("returns 5/5 for done (lesson complete)", () => {
-    expect(progressFor("done")).toEqual({ current: 5, total: 5 });
+  it("collapses remediation1c onto mcq1c (4/7)", () => {
+    expect(progressFor("remediation1c")).toEqual({ current: 4, total: 7 });
+  });
+
+  it("collapses remediation2 onto mcq2 (6/7)", () => {
+    expect(progressFor("remediation2")).toEqual({ current: 6, total: 7 });
+  });
+
+  it("returns 7/7 for done (lesson complete)", () => {
+    expect(progressFor("done")).toEqual({ current: 7, total: 7 });
   });
 });

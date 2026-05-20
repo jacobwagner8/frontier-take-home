@@ -23,6 +23,34 @@ export const curriculum: Curriculum = {
       },
     ],
   },
+  mcq1b: {
+    id: "mcq-gfci-button-purpose",
+    prompt: "What does pressing the TEST button on a GFCI do?",
+    options: [
+      { id: "simulates-leakage", text: "It simulates a small ground-fault leakage to verify the device trips.", isCorrect: true },
+      {
+        id: "cuts-power-always",
+        text: "It cuts power to the receptacle whether or not the device is working.",
+        isCorrect: false,
+        remediation: "The TEST button injects a small imbalance the GFCI must detect; if the device is broken, pressing TEST will not cut power.",
+        misconceptionTag: "misc.gfci-test-button",
+      },
+    ],
+  },
+  mcq1c: {
+    id: "mcq-gfci-reset",
+    prompt: "After a GFCI trips, what restores power?",
+    options: [
+      { id: "press-reset", text: "Pressing the RESET button on the device.", isCorrect: true },
+      {
+        id: "wait-it-out",
+        text: "Waiting a few minutes — the device auto-resets.",
+        isCorrect: false,
+        remediation: "Standard GFCI receptacles do not auto-reset; the RESET button must be pressed.",
+        misconceptionTag: "misc.gfci-auto-reset",
+      },
+    ],
+  },
   simulationCaptions: {
     oneBond: "Healthy circuit: current in equals current out.",
     twoBond: {

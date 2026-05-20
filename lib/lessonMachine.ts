@@ -5,11 +5,18 @@ export type LessonStep =
   | "reading1"
   | "mcq1"
   | "remediation1"
+  | "mcq1b"
+  | "remediation1b"
+  | "mcq1c"
+  | "remediation1c"
   | "simulation"
   | "mcq2"
   | "remediation2"
   | "voiceTutor"
   | "done";
+
+export type ReadingMcqId = "mcq1" | "mcq1b" | "mcq1c";
+export type McqId = ReadingMcqId | "mcq2";
 
 export interface LessonState {
   step: LessonStep;
@@ -19,7 +26,7 @@ export interface LessonState {
 export type LessonAction =
   | { type: "ADVANCE" }
   | { type: "GO_BACK" }
-  | { type: "ANSWER_MCQ"; mcqId: "mcq1" | "mcq2"; optionId: string }
+  | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string }
   | { type: "RESTART_LESSON" };
 
 /** Steps that expose a Back affordance, with their explicit destinations.
@@ -28,7 +35,9 @@ export type LessonAction =
 const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   reading1: "intro",
   mcq1: "reading1",
-  simulation: "mcq1",
+  mcq1b: "mcq1",
+  mcq1c: "mcq1b",
+  simulation: "mcq1c",
   mcq2: "simulation",
   voiceTutor: "mcq2",
 };
@@ -39,11 +48,20 @@ const linearOrder: LessonStep[] = [
   "intro",
   "reading1",
   "mcq1",
+  "mcq1b",
+  "mcq1c",
   "simulation",
   "mcq2",
   "voiceTutor",
   "done",
 ];
+
+const REMEDIATION_FOR: Record<McqId, LessonStep> = {
+  mcq1: "remediation1",
+  mcq1b: "remediation1b",
+  mcq1c: "remediation1c",
+  mcq2: "remediation2",
+};
 
 function nextLinear(step: LessonStep): LessonStep {
   const i = linearOrder.indexOf(step);
@@ -59,11 +77,15 @@ export function lessonReducer(
       return initialLessonState;
 
     case "ADVANCE": {
-      if (state.step === "remediation1") {
-        return { step: "mcq1", lastWrongOptionId: undefined };
-      }
-      if (state.step === "remediation2") {
-        return { step: "mcq2", lastWrongOptionId: undefined };
+      const remediationRetry: Partial<Record<LessonStep, McqId>> = {
+        remediation1: "mcq1",
+        remediation1b: "mcq1b",
+        remediation1c: "mcq1c",
+        remediation2: "mcq2",
+      };
+      const retryTarget = remediationRetry[state.step];
+      if (retryTarget) {
+        return { step: retryTarget, lastWrongOptionId: undefined };
       }
       return { ...state, step: nextLinear(state.step) };
     }
@@ -75,8 +97,7 @@ export function lessonReducer(
     }
 
     case "ANSWER_MCQ": {
-      const mcq =
-        action.mcqId === "mcq1" ? curriculum.mcq1 : curriculum.mcq2;
+      const mcq = curriculum[action.mcqId];
       const option = mcq.options.find((o) => o.id === action.optionId);
       if (!option) return state;
       if (option.isCorrect) {
@@ -86,7 +107,7 @@ export function lessonReducer(
         };
       }
       return {
-        step: action.mcqId === "mcq1" ? "remediation1" : "remediation2",
+        step: REMEDIATION_FOR[action.mcqId],
         lastWrongOptionId: option.id,
       };
     }
@@ -103,12 +124,16 @@ export function progressFor(step: LessonStep): {
   const visible: LessonStep[] = [
     "reading1",
     "mcq1",
+    "mcq1b",
+    "mcq1c",
     "simulation",
     "mcq2",
     "voiceTutor",
   ];
   const remediationOf: Partial<Record<LessonStep, LessonStep>> = {
     remediation1: "mcq1",
+    remediation1b: "mcq1b",
+    remediation1c: "mcq1c",
     remediation2: "mcq2",
   };
   const total = visible.length;
