@@ -25,6 +25,11 @@ npx tsx experimental/eval-engine/cli/eval.ts \
 
 # Free unit tests
 npm run test:experimental
+```
+
+> **Note:** `--curriculum <path>` dynamically imports the file you point at, which executes any top-level code in it. Only pass paths you trust. The `--fixture <name>` form is restricted to files under `experimental/eval-engine/fixtures/`.
+
+```
 
 # Live integration tests (~$0.50–2 per run)
 npm run test:eval

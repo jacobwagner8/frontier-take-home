@@ -72,4 +72,9 @@ describe("renderMarkdownReport", () => {
     expect(md).toMatch(/Unsupported claims \(decision-support/i);
     expect(md).toContain("novel claim");
   });
+
+  it("omits the decision-support section when no unsupported claims exist", () => {
+    const md = renderMarkdownReport(passingReport);
+    expect(md).not.toMatch(/decision-support/i);
+  });
 });

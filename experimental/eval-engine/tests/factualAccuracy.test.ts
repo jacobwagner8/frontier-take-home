@@ -192,6 +192,23 @@ describe("factualAccuracyEvaluator aggregation", () => {
     expect(judge).toHaveBeenCalledTimes(2);
   });
 
+  it("aggregates N runs via stable verdict-projection keying (no per-call uniqueness)", async () => {
+    const items = [
+      { slot_kind: "reading", slot_detail: "body", claim_text: "x", verdict: "supported" as const, reasoning: "v1", cited_kg_ids: [], confidence: "high" as const },
+    ];
+    const judge = vi.fn(async () => ({
+      parsed: { items: items.map((i) => ({ ...i, reasoning: `unique-${Math.random()}` })) },
+      raw: {},
+    }));
+    const result = await factualAccuracyEvaluator.evaluate(minimalCurriculum, ctx, {
+      model: "test",
+      runs: 3,
+      __judge: judge,
+    } as any);
+    expect(judge).toHaveBeenCalledTimes(3);
+    expect(result.rating).toBe(4);
+  });
+
   it("surfaces unsupported claims into unsureItems but does not auto-fail", async () => {
     const judge = mockJudgeWith({
       items: [

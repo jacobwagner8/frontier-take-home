@@ -84,6 +84,14 @@ describe("computeOverallVerdict", () => {
     expect(v.pass).toBe(true);
     expect(v.needsHumanReview).toBe(3);
   });
+
+  it("sums needsHumanReview across all evaluator results", () => {
+    const v = computeOverallVerdict([
+      makeResult({ id: "a", rating: 4, unexpectedContradictions: 0, unsureCount: 2 }),
+      makeResult({ id: "b", rating: 4, unexpectedContradictions: 0, unsureCount: 3 }),
+    ]);
+    expect(v.needsHumanReview).toBe(5);
+  });
 });
 
 describe("runEvaluation", () => {

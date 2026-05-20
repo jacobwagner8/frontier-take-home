@@ -132,6 +132,42 @@ describe("learningGoalCoverageEvaluator aggregation", () => {
     expect(judge).toHaveBeenCalledTimes(2);
   });
 
+  it("rates 4 when the learning goal has zero addressed misconceptions (vacuous coverage)", async () => {
+    const kgNoMisc = loadKG({
+      learningGoals: [
+        {
+          type: "LearningGoal",
+          id: "lg.no-misc",
+          question: "?",
+          summary: "no misconceptions here",
+          prerequisites: [],
+          teaches: ["fact.a"],
+          addresses: [],
+        },
+      ],
+      atomicFacts: [
+        { type: "AtomicFact", id: "fact.a", statement: "A", scope: "test", confidence: "high", cites: [] },
+      ],
+      misconceptions: [],
+      sources: [],
+    });
+    const ctxNoMisc = kgNoMisc.resolveContext("lg.no-misc");
+    const judge = vi.fn(async () => ({
+      parsed: {
+        criteria: [
+          { criterion_id: "summary", verdict: "met" as const, reasoning: "s", evidence_excerpts: [] },
+          { criterion_id: "teaches:fact.a", verdict: "met" as const, reasoning: "a", evidence_excerpts: [] },
+        ],
+      },
+      raw: {},
+    }));
+    const result = await learningGoalCoverageEvaluator.evaluate(minimalCurriculum, ctxNoMisc, {
+      model: "test",
+      __judge: judge,
+    } as any);
+    expect(result.rating).toBe(4);
+  });
+
   it("rates 3 / Adequate when teaches are met-or-partial and 50%+ misconceptions covered", async () => {
     const judge = mockJudgeWith({
       criteria: [

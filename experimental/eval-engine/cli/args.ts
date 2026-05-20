@@ -38,7 +38,14 @@ export function parseArgs(argv: string[]): ParsedArgs {
   return {
     source,
     goal,
-    runs: map.has("--runs") ? Number(map.get("--runs")) : 1,
+    runs: (() => {
+      if (!map.has("--runs")) return 1;
+      const v = Number(map.get("--runs"));
+      if (!Number.isInteger(v) || v < 1) {
+        throw new Error(`--runs must be a positive integer; got '${map.get("--runs")}'`);
+      }
+      return v;
+    })(),
     model: map.get("--model") ?? "gpt-4o",
     json: map.get("--json"),
   };

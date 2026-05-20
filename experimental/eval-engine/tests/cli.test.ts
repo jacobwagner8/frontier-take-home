@@ -39,4 +39,7 @@ describe("parseArgs", () => {
   it("rejects unknown flags", () => {
     expect(() => parseArgs(["--fixture", "f", "--goal", "g", "--bogus"])).toThrow(/--bogus/);
   });
+  it("rejects non-integer --runs with a clear error", () => {
+    expect(() => parseArgs(["--fixture", "f", "--goal", "g", "--runs", "abc"])).toThrow(/positive integer/i);
+  });
 });

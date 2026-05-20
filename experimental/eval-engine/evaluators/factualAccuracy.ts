@@ -172,7 +172,11 @@ export const factualAccuracyEvaluator: Evaluator<FactualVerdict> = {
       runs > 1
         ? await majorityVote<z.infer<typeof factualAccuracyResponseSchema>>(doCall, {
             n: runs,
-            keyOf: (r) => JSON.stringify(r),
+            keyOf: (r) =>
+              [...r.items]
+                .sort((a, b) => a.slot_detail.localeCompare(b.slot_detail))
+                .map((i) => `${i.slot_detail}:${i.verdict}`)
+                .join("|"),
           })
         : await doCall();
     return aggregate(parsed, slots, model, runs);

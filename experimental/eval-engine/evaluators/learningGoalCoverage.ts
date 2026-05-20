@@ -195,7 +195,11 @@ export const learningGoalCoverageEvaluator: Evaluator<CoverageVerdict> = {
       runs > 1
         ? await majorityVote<z.infer<typeof coverageResponseSchema>>(doCall, {
             n: runs,
-            keyOf: (r) => JSON.stringify(r),
+            keyOf: (r) =>
+              [...r.criteria]
+                .sort((a, b) => a.criterion_id.localeCompare(b.criterion_id))
+                .map((i) => `${i.criterion_id}:${i.verdict}`)
+                .join("|"),
           })
         : await doCall();
     return aggregate(parsed, criteria, model, runs);

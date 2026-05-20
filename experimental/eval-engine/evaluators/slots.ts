@@ -1,6 +1,15 @@
 import type { Curriculum } from "@/lib/curriculum.types";
 import type { SlotInstance } from "./types";
 
+/**
+ * Yields every text slot in the curriculum with its semantic role.
+ *
+ * Intentionally NOT emitted:
+ * - reading1.title, reading1.imageAlt — titles and alt-text are navigation aids, not factual assertions
+ * - mcq.options[i].misconceptionTag — internal taxonomy; the tag is threaded into the judge prompt separately (see factualAccuracy.ts)
+ *
+ * A future Curriculum field that holds factual content must be added here explicitly.
+ */
 export function enumerateSlots(c: Curriculum): SlotInstance[] {
   const out: SlotInstance[] = [];
   out.push({ slot: { kind: "reading", field: "body" }, excerpt: c.reading1.body });
