@@ -157,3 +157,15 @@ describe("KG loader", () => {
     expect(ctx.sourceExcerpts.map((s) => s.id)).toEqual(["src.s1"]);
   });
 });
+
+describe("KG seeded data on disk", () => {
+  it("loads the seeded N-G bonding learning goal and resolves its full context", () => {
+    const kgDir = path.resolve(__dirname, "../kg");
+    const kg = loadKGFromDisk(kgDir);
+    const ctx = kg.resolveContext("lg.ng-bonding-one-point");
+    expect(ctx.learningGoal.summary).toMatch(/single.*bond.*service disconnect/i);
+    expect(ctx.taughtFacts.length).toBeGreaterThanOrEqual(5);
+    expect(ctx.addressedMisconceptions.map((m) => m.id)).toContain("misc.subpanels-need-own-bond");
+    expect(ctx.sourceExcerpts.some((s) => s.citation.includes("250.24"))).toBe(true);
+  });
+});

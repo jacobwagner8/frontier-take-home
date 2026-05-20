@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.parallel-return-mechanism",
+  "statement": "If a second neutral-to-ground bond exists downstream of the service disconnect, the neutral and the equipment grounding conductor (EGC) form a parallel pair between the two bond points. By Kirchhoff's current law and Ohm's law, normal load return current splits between the neutral and the EGC in proportion to their admittances, putting continuous load current on the EGC, raceways, bonded enclosures, and bonded metal piping that were never sized or insulated to carry it.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-142"]
+}

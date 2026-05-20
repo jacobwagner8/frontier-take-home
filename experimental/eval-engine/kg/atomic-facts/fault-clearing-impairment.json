@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.fault-clearing-impairment",
+  "statement": "During a ground fault the intended return path is hot → EGC → main bond → neutral → source, fast and high-current to trip the breaker. With multiple neutral-to-ground bonds, fault current divides across multiple parallel paths. Some paths may have too much impedance to trip the breaker promptly, making fault clearing unpredictable.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-24a"]
+}

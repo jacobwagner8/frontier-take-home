@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.objectionable-current-on-egc",
+  "statement": "Continuous load current flowing on the EGC, metal raceways, bonded enclosures, and water pipes (a consequence of a second N-G bond) is called objectionable current. NEC 250.6 prohibits arrangements that cause objectionable current on grounding conductors.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-142"]
+}

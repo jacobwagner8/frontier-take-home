@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.more-bonds-is-safer",
+  "name": "More bonds is safer",
+  "statement": "Adding extra neutral-to-ground bonds throughout the system provides redundancy and improves safety.",
+  "correction": "Extra bonds create parallel return paths that put continuous load current on the EGC and bonded metal, degrade GFCI behavior, and make fault clearing unpredictable. Code requires exactly one bond point, at the service disconnect.",
+  "correctedBy": ["fact.parallel-return-mechanism", "fact.fault-clearing-impairment", "fact.objectionable-current-on-egc"]
+}

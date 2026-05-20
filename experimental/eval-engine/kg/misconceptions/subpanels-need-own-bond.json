@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.subpanels-need-own-bond",
+  "name": "Subpanels need their own N-G bond",
+  "statement": "A subpanel needs the neutral bonded to ground, just like the main panel, to be safe.",
+  "correction": "Subpanels keep the neutral bus and the equipment grounding bus electrically isolated. Only the service disconnect bonds N to G. A second bond at the subpanel creates a parallel return path through the EGC, which violates 250.142 and 250.6.",
+  "correctedBy": ["fact.nec-250-142-subpanel-isolation", "fact.parallel-return-mechanism"]
+}

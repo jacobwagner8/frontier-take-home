@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.nec-250-24a-single-bond",
+  "statement": "In a US residential service, NEC 250.24(A) requires the neutral-to-equipment-grounding-conductor bond to occur at exactly one point: the service disconnect (typically the main panel).",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-24a"]
+}
