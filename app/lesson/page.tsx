@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useRef } from "react";
+import { useReducer } from "react";
 import { LessonShell } from "@/components/LessonShell";
 import { ReadingScreen } from "@/components/ReadingScreen";
 import { MCQuestionScreen } from "@/components/MCQuestionScreen";
@@ -9,10 +9,7 @@ import { SimulationScreen } from "@/components/SimulationScreen";
 import { VoiceTutorScreen } from "@/components/VoiceTutorScreen";
 import { CompletionScreen } from "@/components/CompletionScreen";
 import {
-  currentEntry,
   initialLessonState,
-  LessonAction,
-  LessonEntry,
   lessonReducer,
   progressFor,
 } from "@/lib/lessonMachine";
@@ -20,159 +17,85 @@ import { curriculum } from "@/lib/curriculum";
 
 export default function LessonPage() {
   const [state, dispatch] = useReducer(lessonReducer, initialLessonState);
-  const progress = progressFor(currentEntry(state).step);
-
-  const lastEntryRef = useRef<HTMLDivElement | null>(null);
-  const prevLengthRef = useRef(state.entries.length);
-  useEffect(() => {
-    if (state.entries.length > prevLengthRef.current) {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      lastEntryRef.current?.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start",
-      });
-    }
-    prevLengthRef.current = state.entries.length;
-  }, [state.entries.length]);
+  const progress = progressFor(state.step);
 
   return (
     <LessonShell progress={progress}>
-      {state.entries.map((entry, idx) => {
-        const isCurrent = idx === state.entries.length - 1;
-        return (
-          <div
-            key={idx}
-            ref={isCurrent ? lastEntryRef : undefined}
-            className="scroll-mt-28"
-          >
-            {renderEntry(entry, {
-              frozen: !isCurrent,
-              dispatch,
-            })}
-          </div>
-        );
-      })}
-    </LessonShell>
-  );
-}
-
-function renderEntry(
-  entry: LessonEntry,
-  opts: { frozen: boolean; dispatch: React.Dispatch<LessonAction> },
-) {
-  const { frozen, dispatch } = opts;
-  switch (entry.step) {
-    case "intro":
-      return (
-        <div className="flex flex-col items-start gap-5 max-w-md">
+      {state.step === "intro" && (
+        <div className="flex-1 flex flex-col justify-center items-start gap-5 max-w-md">
           <p className="text-base leading-relaxed text-text-muted">
             Let&apos;s get started. This will take about 5-10 minutes.
           </p>
-          {!frozen && (
-            <button
-              type="button"
-              onClick={() => dispatch({ type: "ADVANCE" })}
-              className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-            >
-              Begin
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "ADVANCE" })}
+            className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+          >
+            Begin
+          </button>
         </div>
-      );
+      )}
 
-    case "reading1":
-      return (
+      {state.step === "reading1" && (
         <ReadingScreen
           section={curriculum.reading1}
-          frozen={frozen}
           onAdvance={() => dispatch({ type: "ADVANCE" })}
         />
-      );
+      )}
 
-    case "mcq1":
-      return (
+      {state.step === "mcq1" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1}
-          frozen={frozen}
-          answeredOptionId={entry.answeredOptionId}
           onAnswer={(opt) =>
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id })
           }
         />
-      );
+      )}
 
-    case "remediation1": {
-      if (!entry.lastWrongOptionId) return null;
-      const wrongOption = curriculum.mcq1.options.find(
-        (o) => o.id === entry.lastWrongOptionId,
-      );
-      if (!wrongOption) return null;
-      return (
+      {state.step === "remediation1" && state.lastWrongOptionId && (
         <RemediationScreen
-          wrongOption={wrongOption}
-          frozen={frozen}
+          wrongOption={
+            curriculum.mcq1.options.find(
+              (o) => o.id === state.lastWrongOptionId,
+            )!
+          }
           onAdvance={() => dispatch({ type: "ADVANCE" })}
         />
-      );
-    }
+      )}
 
-    case "simulation":
-      return (
-        <SimulationScreen
-          frozen={frozen}
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
-        />
-      );
+      {state.step === "simulation" && (
+        <SimulationScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
+      )}
 
-    case "mcq2":
-      return (
+      {state.step === "mcq2" && (
         <MCQuestionScreen
           mcq={curriculum.mcq2}
-          frozen={frozen}
-          answeredOptionId={entry.answeredOptionId}
           onAnswer={(opt) =>
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id })
           }
         />
-      );
+      )}
 
-    case "remediation2": {
-      if (!entry.lastWrongOptionId) return null;
-      const wrongOption = curriculum.mcq2.options.find(
-        (o) => o.id === entry.lastWrongOptionId,
-      );
-      if (!wrongOption) return null;
-      return (
+      {state.step === "remediation2" && state.lastWrongOptionId && (
         <RemediationScreen
-          wrongOption={wrongOption}
-          frozen={frozen}
+          wrongOption={
+            curriculum.mcq2.options.find(
+              (o) => o.id === state.lastWrongOptionId,
+            )!
+          }
           onAdvance={() => dispatch({ type: "ADVANCE" })}
         />
-      );
-    }
+      )}
 
-    case "voiceTutor":
-      return (
-        <VoiceTutorScreen
-          frozen={frozen}
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
-        />
-      );
+      {state.step === "voiceTutor" && (
+        <VoiceTutorScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
+      )}
 
-    case "done":
-      return (
+      {state.step === "done" && (
         <CompletionScreen
-          frozen={frozen}
           onRestart={() => dispatch({ type: "RESTART_LESSON" })}
         />
-      );
-
-    default: {
-      const _exhaustive: never = entry.step;
-      void _exhaustive;
-      return null;
-    }
-  }
+      )}
+    </LessonShell>
+  );
 }

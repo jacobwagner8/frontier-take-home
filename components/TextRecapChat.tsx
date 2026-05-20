@@ -5,10 +5,9 @@ import { useChat } from "@/lib/useChat";
 
 interface Props {
   onDone: () => void;
-  frozen?: boolean;
 }
 
-export function TextRecapChat({ onDone, frozen = false }: Props) {
+export function TextRecapChat({ onDone }: Props) {
   const { messages, input, setInput, busy, send } = useChat({
     buildBody: (msgs) => ({
       context: "voice_fallback",
@@ -48,38 +47,34 @@ export function TextRecapChat({ onDone, frozen = false }: Props) {
           </p>
         )}
       </div>
-      {!frozen && (
-        <>
-          <div className="flex gap-2">
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") send();
-              }}
-              placeholder="Recap what you learned"
-              aria-label="Your recap"
-              className="flex-1 border border-border rounded-xl px-4 py-3 text-base bg-surface focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-            />
-            <button
-              type="button"
-              onClick={send}
-              disabled={busy || !input.trim()}
-              className="px-4 py-3 rounded-xl bg-brand text-white font-semibold disabled:bg-border disabled:text-text-subtle disabled:cursor-not-allowed"
-            >
-              Send
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={onDone}
-            className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-          >
-            Done
-          </button>
-        </>
-      )}
+      <div className="flex gap-2">
+        <input
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") send();
+          }}
+          placeholder="Recap what you learned"
+          aria-label="Your recap"
+          className="flex-1 border border-border rounded-xl px-4 py-3 text-base bg-surface focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+        />
+        <button
+          type="button"
+          onClick={send}
+          disabled={busy || !input.trim()}
+          className="px-4 py-3 rounded-xl bg-brand text-white font-semibold disabled:bg-border disabled:text-text-subtle disabled:cursor-not-allowed"
+        >
+          Send
+        </button>
+      </div>
+      <button
+        type="button"
+        onClick={onDone}
+        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+      >
+        Done
+      </button>
     </div>
   );
 }

@@ -1,27 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { MCQOption } from "@/lib/curriculum.types";
 import { FollowUpChat } from "./FollowUpChat";
 
 interface Props {
   wrongOption: MCQOption;
   onAdvance: () => void;
-  frozen?: boolean;
 }
 
-export function RemediationScreen({
-  wrongOption,
-  onAdvance,
-  frozen = false,
-}: Props) {
+export function RemediationScreen({ wrongOption, onAdvance }: Props) {
   const [chatOpen, setChatOpen] = useState(false);
-
-  // Auto-close any open follow-up dialog when this remediation freezes,
-  // so the chat doesn't keep accepting input below a frozen step.
-  useEffect(() => {
-    if (frozen && chatOpen) setChatOpen(false);
-  }, [frozen, chatOpen]);
 
   return (
     <section className="flex flex-col gap-4">
@@ -33,26 +22,24 @@ export function RemediationScreen({
           {wrongOption.remediation}
         </p>
       </div>
-      {!frozen && (
-        <div className="flex gap-2 justify-end">
-          {wrongOption.misconceptionTag && (
-            <button
-              type="button"
-              onClick={() => setChatOpen(true)}
-              className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-            >
-              Ask a follow-up
-            </button>
-          )}
+      <div className="flex gap-2 justify-end">
+        {wrongOption.misconceptionTag && (
           <button
             type="button"
-            onClick={onAdvance}
-            className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+            onClick={() => setChatOpen(true)}
+            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
           >
-            Try again
+            Ask a follow-up
           </button>
-        </div>
-      )}
+        )}
+        <button
+          type="button"
+          onClick={onAdvance}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+        >
+          Try again
+        </button>
+      </div>
       {chatOpen && wrongOption.misconceptionTag && (
         <FollowUpChat
           misconceptionTag={wrongOption.misconceptionTag}
