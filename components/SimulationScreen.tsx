@@ -10,7 +10,13 @@ interface Props {
 
 export function SimulationScreen({ onAdvance }: Props) {
   const [secondBond, setSecondBond] = useState(false);
+  const [hasToggled, setHasToggled] = useState(false);
   const { oneBond, twoBond } = curriculum.simulationCaptions;
+
+  const handleToggle = (next: boolean) => {
+    setSecondBond(next);
+    setHasToggled(true);
+  };
 
   return (
     <section className="flex flex-col gap-5">
@@ -432,7 +438,7 @@ export function SimulationScreen({ onAdvance }: Props) {
       <div className="rounded-2xl border border-border bg-surface px-4 py-2">
         <Toggle
           checked={secondBond}
-          onChange={setSecondBond}
+          onChange={handleToggle}
           label="Add a second N-G bond at the subpanel"
         />
       </div>
@@ -477,13 +483,22 @@ export function SimulationScreen({ onAdvance }: Props) {
         </>
       )}
 
-      <button
-        type="button"
-        onClick={onAdvance}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-      >
-        Continue
-      </button>
+      <div className="self-end flex flex-col items-end gap-2">
+        {!hasToggled && (
+          <p id="continue-hint" className="text-[13px] text-text-muted">
+            Try the toggle to continue
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={onAdvance}
+          disabled={!hasToggled}
+          aria-describedby={!hasToggled ? "continue-hint" : undefined}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
+        >
+          Continue
+        </button>
+      </div>
     </section>
   );
 }

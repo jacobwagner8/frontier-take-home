@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SimulationScreen } from "@/components/SimulationScreen";
@@ -34,5 +34,46 @@ describe("SimulationScreen toggle behavior", () => {
       screen.getByText(/Current now flowing on the EGC/i),
     ).toBeInTheDocument();
     expect(screen.getByText(/≈ 5 V/)).toBeInTheDocument();
+  });
+});
+
+describe("SimulationScreen continue gating", () => {
+  it("disables Continue and shows a hint until the toggle is engaged", () => {
+    render(<SimulationScreen onAdvance={() => {}} />);
+    const continueButton = screen.getByRole("button", { name: /continue/i });
+    expect(continueButton).toBeDisabled();
+    expect(screen.getByText(/try the toggle to continue/i)).toBeInTheDocument();
+  });
+
+  it("enables Continue and removes the hint after the first toggle interaction", async () => {
+    const user = userEvent.setup();
+    render(<SimulationScreen onAdvance={() => {}} />);
+
+    await user.click(screen.getByRole("checkbox"));
+
+    const continueButton = screen.getByRole("button", { name: /continue/i });
+    expect(continueButton).toBeEnabled();
+    expect(screen.queryByText(/try the toggle to continue/i)).toBeNull();
+  });
+
+  it("keeps Continue enabled after toggling back to the baseline", async () => {
+    const user = userEvent.setup();
+    render(<SimulationScreen onAdvance={() => {}} />);
+
+    const toggle = screen.getByRole("checkbox");
+    await user.click(toggle);
+    await user.click(toggle);
+
+    expect(screen.getByRole("button", { name: /continue/i })).toBeEnabled();
+  });
+
+  it("does not advance when the disabled Continue is clicked", async () => {
+    const user = userEvent.setup();
+    const onAdvance = vi.fn();
+    render(<SimulationScreen onAdvance={onAdvance} />);
+
+    await user.click(screen.getByRole("button", { name: /continue/i }));
+
+    expect(onAdvance).not.toHaveBeenCalled();
   });
 });
