@@ -87,7 +87,7 @@ export function SessionMetrics({ snapshot }: Props) {
           label="Remediation chat turns"
           value={snapshot.chatTurns.remediation1 + snapshot.chatTurns.remediation2}
         />
-        <Row label="Final recap chat turns" value={snapshot.chatTurns.finalRecap} />
+        <Row label="Final recap text turns" value={snapshot.chatTurns.finalRecap} />
       </div>
     </section>
   );

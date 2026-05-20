@@ -125,7 +125,7 @@ export function useLessonAnalytics(
       segmentStartRef.current = null;
       return;
     }
-    const delta = Date.now() - start;
+    const delta = performance.now() - start;
     if (delta > 0) {
       stateRef.current.perStepMs[active] =
         (stateRef.current.perStepMs[active] ?? 0) + delta;
@@ -136,7 +136,7 @@ export function useLessonAnalytics(
   const openSegment = useCallback(() => {
     if (activeStepRef.current === null) return;
     if (!visibleRef.current) return;
-    segmentStartRef.current = Date.now();
+    segmentStartRef.current = performance.now();
   }, []);
 
   useEffect(() => {
