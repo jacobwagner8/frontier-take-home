@@ -484,8 +484,10 @@ export function SimulationScreen({ onAdvance, onBack }: Props) {
         </>
       )}
 
-      <div className="flex justify-between items-end gap-3">
-        {onBack ? (
+      <div
+        className={`flex items-end gap-3 ${onBack ? "justify-between" : "justify-end"}`}
+      >
+        {onBack && (
           <button
             type="button"
             onClick={onBack}
@@ -493,8 +495,6 @@ export function SimulationScreen({ onAdvance, onBack }: Props) {
           >
             Back
           </button>
-        ) : (
-          <span />
         )}
         <div className="flex flex-col items-end gap-2">
           {!hasToggled && (

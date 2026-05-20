@@ -33,10 +33,6 @@ const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   voiceTutor: "mcq2",
 };
 
-export function canGoBack(step: LessonStep): boolean {
-  return step in backTargets;
-}
-
 export const initialLessonState: LessonState = { step: "intro" };
 
 const linearOrder: LessonStep[] = [

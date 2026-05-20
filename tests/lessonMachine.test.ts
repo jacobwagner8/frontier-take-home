@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  canGoBack,
   initialLessonState,
   lessonReducer,
   LessonState,
@@ -137,16 +136,6 @@ describe("lessonReducer GO_BACK", () => {
     const state: LessonState = { ...initialLessonState, step };
     const next = lessonReducer(state, { type: "GO_BACK" });
     expect(next).toEqual(state);
-  });
-
-  it("canGoBack matches the set of back-eligible steps", () => {
-    const eligible = backCases.map(([from]) => from);
-    for (const step of eligible) {
-      expect(canGoBack(step)).toBe(true);
-    }
-    for (const step of noBackSteps) {
-      expect(canGoBack(step)).toBe(false);
-    }
   });
 });
 

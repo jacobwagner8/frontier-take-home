@@ -50,8 +50,10 @@ export function MCQuestionScreen({ mcq, onAnswer, onBack }: Props) {
           );
         })}
       </div>
-      <div className="flex justify-between items-center gap-3">
-        {onBack ? (
+      <div
+        className={`flex items-center gap-3 ${onBack ? "justify-between" : "justify-end"}`}
+      >
+        {onBack && (
           <button
             type="button"
             onClick={onBack}
@@ -59,8 +61,6 @@ export function MCQuestionScreen({ mcq, onAnswer, onBack }: Props) {
           >
             Back
           </button>
-        ) : (
-          <span />
         )}
         <button
           type="button"

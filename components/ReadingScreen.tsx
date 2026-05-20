@@ -33,8 +33,10 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <div className="flex justify-between items-center gap-3">
-        {onBack ? (
+      <div
+        className={`flex items-center gap-3 ${onBack ? "justify-between" : "justify-end"}`}
+      >
+        {onBack && (
           <button
             type="button"
             onClick={onBack}
@@ -42,8 +44,6 @@ export function ReadingScreen({
           >
             Back
           </button>
-        ) : (
-          <span />
         )}
         <button
           type="button"

@@ -151,8 +151,10 @@ export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
             ))}
           </div>
 
-          <div className="flex gap-2 justify-between items-center">
-            {onBack ? (
+          <div
+            className={`flex gap-2 items-center ${onBack ? "justify-between" : "justify-end"}`}
+          >
+            {onBack && (
               <button
                 type="button"
                 onClick={() => {
@@ -163,8 +165,6 @@ export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
               >
                 Back
               </button>
-            ) : (
-              <span />
             )}
             <div className="flex gap-2">
             {inactive ? (
