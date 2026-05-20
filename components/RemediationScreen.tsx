@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { MCQOption } from "@/lib/curriculum.types";
 import { FollowUpChat } from "./FollowUpChat";
 
@@ -16,6 +16,12 @@ export function RemediationScreen({
   frozen = false,
 }: Props) {
   const [chatOpen, setChatOpen] = useState(false);
+
+  // Auto-close any open follow-up dialog when this remediation freezes,
+  // so the chat doesn't keep accepting input below a frozen step.
+  useEffect(() => {
+    if (frozen && chatOpen) setChatOpen(false);
+  }, [frozen, chatOpen]);
 
   return (
     <section className="flex flex-col gap-4">

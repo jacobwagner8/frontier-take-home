@@ -118,6 +118,12 @@ describe("lessonReducer", () => {
     expect(currentEntry(next).step).toBe("done");
   });
 
+  it("ADVANCE from done is a no-op (does not append another done entry)", () => {
+    const state: LessonState = { entries: [{ step: "done" }] };
+    const next = lessonReducer(state, { type: "ADVANCE" });
+    expect(next).toBe(state);
+  });
+
   it("RESTART_LESSON resets entries to a single intro", () => {
     const state: LessonState = {
       entries: [

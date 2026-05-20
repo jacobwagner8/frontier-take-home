@@ -22,13 +22,15 @@ export default function LessonPage() {
   const [state, dispatch] = useReducer(lessonReducer, initialLessonState);
   const progress = progressFor(currentEntry(state).step);
 
-  // Auto-scroll the newly-appended entry into view when entries.length grows.
   const lastEntryRef = useRef<HTMLDivElement | null>(null);
   const prevLengthRef = useRef(state.entries.length);
   useEffect(() => {
     if (state.entries.length > prevLengthRef.current) {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       lastEntryRef.current?.scrollIntoView({
-        behavior: "smooth",
+        behavior: prefersReducedMotion ? "auto" : "smooth",
         block: "start",
       });
     }
@@ -43,7 +45,7 @@ export default function LessonPage() {
           <div
             key={idx}
             ref={isCurrent ? lastEntryRef : undefined}
-            className="scroll-mt-4"
+            className="scroll-mt-28"
           >
             {renderEntry(entry, {
               frozen: !isCurrent,
@@ -166,5 +168,11 @@ function renderEntry(
           onRestart={() => dispatch({ type: "RESTART_LESSON" })}
         />
       );
+
+    default: {
+      const _exhaustive: never = entry.step;
+      void _exhaustive;
+      return null;
+    }
   }
 }

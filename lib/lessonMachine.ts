@@ -63,6 +63,10 @@ export function lessonReducer(
 
     case "ADVANCE": {
       const current = currentEntry(state);
+      // nextLinear("done") returns "done", so without this guard ADVANCE on
+      // the completion step would append another done entry instead of being
+      // a no-op. Not reachable via UI but a real footgun if dispatched elsewhere.
+      if (current.step === "done") return state;
       let nextStep: LessonStep;
       if (current.step === "remediation1") nextStep = "mcq1";
       else if (current.step === "remediation2") nextStep = "mcq2";
