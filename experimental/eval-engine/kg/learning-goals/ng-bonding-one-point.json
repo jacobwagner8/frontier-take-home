@@ -1,0 +1,27 @@
+{
+  "type": "LearningGoal",
+  "id": "lg.ng-bonding-one-point",
+  "question": "Why a US residential electrical system can have neutral and ground bonded at exactly one point, and what physically goes wrong if there is more than one.",
+  "summary": "A US residential service has a single neutral-to-ground bond at the service disconnect; downstream of that point neutral and the EGC must stay electrically isolated. A second bond creates a parallel return path through the EGC, raceways, and bonded metal, putting continuous load current where it doesn't belong, degrading GFCI behavior, and making fault clearing unpredictable.",
+  "prerequisites": [],
+  "teaches": [
+    "fact.nec-250-24a-single-bond",
+    "fact.nec-250-142-subpanel-isolation",
+    "fact.parallel-return-mechanism",
+    "fact.fault-clearing-impairment",
+    "fact.objectionable-current-on-egc",
+    "fact.ground-rod-resistance",
+    "fact.fault-current-path-via-mbj",
+    "fact.main-bonding-jumper-ties",
+    "fact.open-neutral-hazard",
+    "fact.gfci-imbalance-confusion"
+  ],
+  "addresses": [
+    "misc.more_bonding_is_safer",
+    "misc.ground_rod_is_the_bond",
+    "misc.always_separate",
+    "misc.redundancy_is_harmless",
+    "misc.earth_is_return_path",
+    "misc.double_bond_trips_breaker"
+  ]
+}

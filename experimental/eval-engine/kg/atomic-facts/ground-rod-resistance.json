@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.ground-rod-resistance",
+  "statement": "A ground rod typically presents tens to hundreds of ohms of resistance to remote earth — far too high to carry load current or to act as an effective ground-fault return path. NEC 250.53(A)(2) treats 25 ohms as the threshold above which a single rod is insufficient; many residential rods exceed that. Current returns to the utility transformer through the metallic neutral, not through the earth.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-53", "src.nec-2023-250-4-a"]
+}

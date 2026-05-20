@@ -1,0 +1,8 @@
+{
+  "type": "SourceExcerpt",
+  "id": "src.nec-2023-250-4-a",
+  "sourceType": "NEC",
+  "citation": "NEC 2023 Article 250.4(A)",
+  "text": "Electrical systems that are grounded shall be connected to earth in a manner that will limit the voltage imposed by lightning, line surges, or unintentional contact with higher-voltage lines and that will stabilize the voltage to earth during normal operation. Normally non-current-carrying conductive materials enclosing electrical conductors or equipment, or forming part of such equipment, shall be connected to earth so as to limit the voltage to ground on these materials. Bonding of electrically conductive materials and other equipment shall be done in a manner that establishes an effective ground-fault current path. The earth shall not be considered as an effective ground-fault current path.",
+  "url": null
+}

@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.redundancy_is_harmless",
+  "name": "A redundant second bond is harmless",
+  "statement": "Adding a second bond at the subpanel is redundant — nothing actually changes during normal operation.",
+  "correction": "Redundant paths in a circuit aren't passive — they're parallel. Two conductors tied at both ends share current proportional to their conductance. The moment the second bond is in, every bonded metal raceway and EGC starts carrying continuous load current — current the EGC was meant to carry only briefly during a fault. They were never sized or insulated for that, and the voltage drops they produce show up as touch voltage on appliance cases and water pipes.",
+  "correctedBy": ["fact.parallel-return-mechanism", "fact.objectionable-current-on-egc"]
+}

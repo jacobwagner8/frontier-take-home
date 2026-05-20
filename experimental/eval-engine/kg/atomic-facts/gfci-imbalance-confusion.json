@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.gfci-imbalance-confusion",
+  "statement": "GFCIs detect ground faults by measuring imbalance between the hot conductor and the neutral conductor: in a healthy circuit they carry equal and opposite current. A second neutral-to-ground bond downstream of the service disconnect creates parallel return paths through the EGC, so some normal load current returns via the EGC instead of the neutral. The GFCI sees this as a persistent imbalance and either trips nuisance-style or, in more complex topologies, fails to detect a real ground fault because the imbalance signature is masked.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-142", "src.nec-2023-250-4-a"]
+}

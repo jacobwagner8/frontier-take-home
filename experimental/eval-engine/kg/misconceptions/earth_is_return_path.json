@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.earth_is_return_path",
+  "name": "Earth is the return path",
+  "statement": "With a second bond at the subpanel, all normal current flows down through the ground rod into the earth.",
+  "correction": "A ground rod typically presents tens to hundreds of ohms to remote earth — far too much resistance compared to the copper neutral that runs all the way back to the transformer. Current returns to the source through the wire, not through the dirt. With a second bond, the return current splits between the neutral conductor AND the EGC in parallel — both metallic paths back to the bonding point and then back through the service neutral. Earth is never a normal return path.",
+  "correctedBy": ["fact.ground-rod-resistance", "fact.fault-current-path-via-mbj", "fact.parallel-return-mechanism"]
+}

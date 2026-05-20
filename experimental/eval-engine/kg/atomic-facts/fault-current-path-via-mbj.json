@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.fault-current-path-via-mbj",
+  "statement": "During a hot-to-metal ground fault, the intended return path is faulted metal → EGC → main bonding jumper at the service disconnect → neutral bus → service neutral → utility transformer. This is a low-impedance metallic path that allows fault current to rise to hundreds or thousands of amps and trip the breaker in milliseconds. Earth cannot serve as this path because its resistance is too high.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-4-a", "src.nec-2023-250-24a"]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.double_bond_trips_breaker",
+  "name": "A double bond trips the breaker",
+  "statement": "Adding a second neutral-to-ground bond immediately trips the breaker, so the wiring mistake is self-protecting.",
+  "correction": "Overcurrent breakers trip on overload or short circuit, not on a wiring mistake. A second N-G bond just splits the normal return current across two conductors; the total current is unchanged and well below the trip threshold. The breaker has no way to see the problem. The danger is invisible until a fault occurs or someone touches two bonded surfaces at different potentials.",
+  "correctedBy": ["fact.parallel-return-mechanism", "fact.gfci-imbalance-confusion"]
+}

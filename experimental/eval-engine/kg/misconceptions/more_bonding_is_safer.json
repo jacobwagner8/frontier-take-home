@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.more_bonding_is_safer",
+  "name": "More bonding is safer",
+  "statement": "Bonding the neutral to ground at every panel and subpanel — not just the main panel — provides redundancy and improves safety.",
+  "correction": "More bonds creates more harm, not more safety. A second bond downstream of the service disconnect ties the neutral and the EGC together at two points, forming a parallel return path. Normal load current then splits between the neutral and the EGC and flows continuously on bonded metal that was never sized or insulated for it. NEC 250.142 explicitly prohibits this.",
+  "correctedBy": ["fact.parallel-return-mechanism", "fact.nec-250-142-subpanel-isolation", "fact.objectionable-current-on-egc"]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.nec-250-142-subpanel-isolation",
+  "statement": "Downstream of the service disconnect (e.g. in subpanels), the neutral bus and the equipment grounding conductor bus must be kept electrically isolated. The bonding screw that ties the neutral bus to the panel enclosure is removed in subpanels.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-142"]
+}

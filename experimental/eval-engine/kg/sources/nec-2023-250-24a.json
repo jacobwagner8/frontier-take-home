@@ -1,0 +1,8 @@
+{
+  "type": "SourceExcerpt",
+  "id": "src.nec-2023-250-24a",
+  "sourceType": "NEC",
+  "citation": "NEC 2023 Article 250.24(A)",
+  "text": "A premises wiring system supplied by a grounded ac service shall have a grounding electrode conductor connection to the grounded service conductor at each service in accordance with 250.24(A)(1) through (A)(5). The connection shall be made at any accessible point from the load end of the overhead service conductors, service drop, underground service conductors, or service lateral to and including the terminal or bus to which the grounded service conductor is connected at the service disconnecting means.",
+  "url": null
+}
