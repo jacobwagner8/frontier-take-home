@@ -273,8 +273,10 @@ export function SimulationScreen({ onAdvance }: Props) {
             cy="272"
             r="4"
             fill="none"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
           />
           {/* Body — conducts when energized */}
           <line
@@ -293,8 +295,10 @@ export function SimulationScreen({ onAdvance }: Props) {
             y1="283"
             x2="264"
             y2="296"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
           />
           {/* Right arm — touches the appliance; conducts when energized */}
           <line
