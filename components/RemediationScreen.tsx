@@ -7,9 +7,14 @@ import { FollowUpChat } from "./FollowUpChat";
 interface Props {
   wrongOption: MCQOption;
   onAdvance: () => void;
+  onChatTurn?: () => void;
 }
 
-export function RemediationScreen({ wrongOption, onAdvance }: Props) {
+export function RemediationScreen({
+  wrongOption,
+  onAdvance,
+  onChatTurn,
+}: Props) {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
@@ -44,6 +49,7 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
         <FollowUpChat
           misconceptionTag={wrongOption.misconceptionTag}
           onClose={() => setChatOpen(false)}
+          onUserSent={onChatTurn}
         />
       )}
     </section>
