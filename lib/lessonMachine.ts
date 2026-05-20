@@ -18,8 +18,24 @@ export interface LessonState {
 
 export type LessonAction =
   | { type: "ADVANCE" }
+  | { type: "GO_BACK" }
   | { type: "ANSWER_MCQ"; mcqId: "mcq1" | "mcq2"; optionId: string }
   | { type: "RESTART_LESSON" };
+
+/** Steps that expose a Back affordance, with their explicit destinations.
+ * Non-linear cases (remediation, intro, done) are intentionally omitted —
+ * see the Back UX decisions in the PR description. */
+const backTargets: Partial<Record<LessonStep, LessonStep>> = {
+  reading1: "intro",
+  mcq1: "reading1",
+  simulation: "mcq1",
+  mcq2: "simulation",
+  voiceTutor: "mcq2",
+};
+
+export function canGoBack(step: LessonStep): boolean {
+  return step in backTargets;
+}
 
 export const initialLessonState: LessonState = { step: "intro" };
 
@@ -54,6 +70,12 @@ export function lessonReducer(
         return { step: "mcq2", lastWrongOptionId: undefined };
       }
       return { ...state, step: nextLinear(state.step) };
+    }
+
+    case "GO_BACK": {
+      const target = backTargets[state.step];
+      if (!target) return state;
+      return { step: target, lastWrongOptionId: undefined };
     }
 
     case "ANSWER_MCQ": {

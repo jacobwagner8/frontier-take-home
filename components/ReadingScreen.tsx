@@ -4,12 +4,14 @@ import type { ReadingSection } from "@/lib/curriculum.types";
 interface Props {
   section: ReadingSection;
   onAdvance: () => void;
+  onBack?: () => void;
   ctaLabel?: string;
 }
 
 export function ReadingScreen({
   section,
   onAdvance,
+  onBack,
   ctaLabel = "Continue",
 }: Props) {
   return (
@@ -31,13 +33,26 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <button
-        type="button"
-        onClick={onAdvance}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-      >
-        {ctaLabel}
-      </button>
+      <div className="flex justify-between items-center gap-3">
+        {onBack ? (
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+          >
+            Back
+          </button>
+        ) : (
+          <span />
+        )}
+        <button
+          type="button"
+          onClick={onAdvance}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+        >
+          {ctaLabel}
+        </button>
+      </div>
     </article>
   );
 }

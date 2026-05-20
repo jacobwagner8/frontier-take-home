@@ -5,9 +5,10 @@ import { useChat } from "@/lib/useChat";
 
 interface Props {
   onDone: () => void;
+  onBack?: () => void;
 }
 
-export function TextRecapChat({ onDone }: Props) {
+export function TextRecapChat({ onDone, onBack }: Props) {
   const { messages, input, setInput, busy, send } = useChat({
     buildBody: (msgs) => ({
       context: "voice_fallback",
@@ -68,13 +69,26 @@ export function TextRecapChat({ onDone }: Props) {
           Send
         </button>
       </div>
-      <button
-        type="button"
-        onClick={onDone}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-      >
-        Done
-      </button>
+      <div className="flex justify-between items-center gap-3">
+        {onBack ? (
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+          >
+            Back
+          </button>
+        ) : (
+          <span />
+        )}
+        <button
+          type="button"
+          onClick={onDone}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+        >
+          Done
+        </button>
+      </div>
     </div>
   );
 }

@@ -37,6 +37,28 @@ describe("SimulationScreen toggle behavior", () => {
   });
 });
 
+describe("SimulationScreen Back button", () => {
+  it("does not render Back when no onBack is provided", () => {
+    render(<SimulationScreen onAdvance={() => {}} />);
+    expect(screen.queryByRole("button", { name: /back/i })).toBeNull();
+  });
+
+  it("renders Back when onBack is provided and invokes it on click", async () => {
+    const user = userEvent.setup();
+    const onBack = vi.fn();
+    render(<SimulationScreen onAdvance={() => {}} onBack={onBack} />);
+
+    await user.click(screen.getByRole("button", { name: /back/i }));
+
+    expect(onBack).toHaveBeenCalledTimes(1);
+  });
+
+  it("Back is enabled even before the toggle is engaged", () => {
+    render(<SimulationScreen onAdvance={() => {}} onBack={() => {}} />);
+    expect(screen.getByRole("button", { name: /back/i })).toBeEnabled();
+  });
+});
+
 describe("SimulationScreen continue gating", () => {
   it("disables Continue and shows a hint until the toggle is engaged", () => {
     render(<SimulationScreen onAdvance={() => {}} />);

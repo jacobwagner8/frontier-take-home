@@ -9,6 +9,7 @@ import { TextRecapChat } from "./TextRecapChat";
 
 interface Props {
   onAdvance: () => void;
+  onBack?: () => void;
 }
 
 type Status = "idle" | "connecting" | "live" | "error" | "stopped";
@@ -19,7 +20,7 @@ interface TranscriptLine {
   text: string;
 }
 
-export function VoiceTutorScreen({ onAdvance }: Props) {
+export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
   const [mode, setMode] = useState<Mode>("voice");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -113,7 +114,13 @@ export function VoiceTutorScreen({ onAdvance }: Props) {
       </p>
 
       {mode === "text" ? (
-        <TextRecapChat onDone={onAdvance} />
+        <TextRecapChat
+          onDone={onAdvance}
+          onBack={onBack ? () => {
+            stopCall();
+            onBack();
+          } : undefined}
+        />
       ) : (
         <>
           <p
@@ -144,7 +151,22 @@ export function VoiceTutorScreen({ onAdvance }: Props) {
             ))}
           </div>
 
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-between items-center">
+            {onBack ? (
+              <button
+                type="button"
+                onClick={() => {
+                  stopCall();
+                  onBack();
+                }}
+                className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+              >
+                Back
+              </button>
+            ) : (
+              <span />
+            )}
+            <div className="flex gap-2">
             {inactive ? (
               <>
                 <button
@@ -188,6 +210,7 @@ export function VoiceTutorScreen({ onAdvance }: Props) {
                 </button>
               </>
             )}
+            </div>
           </div>
         </>
       )}
