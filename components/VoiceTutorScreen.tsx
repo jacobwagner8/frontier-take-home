@@ -9,7 +9,6 @@ import { TextRecapChat } from "./TextRecapChat";
 
 interface Props {
   onAdvance: () => void;
-  frozen?: boolean;
 }
 
 type Status = "idle" | "connecting" | "live" | "error" | "stopped";
@@ -20,7 +19,7 @@ interface TranscriptLine {
   text: string;
 }
 
-export function VoiceTutorScreen({ onAdvance, frozen = false }: Props) {
+export function VoiceTutorScreen({ onAdvance }: Props) {
   const [mode, setMode] = useState<Mode>("voice");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -114,7 +113,7 @@ export function VoiceTutorScreen({ onAdvance, frozen = false }: Props) {
       </p>
 
       {mode === "text" ? (
-        <TextRecapChat onDone={onAdvance} frozen={frozen} />
+        <TextRecapChat onDone={onAdvance} />
       ) : (
         <>
           <p
@@ -145,53 +144,51 @@ export function VoiceTutorScreen({ onAdvance, frozen = false }: Props) {
             ))}
           </div>
 
-          {!frozen && (
-            <div className="flex gap-2 justify-end">
-              {inactive ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      stopCall();
-                      setMode("text");
-                    }}
-                    className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-                  >
-                    Type instead
-                  </button>
-                  <button
-                    type="button"
-                    onClick={startCall}
-                    className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-                  >
-                    {status === "stopped" || status === "error"
-                      ? "Try again"
-                      : "Start"}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={stopCall}
-                    className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-                  >
-                    Stop
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      stopCall();
-                      onAdvance();
-                    }}
-                    className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-                  >
-                    Done
-                  </button>
-                </>
-              )}
-            </div>
-          )}
+          <div className="flex gap-2 justify-end">
+            {inactive ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopCall();
+                    setMode("text");
+                  }}
+                  className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+                >
+                  Type instead
+                </button>
+                <button
+                  type="button"
+                  onClick={startCall}
+                  className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+                >
+                  {status === "stopped" || status === "error"
+                    ? "Try again"
+                    : "Start"}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={stopCall}
+                  className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+                >
+                  Stop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopCall();
+                    onAdvance();
+                  }}
+                  className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+                >
+                  Done
+                </button>
+              </>
+            )}
+          </div>
         </>
       )}
     </section>

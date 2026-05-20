@@ -6,10 +6,9 @@ import { Toggle } from "./Toggle";
 
 interface Props {
   onAdvance: () => void;
-  frozen?: boolean;
 }
 
-export function SimulationScreen({ onAdvance, frozen = false }: Props) {
+export function SimulationScreen({ onAdvance }: Props) {
   const [secondBond, setSecondBond] = useState(false);
   const { oneBond, twoBond } = curriculum.simulationCaptions;
 
@@ -481,15 +480,13 @@ export function SimulationScreen({ onAdvance, frozen = false }: Props) {
         </div>
       )}
 
-      {!frozen && (
-        <button
-          type="button"
-          onClick={onAdvance}
-          className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-        >
-          Continue
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+      >
+        Continue
+      </button>
     </section>
   );
 }
