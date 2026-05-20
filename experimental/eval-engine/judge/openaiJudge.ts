@@ -68,8 +68,12 @@ export async function callJudge<T>(
     try {
       response = await doCall();
     } catch (secondErr) {
+      const firstMsg = (firstErr as Error).message;
+      const secondMsg = (secondErr as Error).message;
       throw new Error(
-        `Judge call failed twice. First: ${(firstErr as Error).message}. Second: ${(secondErr as Error).message}`,
+        firstMsg === secondMsg
+          ? `Judge call failed twice (same error): ${firstMsg}`
+          : `Judge call failed twice. First: ${firstMsg}. Second: ${secondMsg}`,
       );
     }
   }

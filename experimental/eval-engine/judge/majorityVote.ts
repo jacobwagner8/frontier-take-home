@@ -3,6 +3,10 @@ export interface MajorityVoteOptions<T> {
   keyOf: (result: T) => string;
 }
 
+/**
+ * Run `call` N times sequentially and return the most common result, keyed by `keyOf`.
+ * Ties are broken by returning the FIRST occurrence in call order.
+ */
 export async function majorityVote<T>(
   call: () => Promise<T>,
   opts: MajorityVoteOptions<T>,
