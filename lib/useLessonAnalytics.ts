@@ -1,16 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { LessonStep } from "./lessonMachine";
+import type { LessonStep, McqId } from "./lessonMachine";
 
 export type TimedStep =
   | "reading1"
   | "mcq1"
+  | "mcq1b"
+  | "mcq1c"
   | "simulation"
   | "mcq2"
   | "voiceTutor";
 
-export type ChatSurface = "remediation1" | "remediation2" | "finalRecap";
+export type ChatSurface =
+  | "remediation1"
+  | "remediation1b"
+  | "remediation1c"
+  | "remediation2"
+  | "finalRecap";
 
 export interface StepTime {
   step: TimedStep;
@@ -27,6 +34,8 @@ export interface AnalyticsSnapshot {
   totalActiveMs: number;
   perStep: StepTime[];
   mcq1: McqStats;
+  mcq1b: McqStats;
+  mcq1c: McqStats;
   mcq2: McqStats;
   simulationToggles: number;
   chatTurns: Record<ChatSurface, number>;
@@ -35,6 +44,8 @@ export interface AnalyticsSnapshot {
 interface MutableAnalytics {
   perStepMs: Partial<Record<TimedStep, number>>;
   mcq1: McqStats;
+  mcq1b: McqStats;
+  mcq1c: McqStats;
   mcq2: McqStats;
   simulationToggles: number;
   chatTurns: Record<ChatSurface, number>;
@@ -48,15 +59,25 @@ function emptyMutable(): MutableAnalytics {
   return {
     perStepMs: {},
     mcq1: emptyMcqStats(),
+    mcq1b: emptyMcqStats(),
+    mcq1c: emptyMcqStats(),
     mcq2: emptyMcqStats(),
     simulationToggles: 0,
-    chatTurns: { remediation1: 0, remediation2: 0, finalRecap: 0 },
+    chatTurns: {
+      remediation1: 0,
+      remediation1b: 0,
+      remediation1c: 0,
+      remediation2: 0,
+      finalRecap: 0,
+    },
   };
 }
 
 const TIMED_STEP_ORDER: TimedStep[] = [
   "reading1",
   "mcq1",
+  "mcq1b",
+  "mcq1c",
   "simulation",
   "mcq2",
   "voiceTutor",
@@ -64,6 +85,8 @@ const TIMED_STEP_ORDER: TimedStep[] = [
 
 const REMEDIATION_PARENT: Partial<Record<LessonStep, TimedStep>> = {
   remediation1: "mcq1",
+  remediation1b: "mcq1b",
+  remediation1c: "mcq1c",
   remediation2: "mcq2",
 };
 
@@ -85,6 +108,8 @@ function snapshotFrom(m: MutableAnalytics): AnalyticsSnapshot {
     totalActiveMs,
     perStep,
     mcq1: { ...m.mcq1 },
+    mcq1b: { ...m.mcq1b },
+    mcq1c: { ...m.mcq1c },
     mcq2: { ...m.mcq2 },
     simulationToggles: m.simulationToggles,
     chatTurns: { ...m.chatTurns },
@@ -95,7 +120,7 @@ export interface UseLessonAnalyticsResult {
   snapshot: AnalyticsSnapshot;
   recordToggle: () => void;
   recordChatTurn: (surface: ChatSurface) => void;
-  recordMcqAttempt: (mcqId: "mcq1" | "mcq2", isCorrect: boolean) => void;
+  recordMcqAttempt: (mcqId: McqId, isCorrect: boolean) => void;
   reset: () => void;
 }
 
@@ -185,7 +210,7 @@ export function useLessonAnalytics(
   );
 
   const recordMcqAttempt = useCallback(
-    (mcqId: "mcq1" | "mcq2", isCorrect: boolean) => {
+    (mcqId: McqId, isCorrect: boolean) => {
       const stats = stateRef.current[mcqId];
       if (stats.attempts === 0 && isCorrect) {
         stats.firstTryCorrect = true;

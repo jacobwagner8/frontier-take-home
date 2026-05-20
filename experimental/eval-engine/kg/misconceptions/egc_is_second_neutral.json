@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.egc_is_second_neutral",
+  "name": "The EGC is a second neutral",
+  "statement": "The neutral and the equipment grounding conductor do the same job — both return current to the source — so under normal operation they carry the same current.",
+  "correction": "The neutral and the EGC look alike — both copper conductors ending at bonded buses in the main panel — but they have opposite jobs. The neutral is the planned return path: under normal operation, all load current goes out a hot and comes back on the neutral. The EGC is a fault-only path: it sits at zero current until a hot conductor accidentally touches grounded metal, then briefly carries fault current long enough to trip the breaker. NEC 250.142 requires the neutral and the EGC to be kept on separate buses downstream of the service disconnect specifically so normal current has no way onto the EGC.",
+  "correctedBy": ["fact.nec-250-142-subpanel-isolation", "fact.parallel-return-mechanism", "fact.objectionable-current-on-egc"]
+}

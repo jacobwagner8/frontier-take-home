@@ -1,16 +1,23 @@
 import { describe, it, expect } from "vitest";
 import { curriculum } from "@/lib/curriculum";
 
+const allMcqs = [
+  curriculum.mcq1,
+  curriculum.mcq1b,
+  curriculum.mcq1c,
+  curriculum.mcq2,
+];
+
 describe("curriculum integrity", () => {
   it("every MCQ has exactly one correct option", () => {
-    for (const mcq of [curriculum.mcq1, curriculum.mcq2]) {
+    for (const mcq of allMcqs) {
       const correct = mcq.options.filter((o) => o.isCorrect);
       expect(correct, `${mcq.id}`).toHaveLength(1);
     }
   });
 
   it("every wrong option has remediation text and a misconception tag", () => {
-    for (const mcq of [curriculum.mcq1, curriculum.mcq2]) {
+    for (const mcq of allMcqs) {
       for (const opt of mcq.options) {
         if (!opt.isCorrect) {
           expect(opt.remediation, `${mcq.id}/${opt.id}`).toBeTruthy();
@@ -21,7 +28,7 @@ describe("curriculum integrity", () => {
   });
 
   it("every MCQ has at least 3 options", () => {
-    for (const mcq of [curriculum.mcq1, curriculum.mcq2]) {
+    for (const mcq of allMcqs) {
       expect(mcq.options.length).toBeGreaterThanOrEqual(3);
     }
   });

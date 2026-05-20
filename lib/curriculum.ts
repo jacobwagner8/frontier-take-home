@@ -53,6 +53,74 @@ Downstream of the main panel — at every subpanel, junction, and device — the
     ],
   },
 
+  mcq1b: {
+    id: "mcq1b",
+    prompt:
+      "A hot conductor inside an appliance frays and touches the appliance's metal case. What actually causes the breaker to trip and de-energize the case?",
+    options: [
+      {
+        id: "mcq1b_a",
+        text: "The ground rod carries the fault current safely into the earth.",
+        isCorrect: false,
+        misconceptionTag: "ground_rod_clears_fault",
+        remediation: `A ground rod typically presents 25 to 100+ ohms to remote earth. At 120 V, that's only a few amps through the rod — well below the trip threshold of a 15 or 20 A breaker. Earth simply isn't a low-enough-impedance return path to clear a fault. What actually clears it is the metallic path from faulted case → EGC → main bonding jumper → service neutral → utility transformer, which draws hundreds or thousands of amps and trips the breaker in milliseconds.`,
+      },
+      {
+        id: "mcq1b_b",
+        text: "Fault current flows through the EGC and main bonding jumper back to the utility transformer, driving enough current to trip the breaker.",
+        isCorrect: true,
+      },
+      {
+        id: "mcq1b_c",
+        text: "A GFCI in the panel senses current leaking to ground and opens the circuit.",
+        isCorrect: false,
+        misconceptionTag: "gfci_clears_all_faults",
+        remediation: `GFCIs detect imbalance between hot and neutral (at 4–6 mA) and only protect specific branch circuits — kitchens, baths, laundry, outdoors. Most circuits in a house rely on the overcurrent breaker to clear a ground fault. The breaker only trips because the main bonding jumper turns a hot-to-case fault into a metallic short circuit through the EGC and service neutral back to the transformer. Without that bond, even a GFCI-protected circuit would still leave any unprotected appliance frame energized; the bond is what makes fast, predictable clearing possible system-wide.`,
+      },
+      {
+        id: "mcq1b_d",
+        text: "The bonded metal connects to the ground rod, so the fault current drains harmlessly into the earth.",
+        isCorrect: false,
+        misconceptionTag: "earth_absorbs_fault",
+        remediation: `Earth doesn't absorb or dissipate current — current returns to its source. In a residential service, that source is the utility transformer's center-tapped winding, not the soil. A ground rod is roughly 25 ohms or more to remote earth, so even a full 120 V across it would push only a few amps — well below any breaker's trip point. What clears the fault is the copper path from EGC to main bonding jumper to neutral to transformer, with low enough impedance to draw hundreds or thousands of amps. The ground rod's job is lightning and voltage reference, not fault clearing.`,
+      },
+    ],
+  },
+
+  mcq1c: {
+    id: "mcq1c",
+    prompt:
+      "Under normal operation — no faults — how much current does the equipment grounding conductor (EGC) carry?",
+    options: [
+      {
+        id: "mcq1c_a",
+        text: "The same as the neutral, since both return current to the source.",
+        isCorrect: false,
+        misconceptionTag: "egc_is_second_neutral",
+        remediation: `The neutral and the EGC look alike — both copper conductors ending at bonded buses in the main panel — but they have opposite jobs. The neutral is the planned return path: under normal operation, all load current goes out a hot and comes back on the neutral. The EGC is a fault-only path: it sits at zero current until a hot conductor accidentally touches grounded metal, then briefly carries fault current long enough to trip the breaker. That's why downstream of the main bond, the two are kept on separate buses — so normal current has no way onto the EGC.`,
+      },
+      {
+        id: "mcq1c_b",
+        text: "None — it only carries current briefly during a fault, long enough to trip the breaker.",
+        isCorrect: true,
+      },
+      {
+        id: "mcq1c_c",
+        text: "A small leakage current from connected appliances flows continuously through the EGC.",
+        isCorrect: false,
+        misconceptionTag: "egc_carries_normal_leakage",
+        remediation: `Healthy appliances shouldn't leak any meaningful current to their bonded cases — that's what insulation is for. A few microamps of capacitive coupling exist on some equipment, but those are far below anything a breaker or GFCI reacts to. If you actually measure continuous current on an EGC in the field, it's almost always a wiring fault: a downstream N-G bond, a swapped neutral and ground, or compromised insulation. Designed behavior is zero EGC current under normal load.`,
+      },
+      {
+        id: "mcq1c_d",
+        text: "Roughly half the load current, sharing the return path with the neutral for redundancy.",
+        isCorrect: false,
+        misconceptionTag: "egc_shares_return_with_neutral",
+        remediation: `This is exactly what a second N-G bond would cause — and exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current has no way to split onto it. Adding a second bond at a subpanel creates that parallel path, and the EGC starts carrying continuous load current it was never sized or insulated for. The simulation on the next screen shows that exact failure mode.`,
+      },
+    ],
+  },
+
   simulationCaptions: {
     oneBond: `With a single bond at the service, normal load current returns to the source through the neutral. The EGC and every bonded metal part — boxes, raceways, the appliance case — sit at the same potential as the panel's ground bus. Touching the case is safe because there's no voltage difference between it and anything else you might touch.`,
     twoBond: {

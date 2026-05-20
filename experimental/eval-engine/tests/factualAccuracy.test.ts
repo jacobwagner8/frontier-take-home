@@ -25,6 +25,8 @@ const minimalCurriculum: Curriculum = {
       },
     ],
   },
+  mcq1b: { id: "m1b", prompt: "Q1b?", options: [{ id: "a", text: "ok", isCorrect: true }] },
+  mcq1c: { id: "m1c", prompt: "Q1c?", options: [{ id: "a", text: "ok", isCorrect: true }] },
   simulationCaptions: { oneBond: "o", twoBond: { mechanism: "m", consequence: "c", hazard: "h" } },
   mcq2: { id: "m2", prompt: "Q2?", options: [{ id: "a", text: "ok", isCorrect: true }] },
   voiceTutor: { groundingFacts: ["fact1"], openingPrompt: "open" },

@@ -8,6 +8,8 @@ import type { Curriculum } from "@/lib/curriculum.types";
 const baseCurriculum: Curriculum = {
   reading1: { id: "r1", title: "T", body: "B" },
   mcq1: { id: "m1", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
+  mcq1b: { id: "m1b", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
+  mcq1c: { id: "m1c", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
   simulationCaptions: { oneBond: "o", twoBond: { mechanism: "m", consequence: "c", hazard: "h" } },
   mcq2: { id: "m2", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
   voiceTutor: { groundingFacts: [], openingPrompt: "open" },

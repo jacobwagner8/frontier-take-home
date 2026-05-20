@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.gfci_clears_all_faults",
+  "name": "A GFCI clears every ground fault in the house",
+  "statement": "When a hot conductor faults to a metal enclosure, the GFCI in the panel senses the imbalance and opens the circuit — that's how the fault is cleared.",
+  "correction": "GFCIs detect imbalance between hot and neutral (at 4–6 mA) and only protect specific branch circuits required by code — kitchens, bathrooms, laundry, outdoors, and similar. Most circuits in a house rely on the overcurrent breaker to clear a ground fault. The breaker only trips because the main bonding jumper turns a hot-to-case fault into a high-current short circuit through the EGC and service neutral back to the utility transformer. Without that bond, even a GFCI-protected circuit would leave any unprotected appliance frame energized; the bond is what makes fast, predictable clearing possible system-wide.",
+  "correctedBy": ["fact.fault-current-path-via-mbj", "fact.gfci-imbalance-confusion", "fact.main-bonding-jumper-ties"]
+}

@@ -11,15 +11,19 @@ interface Props {
 
 const STEP_LABELS: Record<TimedStep, string> = {
   reading1: "Reading",
-  mcq1: "Question 1",
+  mcq1: "Reading Q1a",
+  mcq1b: "Reading Q1b",
+  mcq1c: "Reading Q1c",
   simulation: "Simulation",
-  mcq2: "Question 2",
+  mcq2: "Sim Q2",
   voiceTutor: "Voice / text recap",
 };
 
 const STEP_ORDER: TimedStep[] = [
   "reading1",
   "mcq1",
+  "mcq1b",
+  "mcq1c",
   "simulation",
   "mcq2",
   "voiceTutor",
@@ -86,12 +90,19 @@ export function SessionMetrics({ snapshot }: Props) {
 
       <div className="flex flex-col gap-2">
         <GroupHeading>Engagement</GroupHeading>
-        <Row label="Question 1 attempts" value={formatMcq(snapshot.mcq1)} />
-        <Row label="Question 2 attempts" value={formatMcq(snapshot.mcq2)} />
+        <Row label="Reading Q1a attempts" value={formatMcq(snapshot.mcq1)} />
+        <Row label="Reading Q1b attempts" value={formatMcq(snapshot.mcq1b)} />
+        <Row label="Reading Q1c attempts" value={formatMcq(snapshot.mcq1c)} />
+        <Row label="Sim Q2 attempts" value={formatMcq(snapshot.mcq2)} />
         <Row label="Simulation toggles" value={snapshot.simulationToggles} />
         <Row
           label="Remediation chat turns"
-          value={snapshot.chatTurns.remediation1 + snapshot.chatTurns.remediation2}
+          value={
+            snapshot.chatTurns.remediation1 +
+            snapshot.chatTurns.remediation1b +
+            snapshot.chatTurns.remediation1c +
+            snapshot.chatTurns.remediation2
+          }
         />
         <Row label="Final recap text turns" value={snapshot.chatTurns.finalRecap} />
       </div>

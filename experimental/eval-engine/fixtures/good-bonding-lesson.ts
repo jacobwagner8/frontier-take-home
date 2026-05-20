@@ -36,6 +36,45 @@ export const curriculum: Curriculum = {
       },
     ],
   },
+  mcq1b: {
+    id: "mcq-fault-current-path",
+    prompt:
+      "A hot conductor frays inside an appliance and touches its metal case. What actually causes the breaker to trip and de-energize the case?",
+    options: [
+      {
+        id: "egc-to-neutral",
+        text: "Fault current flows through the EGC and main bonding jumper back to the utility transformer, drawing enough current to trip the breaker.",
+        isCorrect: true,
+      },
+      {
+        id: "rod-clears-fault",
+        text: "The ground rod carries the fault current safely into the earth.",
+        isCorrect: false,
+        remediation:
+          "A ground rod presents 25 to 100+ ohms to remote earth — far too high to draw the hundreds of amps needed to trip the breaker. The bond's metallic path from EGC to neutral to transformer is what clears a fault.",
+        misconceptionTag: "ground_rod_clears_fault",
+      },
+    ],
+  },
+  mcq1c: {
+    id: "mcq-egc-normal-current",
+    prompt: "Under normal operation — no faults — how much current does the EGC carry?",
+    options: [
+      {
+        id: "none",
+        text: "None — it only carries current briefly during a fault, long enough to trip the breaker.",
+        isCorrect: true,
+      },
+      {
+        id: "shares-with-neutral",
+        text: "Roughly half the load current, sharing the return path with the neutral for redundancy.",
+        isCorrect: false,
+        remediation:
+          "That outcome is exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current cannot split onto it.",
+        misconceptionTag: "egc_shares_return_with_neutral",
+      },
+    ],
+  },
   simulationCaptions: {
     oneBond:
       "With one bond at the service disconnect, normal load return current flows on the neutral. The EGC carries no current.",

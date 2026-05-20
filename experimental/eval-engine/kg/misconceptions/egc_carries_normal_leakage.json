@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.egc_carries_normal_leakage",
+  "name": "The EGC carries a small continuous leakage current normally",
+  "statement": "Healthy appliances leak a little current to their bonded cases all the time, so the equipment grounding conductor normally carries a small continuous current.",
+  "correction": "Healthy appliances should not leak any meaningful current to their bonded cases — that is what insulation is for. A few microamps of capacitive coupling exist on some equipment, but those are far below anything a breaker or GFCI reacts to. If continuous current is measured on an EGC in the field, it is almost always a wiring fault: a downstream N-G bond, a swapped neutral and ground, or compromised insulation. Designed behavior is zero EGC current under normal load — that is exactly what NEC 250.142 enforces by keeping the neutral and the EGC on separate buses downstream of the service disconnect.",
+  "correctedBy": ["fact.nec-250-142-subpanel-isolation", "fact.objectionable-current-on-egc"]
+}
