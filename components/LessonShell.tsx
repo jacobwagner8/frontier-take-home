@@ -9,7 +9,7 @@ interface LessonShellProps {
 export function LessonShell({ children, progress }: LessonShellProps) {
   return (
     <div className="min-h-dvh flex flex-col bg-canvas text-text">
-      <header className="px-4 pt-5 pb-3">
+      <header className="sticky top-0 z-10 bg-canvas/95 backdrop-blur px-4 pt-5 pb-3 border-b border-border">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <BrandMark />

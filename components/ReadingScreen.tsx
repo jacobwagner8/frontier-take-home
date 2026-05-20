@@ -5,12 +5,14 @@ interface Props {
   section: ReadingSection;
   onAdvance: () => void;
   ctaLabel?: string;
+  frozen?: boolean;
 }
 
 export function ReadingScreen({
   section,
   onAdvance,
   ctaLabel = "Continue",
+  frozen = false,
 }: Props) {
   return (
     <article className="flex flex-col gap-5">
@@ -31,13 +33,15 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <button
-        type="button"
-        onClick={onAdvance}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-      >
-        {ctaLabel}
-      </button>
+      {!frozen && (
+        <button
+          type="button"
+          onClick={onAdvance}
+          className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+        >
+          {ctaLabel}
+        </button>
+      )}
     </article>
   );
 }

@@ -6,11 +6,22 @@ import type { MCQ, MCQOption } from "@/lib/curriculum.types";
 interface Props {
   mcq: MCQ;
   onAnswer: (option: MCQOption) => void;
+  /** When true, lock the radio selection and hide the Submit button. */
+  frozen?: boolean;
+  /** The option the user submitted (only meaningful when frozen). */
+  answeredOptionId?: string;
 }
 
-export function MCQuestionScreen({ mcq, onAnswer }: Props) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+export function MCQuestionScreen({
+  mcq,
+  onAnswer,
+  frozen = false,
+  answeredOptionId,
+}: Props) {
+  const [interactiveId, setInteractiveId] = useState<string | null>(null);
   const promptId = useId();
+
+  const selectedId = frozen ? (answeredOptionId ?? null) : interactiveId;
 
   return (
     <section className="flex flex-col gap-5">
@@ -30,18 +41,19 @@ export function MCQuestionScreen({ mcq, onAnswer }: Props) {
           return (
             <label
               key={opt.id}
-              className={`flex items-center gap-3 cursor-pointer w-full px-4 py-3.5 rounded-2xl border text-[15px] transition-colors ${
+              className={`flex items-center gap-3 w-full px-4 py-3.5 rounded-2xl border text-[15px] transition-colors ${
                 isSelected
                   ? "border-brand bg-brand-soft/40"
-                  : "border-border bg-surface hover:bg-canvas"
-              }`}
+                  : "border-border bg-surface"
+              } ${frozen ? "cursor-default" : "cursor-pointer hover:bg-canvas"}`}
             >
               <input
                 type="radio"
                 name={mcq.id}
                 value={opt.id}
                 checked={isSelected}
-                onChange={() => setSelectedId(opt.id)}
+                onChange={() => setInteractiveId(opt.id)}
+                disabled={frozen}
                 className="accent-brand w-4 h-4"
               />
               <span className="text-text">{opt.text}</span>
@@ -49,17 +61,19 @@ export function MCQuestionScreen({ mcq, onAnswer }: Props) {
           );
         })}
       </div>
-      <button
-        type="button"
-        disabled={!selectedId}
-        onClick={() => {
-          const opt = mcq.options.find((o) => o.id === selectedId);
-          if (opt) onAnswer(opt);
-        }}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
-      >
-        Submit
-      </button>
+      {!frozen && (
+        <button
+          type="button"
+          disabled={!selectedId}
+          onClick={() => {
+            const opt = mcq.options.find((o) => o.id === selectedId);
+            if (opt) onAnswer(opt);
+          }}
+          className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
+        >
+          Submit
+        </button>
+      )}
     </section>
   );
 }

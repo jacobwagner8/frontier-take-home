@@ -2,100 +2,139 @@ import { describe, it, expect } from "vitest";
 import {
   initialLessonState,
   lessonReducer,
+  currentEntry,
   LessonState,
   progressFor,
 } from "@/lib/lessonMachine";
 import { curriculum } from "@/lib/curriculum";
 
 describe("lessonReducer", () => {
-  it("starts at intro", () => {
-    expect(initialLessonState.step).toBe("intro");
+  it("starts with a single intro entry", () => {
+    expect(initialLessonState.entries).toHaveLength(1);
+    expect(currentEntry(initialLessonState).step).toBe("intro");
   });
 
-  it("intro → reading1 on ADVANCE", () => {
+  it("intro → reading1 on ADVANCE (appends, does not replace)", () => {
     const next = lessonReducer(initialLessonState, { type: "ADVANCE" });
-    expect(next.step).toBe("reading1");
+    expect(next.entries).toHaveLength(2);
+    expect(next.entries[0].step).toBe("intro");
+    expect(currentEntry(next).step).toBe("reading1");
   });
 
-  it("reading1 → mcq1 on ADVANCE", () => {
-    const state: LessonState = { ...initialLessonState, step: "reading1" };
+  it("reading1 → mcq1 on ADVANCE (appends)", () => {
+    const state: LessonState = {
+      entries: [{ step: "intro" }, { step: "reading1" }],
+    };
     const next = lessonReducer(state, { type: "ADVANCE" });
-    expect(next.step).toBe("mcq1");
+    expect(next.entries).toHaveLength(3);
+    expect(currentEntry(next).step).toBe("mcq1");
   });
 
-  it("mcq1 → simulation when answered correctly", () => {
-    const state: LessonState = { ...initialLessonState, step: "mcq1" };
-    const correctId = curriculum.mcq1.options.find((o) => o.isCorrect)!.id;
+  it("mcq1 → simulation when answered correctly; locks answeredOptionId", () => {
+    const state: LessonState = {
+      entries: [{ step: "intro" }, { step: "reading1" }, { step: "mcq1" }],
+    };
+    const correct = curriculum.mcq1.options.find((o) => o.isCorrect)!;
     const next = lessonReducer(state, {
       type: "ANSWER_MCQ",
       mcqId: "mcq1",
-      optionId: correctId,
+      optionId: correct.id,
     });
-    expect(next.step).toBe("simulation");
+    expect(next.entries).toHaveLength(4);
+    // mcq1 entry retained, answered option locked onto it
+    expect(next.entries[2].step).toBe("mcq1");
+    expect(next.entries[2].answeredOptionId).toBe(correct.id);
+    // new simulation entry appended
+    expect(currentEntry(next).step).toBe("simulation");
   });
 
-  it("mcq1 → remediation1 when answered incorrectly, tracks wrong option", () => {
-    const state: LessonState = { ...initialLessonState, step: "mcq1" };
+  it("mcq1 wrong → remediation1; both entries record the wrong option", () => {
+    const state: LessonState = {
+      entries: [{ step: "intro" }, { step: "reading1" }, { step: "mcq1" }],
+    };
     const wrong = curriculum.mcq1.options.find((o) => !o.isCorrect)!;
     const next = lessonReducer(state, {
       type: "ANSWER_MCQ",
       mcqId: "mcq1",
       optionId: wrong.id,
     });
-    expect(next.step).toBe("remediation1");
-    expect(next.lastWrongOptionId).toBe(wrong.id);
+    expect(next.entries).toHaveLength(4);
+    expect(next.entries[2].step).toBe("mcq1");
+    expect(next.entries[2].answeredOptionId).toBe(wrong.id);
+    expect(currentEntry(next).step).toBe("remediation1");
+    expect(currentEntry(next).lastWrongOptionId).toBe(wrong.id);
   });
 
-  it("remediation1 → mcq1 on ADVANCE (retry, clears lastWrongOptionId)", () => {
+  it("remediation1 → fresh mcq1 attempt on ADVANCE (appends a new mcq entry)", () => {
     const state: LessonState = {
-      ...initialLessonState,
-      step: "remediation1",
-      lastWrongOptionId: "mcq1_a",
+      entries: [
+        { step: "intro" },
+        { step: "reading1" },
+        { step: "mcq1", answeredOptionId: "mcq1_a" },
+        { step: "remediation1", lastWrongOptionId: "mcq1_a" },
+      ],
     };
     const next = lessonReducer(state, { type: "ADVANCE" });
-    expect(next.step).toBe("mcq1");
-    expect(next.lastWrongOptionId).toBeUndefined();
+    expect(next.entries).toHaveLength(5);
+    const last = currentEntry(next);
+    expect(last.step).toBe("mcq1");
+    expect(last.answeredOptionId).toBeUndefined();
+    // previous mcq1 attempt is preserved in history
+    expect(next.entries[2].answeredOptionId).toBe("mcq1_a");
   });
 
   it("simulation → mcq2 on ADVANCE", () => {
-    const state: LessonState = { ...initialLessonState, step: "simulation" };
+    const state: LessonState = { entries: [{ step: "simulation" }] };
     const next = lessonReducer(state, { type: "ADVANCE" });
-    expect(next.step).toBe("mcq2");
+    expect(currentEntry(next).step).toBe("mcq2");
   });
 
-  it("mcq2 → remediation2 when answered incorrectly, tracks wrong option", () => {
-    const state: LessonState = { ...initialLessonState, step: "mcq2" };
+  it("mcq2 wrong → remediation2", () => {
+    const state: LessonState = { entries: [{ step: "mcq2" }] };
     const wrong = curriculum.mcq2.options.find((o) => !o.isCorrect)!;
     const next = lessonReducer(state, {
       type: "ANSWER_MCQ",
       mcqId: "mcq2",
       optionId: wrong.id,
     });
-    expect(next.step).toBe("remediation2");
-    expect(next.lastWrongOptionId).toBe(wrong.id);
+    expect(currentEntry(next).step).toBe("remediation2");
+    expect(currentEntry(next).lastWrongOptionId).toBe(wrong.id);
   });
 
   it("mcq2 correct → voiceTutor", () => {
-    const state: LessonState = { ...initialLessonState, step: "mcq2" };
+    const state: LessonState = { entries: [{ step: "mcq2" }] };
     const correctId = curriculum.mcq2.options.find((o) => o.isCorrect)!.id;
     const next = lessonReducer(state, {
       type: "ANSWER_MCQ",
       mcqId: "mcq2",
       optionId: correctId,
     });
-    expect(next.step).toBe("voiceTutor");
+    expect(currentEntry(next).step).toBe("voiceTutor");
   });
 
   it("voiceTutor → done on ADVANCE", () => {
-    const state: LessonState = { ...initialLessonState, step: "voiceTutor" };
+    const state: LessonState = { entries: [{ step: "voiceTutor" }] };
     const next = lessonReducer(state, { type: "ADVANCE" });
-    expect(next.step).toBe("done");
+    expect(currentEntry(next).step).toBe("done");
   });
 
-  it("RESTART_LESSON returns to intro from any step", () => {
-    const state: LessonState = { ...initialLessonState, step: "done" };
+  it("ADVANCE from done is a no-op (does not append another done entry)", () => {
+    const state: LessonState = { entries: [{ step: "done" }] };
+    const next = lessonReducer(state, { type: "ADVANCE" });
+    expect(next).toBe(state);
+  });
+
+  it("RESTART_LESSON resets entries to a single intro", () => {
+    const state: LessonState = {
+      entries: [
+        { step: "intro" },
+        { step: "reading1" },
+        { step: "mcq1", answeredOptionId: "x" },
+      ],
+    };
     const next = lessonReducer(state, { type: "RESTART_LESSON" });
-    expect(next.step).toBe("intro");
+    expect(next.entries).toHaveLength(1);
+    expect(currentEntry(next).step).toBe("intro");
   });
 });
 
