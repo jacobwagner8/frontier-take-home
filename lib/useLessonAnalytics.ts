@@ -196,9 +196,5 @@ export function useLessonAnalytics(
     [flush],
   );
 
-  useEffect(() => {
-    flush();
-  }, [step, flush]);
-
   return { snapshot, recordToggle, recordChatTurn, recordMcqAttempt };
 }
