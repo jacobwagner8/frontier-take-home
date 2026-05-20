@@ -20,13 +20,13 @@ export function SimulationScreen({ onAdvance }: Props) {
 
       <div className="rounded-2xl border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
         <svg
-          viewBox="0 0 360 320"
+          viewBox="0 0 360 330"
           className="w-full h-auto"
           role="img"
           aria-label={
             secondBond
-              ? "Diagram with a second neutral-to-ground bond at the subpanel; current now flows on both the neutral feeder and the EGC feeder. Downstream, an appliance bonded to the subpanel EGC sits at about 5 V above earth, while a nearby sink stays at 0 V via its own water-pipe ground. A person touching both is now part of a circuit between them."
-              : "Diagram with a single neutral-to-ground bond at the main panel; current flows only on the neutral feeder. Downstream, an appliance bonded to the subpanel EGC and a nearby sink grounded to earth are at the same potential, so a person touching both is safe."
+              ? "Diagram with a second neutral-to-ground bond at the subpanel; current now flows on both the neutral feeder and the EGC feeder. Downstream, an appliance bonded to the subpanel EGC sits at about 5 V above earth. A person standing on the ground who touches the appliance completes a circuit from the appliance through their body to earth."
+              : "Diagram with a single neutral-to-ground bond at the main panel; current flows only on the neutral feeder. Downstream, an appliance bonded to the subpanel EGC is at the same potential as earth, so a person standing on the ground who touches it is safe."
           }
         >
           {/* Main panel */}
@@ -265,72 +265,9 @@ export function SimulationScreen({ onAdvance }: Props) {
             className={secondBond ? "current-flow-egc" : ""}
           />
 
-          {/* Sink (true earth via local water pipe) */}
-          <rect
-            x="215"
-            y="270"
-            width="40"
-            height="32"
-            rx="2"
-            fill="var(--color-surface-muted)"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <text
-            x="235"
-            y="316"
-            textAnchor="middle"
-            fontSize="9"
-            fill="var(--color-text-strong)"
-            fontWeight="600"
-          >
-            Sink
-          </text>
-          <text
-            x="235"
-            y="262"
-            textAnchor="middle"
-            fontSize="8"
-            fill="var(--color-text-muted)"
-            fontWeight="600"
-          >
-            0 V (earth)
-          </text>
-          {/* Pipe + ground symbol */}
-          <line
-            x1="235"
-            y1="302"
-            x2="235"
-            y2="307"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          <line
-            x1="228"
-            y1="307"
-            x2="242"
-            y2="307"
-            stroke="var(--color-text)"
-            strokeWidth="1.5"
-          />
-          <line
-            x1="230"
-            y1="310"
-            x2="240"
-            y2="310"
-            stroke="var(--color-text)"
-            strokeWidth="1"
-          />
-          <line
-            x1="232"
-            y1="313"
-            x2="238"
-            y2="313"
-            stroke="var(--color-text)"
-            strokeWidth="1"
-          />
-
-          {/* Person — stands to the left of the appliance, between sink and appliance */}
+          {/* Person — stands on the earth, to the left of the appliance.
+              When energized, current flows from appliance frame -> right hand
+              -> body -> legs -> earth. */}
           <circle
             cx="270"
             cy="272"
@@ -339,25 +276,27 @@ export function SimulationScreen({ onAdvance }: Props) {
             stroke="var(--color-text)"
             strokeWidth="1.2"
           />
+          {/* Body — conducts when energized */}
           <line
             x1="270"
             y1="276"
             x2="270"
             y2="298"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
-          />
-          {/* Arms — turn red when there's a voltage between the things being touched */}
-          <line
-            x1="270"
-            y1="283"
-            x2="255"
-            y2="290"
             stroke={
               secondBond ? "var(--color-danger)" : "var(--color-text)"
             }
             strokeWidth={secondBond ? "1.8" : "1.2"}
           />
+          {/* Left arm — hangs at the side, not touching anything */}
+          <line
+            x1="270"
+            y1="283"
+            x2="264"
+            y2="296"
+            stroke="var(--color-text)"
+            strokeWidth="1.2"
+          />
+          {/* Right arm — touches the appliance; conducts when energized */}
           <line
             x1="270"
             y1="283"
@@ -368,21 +307,26 @@ export function SimulationScreen({ onAdvance }: Props) {
             }
             strokeWidth={secondBond ? "1.8" : "1.2"}
           />
+          {/* Legs — conduct when energized */}
           <line
             x1="270"
             y1="298"
             x2="265"
             y2="312"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
           />
           <line
             x1="270"
             y1="298"
             x2="275"
             y2="312"
-            stroke="var(--color-text)"
-            strokeWidth="1.2"
+            stroke={
+              secondBond ? "var(--color-danger)" : "var(--color-text)"
+            }
+            strokeWidth={secondBond ? "1.8" : "1.2"}
           />
           {secondBond && (
             <text
@@ -396,6 +340,37 @@ export function SimulationScreen({ onAdvance }: Props) {
               ⚡
             </text>
           )}
+
+          {/* Earth / floor under the person */}
+          <line
+            x1="240"
+            y1="313"
+            x2="305"
+            y2="313"
+            stroke="var(--color-text)"
+            strokeWidth="1.5"
+          />
+          {[245, 255, 265, 275, 285, 295].map((cx) => (
+            <line
+              key={`earth-${cx}`}
+              x1={cx}
+              y1="313"
+              x2={cx - 5}
+              y2="318"
+              stroke="var(--color-text)"
+              strokeWidth="0.8"
+            />
+          ))}
+          <text
+            x="272"
+            y="328"
+            textAnchor="middle"
+            fontSize="8"
+            fill="var(--color-text-muted)"
+            fontWeight="600"
+          >
+            0 V (earth)
+          </text>
 
           {/* Appliance */}
           <rect
