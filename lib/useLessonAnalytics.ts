@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { LessonStep } from "./lessonMachine";
 
 export type TimedStep =
@@ -62,6 +62,20 @@ const TIMED_STEP_ORDER: TimedStep[] = [
   "voiceTutor",
 ];
 
+const REMEDIATION_PARENT: Partial<Record<LessonStep, TimedStep>> = {
+  remediation1: "mcq1",
+  remediation2: "mcq2",
+};
+
+function timedStepFor(step: LessonStep): TimedStep | null {
+  if (step === "intro" || step === "done") return null;
+  const rolled = REMEDIATION_PARENT[step];
+  if (rolled) return rolled;
+  return (TIMED_STEP_ORDER as readonly LessonStep[]).includes(step)
+    ? (step as TimedStep)
+    : null;
+}
+
 function snapshotFrom(m: MutableAnalytics): AnalyticsSnapshot {
   const perStep: StepTime[] = TIMED_STEP_ORDER.filter(
     (s) => m.perStepMs[s] !== undefined,
@@ -85,9 +99,16 @@ export interface UseLessonAnalyticsResult {
 }
 
 export function useLessonAnalytics(
-  _step: LessonStep,
+  step: LessonStep,
 ): UseLessonAnalyticsResult {
   const stateRef = useRef<MutableAnalytics>(emptyMutable());
+  const activeStepRef = useRef<TimedStep | null>(null);
+  const segmentStartRef = useRef<number | null>(null);
+  const visibleRef = useRef<boolean>(
+    typeof document === "undefined"
+      ? true
+      : document.visibilityState !== "hidden",
+  );
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot>(() =>
     snapshotFrom(stateRef.current),
   );
@@ -95,6 +116,59 @@ export function useLessonAnalytics(
   const flush = useCallback(() => {
     setSnapshot(snapshotFrom(stateRef.current));
   }, []);
+
+  const closeSegment = useCallback(() => {
+    const active = activeStepRef.current;
+    const start = segmentStartRef.current;
+    if (active === null || start === null) {
+      segmentStartRef.current = null;
+      return;
+    }
+    const delta = Date.now() - start;
+    if (delta > 0) {
+      stateRef.current.perStepMs[active] =
+        (stateRef.current.perStepMs[active] ?? 0) + delta;
+    }
+    segmentStartRef.current = null;
+  }, []);
+
+  const openSegment = useCallback(() => {
+    if (activeStepRef.current === null) return;
+    if (!visibleRef.current) return;
+    segmentStartRef.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    function onChange() {
+      const nowVisible = document.visibilityState !== "hidden";
+      if (nowVisible === visibleRef.current) return;
+      if (nowVisible) {
+        visibleRef.current = true;
+        openSegment();
+      } else {
+        closeSegment();
+        visibleRef.current = false;
+      }
+    }
+    document.addEventListener("visibilitychange", onChange);
+    return () => document.removeEventListener("visibilitychange", onChange);
+  }, [openSegment, closeSegment]);
+
+  useEffect(() => {
+    const nextStep = timedStepFor(step);
+    if (nextStep === activeStepRef.current) return;
+    closeSegment();
+    activeStepRef.current = nextStep;
+    openSegment();
+    flush();
+  }, [step, closeSegment, openSegment, flush]);
+
+  useEffect(() => {
+    return () => {
+      closeSegment();
+    };
+  }, [closeSegment]);
 
   const recordToggle = useCallback(() => {
     stateRef.current.simulationToggles += 1;
@@ -121,6 +195,10 @@ export function useLessonAnalytics(
     },
     [flush],
   );
+
+  useEffect(() => {
+    flush();
+  }, [step, flush]);
 
   return { snapshot, recordToggle, recordChatTurn, recordMcqAttempt };
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useLessonAnalytics } from "@/lib/useLessonAnalytics";
 
@@ -75,5 +75,121 @@ describe("useLessonAnalytics — counters", () => {
       wrongAttempts: 2,
       firstTryCorrect: false,
     });
+  });
+});
+
+function setVisibility(state: "visible" | "hidden") {
+  Object.defineProperty(document, "visibilityState", {
+    configurable: true,
+    get: () => state,
+  });
+  document.dispatchEvent(new Event("visibilitychange"));
+}
+
+describe("useLessonAnalytics — timing", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    setVisibility("visible");
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("accumulates time into the current step bucket", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "reading1" as const } },
+    );
+    act(() => {
+      vi.advanceTimersByTime(5_000);
+    });
+    rerender({ step: "mcq1" });
+    expect(
+      result.current.snapshot.perStep.find((s) => s.step === "reading1")
+        ?.activeMs,
+    ).toBe(5_000);
+  });
+
+  it("rolls remediation1 time into mcq1", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "mcq1" as "mcq1" | "remediation1" } },
+    );
+    act(() => {
+      vi.advanceTimersByTime(2_000);
+    });
+    rerender({ step: "remediation1" });
+    act(() => {
+      vi.advanceTimersByTime(3_000);
+    });
+    rerender({ step: "mcq1" });
+    act(() => {
+      vi.advanceTimersByTime(1_000);
+    });
+    rerender({ step: "simulation" as never });
+
+    expect(
+      result.current.snapshot.perStep.find((s) => s.step === "mcq1")?.activeMs,
+    ).toBe(6_000);
+  });
+
+  it("pauses accumulation when the tab is hidden", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "reading1" as const } },
+    );
+    act(() => {
+      vi.advanceTimersByTime(1_000);
+      setVisibility("hidden");
+      vi.advanceTimersByTime(10_000);
+      setVisibility("visible");
+      vi.advanceTimersByTime(2_000);
+    });
+    rerender({ step: "mcq1" });
+    expect(
+      result.current.snapshot.perStep.find((s) => s.step === "reading1")
+        ?.activeMs,
+    ).toBe(3_000);
+  });
+
+  it("excludes intro and done from perStep", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "intro" as const } },
+    );
+    act(() => {
+      vi.advanceTimersByTime(4_000);
+    });
+    rerender({ step: "reading1" as never });
+    act(() => {
+      vi.advanceTimersByTime(2_000);
+    });
+    rerender({ step: "done" as never });
+    act(() => {
+      vi.advanceTimersByTime(5_000);
+    });
+    rerender({ step: "done" });
+
+    expect(result.current.snapshot.perStep.map((s) => s.step)).toEqual([
+      "reading1",
+    ]);
+    expect(result.current.snapshot.totalActiveMs).toBe(2_000);
+  });
+
+  it("totalActiveMs is the sum of per-step buckets", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "reading1" as const } },
+    );
+    act(() => {
+      vi.advanceTimersByTime(3_000);
+    });
+    rerender({ step: "simulation" as never });
+    act(() => {
+      vi.advanceTimersByTime(2_500);
+    });
+    rerender({ step: "done" as never });
+    expect(result.current.snapshot.totalActiveMs).toBe(5_500);
   });
 });
