@@ -3,6 +3,6 @@
   "id": "src.nec-2023-250-142",
   "sourceType": "NEC",
   "citation": "NEC 2023 Article 250.142",
-  "text": "A grounded circuit conductor shall not be used for grounding non-current-carrying metal parts of equipment on the load side of the service disconnecting means or on the load side of a separately derived system disconnecting means or the source of a separately derived system that has no disconnecting means. In other words, the neutral and equipment grounding conductor shall be kept electrically isolated downstream of the service disconnect; subpanels must not bond N to the panel enclosure.",
+  "text": "A grounded circuit conductor shall not be used for grounding non-current-carrying metal parts of equipment on the load side of the service disconnecting means or on the load side of a separately derived system disconnecting means or the source of a separately derived system that has no disconnecting means.",
   "url": null
 }
