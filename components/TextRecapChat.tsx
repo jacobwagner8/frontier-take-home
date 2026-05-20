@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useChat } from "@/lib/useChat";
+import { LessonFooter } from "./LessonFooter";
 
 interface Props {
   onDone: () => void;
@@ -69,18 +70,7 @@ export function TextRecapChat({ onDone, onBack }: Props) {
           Send
         </button>
       </div>
-      <div
-        className={`flex items-center gap-3 ${onBack ? "justify-between" : "justify-end"}`}
-      >
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-          >
-            Back
-          </button>
-        )}
+      <LessonFooter onBack={onBack}>
         <button
           type="button"
           onClick={onDone}
@@ -88,7 +78,7 @@ export function TextRecapChat({ onDone, onBack }: Props) {
         >
           Done
         </button>
-      </div>
+      </LessonFooter>
     </div>
   );
 }

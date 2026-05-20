@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReadingSection } from "@/lib/curriculum.types";
+import { LessonFooter } from "./LessonFooter";
 
 interface Props {
   section: ReadingSection;
@@ -33,18 +34,7 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <div
-        className={`flex items-center gap-3 ${onBack ? "justify-between" : "justify-end"}`}
-      >
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-          >
-            Back
-          </button>
-        )}
+      <LessonFooter onBack={onBack}>
         <button
           type="button"
           onClick={onAdvance}
@@ -52,7 +42,7 @@ export function ReadingScreen({
         >
           {ctaLabel}
         </button>
-      </div>
+      </LessonFooter>
     </article>
   );
 }

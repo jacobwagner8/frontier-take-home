@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { curriculum } from "@/lib/curriculum";
+import { LessonFooter } from "./LessonFooter";
 import { Toggle } from "./Toggle";
 
 interface Props {
@@ -484,18 +485,7 @@ export function SimulationScreen({ onAdvance, onBack }: Props) {
         </>
       )}
 
-      <div
-        className={`flex items-end gap-3 ${onBack ? "justify-between" : "justify-end"}`}
-      >
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-          >
-            Back
-          </button>
-        )}
+      <LessonFooter onBack={onBack}>
         <div className="flex flex-col items-end gap-2">
           {!hasToggled && (
             <p id="continue-hint" className="text-[13px] text-text-muted">
@@ -512,7 +502,7 @@ export function SimulationScreen({ onAdvance, onBack }: Props) {
             Continue
           </button>
         </div>
-      </div>
+      </LessonFooter>
     </section>
   );
 }

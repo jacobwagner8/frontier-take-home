@@ -5,6 +5,7 @@ import {
   startRealtimeSession,
   type RealtimeSession,
 } from "@/lib/realtimeClient";
+import { LessonFooter } from "./LessonFooter";
 import { TextRecapChat } from "./TextRecapChat";
 
 interface Props {
@@ -151,21 +152,16 @@ export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
             ))}
           </div>
 
-          <div
-            className={`flex gap-2 items-center ${onBack ? "justify-between" : "justify-end"}`}
+          <LessonFooter
+            onBack={
+              onBack
+                ? () => {
+                    stopCall();
+                    onBack();
+                  }
+                : undefined
+            }
           >
-            {onBack && (
-              <button
-                type="button"
-                onClick={() => {
-                  stopCall();
-                  onBack();
-                }}
-                className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-              >
-                Back
-              </button>
-            )}
             <div className="flex gap-2">
             {inactive ? (
               <>
@@ -211,7 +207,7 @@ export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
               </>
             )}
             </div>
-          </div>
+          </LessonFooter>
         </>
       )}
     </section>
