@@ -1,15 +1,18 @@
 import Image from "next/image";
 import type { ReadingSection } from "@/lib/curriculum.types";
+import { LessonFooter } from "./LessonFooter";
 
 interface Props {
   section: ReadingSection;
   onAdvance: () => void;
+  onBack?: () => void;
   ctaLabel?: string;
 }
 
 export function ReadingScreen({
   section,
   onAdvance,
+  onBack,
   ctaLabel = "Continue",
 }: Props) {
   return (
@@ -31,13 +34,15 @@ export function ReadingScreen({
           />
         </div>
       )}
-      <button
-        type="button"
-        onClick={onAdvance}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-      >
-        {ctaLabel}
-      </button>
+      <LessonFooter onBack={onBack}>
+        <button
+          type="button"
+          onClick={onAdvance}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
+        >
+          {ctaLabel}
+        </button>
+      </LessonFooter>
     </article>
   );
 }

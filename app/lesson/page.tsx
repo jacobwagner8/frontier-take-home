@@ -18,6 +18,7 @@ import { curriculum } from "@/lib/curriculum";
 export default function LessonPage() {
   const [state, dispatch] = useReducer(lessonReducer, initialLessonState);
   const progress = progressFor(state.step);
+  const goBack = () => dispatch({ type: "GO_BACK" });
 
   return (
     <LessonShell progress={progress}>
@@ -40,6 +41,7 @@ export default function LessonPage() {
         <ReadingScreen
           section={curriculum.reading1}
           onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onBack={goBack}
         />
       )}
 
@@ -49,6 +51,7 @@ export default function LessonPage() {
           onAnswer={(opt) =>
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id })
           }
+          onBack={goBack}
         />
       )}
 
@@ -64,7 +67,10 @@ export default function LessonPage() {
       )}
 
       {state.step === "simulation" && (
-        <SimulationScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
+        <SimulationScreen
+          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onBack={goBack}
+        />
       )}
 
       {state.step === "mcq2" && (
@@ -73,6 +79,7 @@ export default function LessonPage() {
           onAnswer={(opt) =>
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id })
           }
+          onBack={goBack}
         />
       )}
 
@@ -88,7 +95,10 @@ export default function LessonPage() {
       )}
 
       {state.step === "voiceTutor" && (
-        <VoiceTutorScreen onAdvance={() => dispatch({ type: "ADVANCE" })} />
+        <VoiceTutorScreen
+          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onBack={goBack}
+        />
       )}
 
       {state.step === "done" && (

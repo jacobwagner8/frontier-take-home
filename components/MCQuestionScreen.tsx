@@ -2,13 +2,15 @@
 
 import { useId, useState } from "react";
 import type { MCQ, MCQOption } from "@/lib/curriculum.types";
+import { LessonFooter } from "./LessonFooter";
 
 interface Props {
   mcq: MCQ;
   onAnswer: (option: MCQOption) => void;
+  onBack?: () => void;
 }
 
-export function MCQuestionScreen({ mcq, onAnswer }: Props) {
+export function MCQuestionScreen({ mcq, onAnswer, onBack }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const promptId = useId();
 
@@ -49,17 +51,19 @@ export function MCQuestionScreen({ mcq, onAnswer }: Props) {
           );
         })}
       </div>
-      <button
-        type="button"
-        disabled={!selectedId}
-        onClick={() => {
-          const opt = mcq.options.find((o) => o.id === selectedId);
-          if (opt) onAnswer(opt);
-        }}
-        className="self-end px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
-      >
-        Submit
-      </button>
+      <LessonFooter onBack={onBack}>
+        <button
+          type="button"
+          disabled={!selectedId}
+          onClick={() => {
+            const opt = mcq.options.find((o) => o.id === selectedId);
+            if (opt) onAnswer(opt);
+          }}
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
+        >
+          Submit
+        </button>
+      </LessonFooter>
     </section>
   );
 }

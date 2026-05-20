@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { curriculum } from "@/lib/curriculum";
+import { LessonFooter } from "./LessonFooter";
 import { Toggle } from "./Toggle";
 
 interface Props {
   onAdvance: () => void;
+  onBack?: () => void;
 }
 
-export function SimulationScreen({ onAdvance }: Props) {
+export function SimulationScreen({ onAdvance, onBack }: Props) {
   const [secondBond, setSecondBond] = useState(false);
   const [hasToggled, setHasToggled] = useState(false);
   const { oneBond, twoBond } = curriculum.simulationCaptions;
@@ -483,22 +485,24 @@ export function SimulationScreen({ onAdvance }: Props) {
         </>
       )}
 
-      <div className="self-end flex flex-col items-end gap-2">
-        {!hasToggled && (
-          <p id="continue-hint" className="text-[13px] text-text-muted">
-            Try the toggle to continue
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={onAdvance}
-          disabled={!hasToggled}
-          aria-describedby={!hasToggled ? "continue-hint" : undefined}
-          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
-        >
-          Continue
-        </button>
-      </div>
+      <LessonFooter onBack={onBack}>
+        <div className="flex flex-col items-end gap-2">
+          {!hasToggled && (
+            <p id="continue-hint" className="text-[13px] text-text-muted">
+              Try the toggle to continue
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={onAdvance}
+            disabled={!hasToggled}
+            aria-describedby={!hasToggled ? "continue-hint" : undefined}
+            className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
+          >
+            Continue
+          </button>
+        </div>
+      </LessonFooter>
     </section>
   );
 }

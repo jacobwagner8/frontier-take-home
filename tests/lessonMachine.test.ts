@@ -3,6 +3,7 @@ import {
   initialLessonState,
   lessonReducer,
   LessonState,
+  LessonStep,
   progressFor,
 } from "@/lib/lessonMachine";
 import { curriculum } from "@/lib/curriculum";
@@ -96,6 +97,45 @@ describe("lessonReducer", () => {
     const state: LessonState = { ...initialLessonState, step: "done" };
     const next = lessonReducer(state, { type: "RESTART_LESSON" });
     expect(next.step).toBe("intro");
+  });
+});
+
+describe("lessonReducer GO_BACK", () => {
+  const backCases: Array<[LessonStep, LessonStep]> = [
+    ["reading1", "intro"],
+    ["mcq1", "reading1"],
+    ["simulation", "mcq1"],
+    ["mcq2", "simulation"],
+    ["voiceTutor", "mcq2"],
+  ];
+
+  it.each(backCases)("GO_BACK from %s lands on %s", (from, to) => {
+    const state: LessonState = { ...initialLessonState, step: from };
+    const next = lessonReducer(state, { type: "GO_BACK" });
+    expect(next.step).toBe(to);
+  });
+
+  it("GO_BACK clears any lingering lastWrongOptionId", () => {
+    const state: LessonState = {
+      step: "mcq1",
+      lastWrongOptionId: "mcq1_a",
+    };
+    const next = lessonReducer(state, { type: "GO_BACK" });
+    expect(next.step).toBe("reading1");
+    expect(next.lastWrongOptionId).toBeUndefined();
+  });
+
+  const noBackSteps: LessonStep[] = [
+    "intro",
+    "remediation1",
+    "remediation2",
+    "done",
+  ];
+
+  it.each(noBackSteps)("GO_BACK is a no-op from %s", (step) => {
+    const state: LessonState = { ...initialLessonState, step };
+    const next = lessonReducer(state, { type: "GO_BACK" });
+    expect(next).toEqual(state);
   });
 });
 
