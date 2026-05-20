@@ -345,12 +345,12 @@ export function SimulationScreen({ onAdvance }: Props) {
           <line
             x1="240"
             y1="313"
-            x2="305"
+            x2="280"
             y2="313"
             stroke="var(--color-text)"
             strokeWidth="1.5"
           />
-          {[245, 255, 265, 275, 285, 295].map((cx) => (
+          {[245, 255, 265, 275].map((cx) => (
             <line
               key={`earth-${cx}`}
               x1={cx}
