@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Neutral & Ground Bonding — Electrical Fundamentals",
+  title: "Frontier — Residential Electrician Track",
   description:
     "A 5-10 minute lesson on why a residential electrical system bonds neutral and ground at exactly one point.",
 };
