@@ -422,6 +422,13 @@ export function SimulationScreen({ onAdvance }: Props) {
         </svg>
       </div>
 
+      <div className="flex flex-col gap-3 p-4 bg-surface-muted rounded-2xl">
+        <div className="text-[11px] uppercase tracking-[0.08em] text-text-strong font-semibold">
+          Single bond
+        </div>
+        <p className="text-[14px] leading-[1.55] text-text-muted">{oneBond}</p>
+      </div>
+
       <div className="rounded-2xl border border-border bg-surface px-4 py-2">
         <Toggle
           checked={secondBond}
@@ -431,53 +438,43 @@ export function SimulationScreen({ onAdvance }: Props) {
       </div>
 
       {secondBond && (
-        <div
-          role="alert"
-          className="flex items-center gap-2 px-4 py-3 rounded-2xl border border-danger/30 bg-danger/10 text-danger text-[13px] font-semibold"
-        >
-          <span aria-hidden="true">⚠</span>
-          <span>Current now flowing on the EGC</span>
-        </div>
-      )}
-
-      {secondBond ? (
-        <div
-          className="flex flex-col gap-3 p-4 bg-surface-muted rounded-2xl"
-          aria-live="polite"
-        >
-          <div className="text-[11px] uppercase tracking-[0.08em] text-text-strong font-semibold">
-            What changed?
+        <>
+          <div
+            role="alert"
+            className="flex items-center gap-2 px-4 py-3 rounded-2xl border border-danger/30 bg-danger/10 text-danger text-[13px] font-semibold"
+          >
+            <span aria-hidden="true">⚠</span>
+            <span>Current now flowing on the EGC</span>
           </div>
-          <ul className="flex flex-col gap-2.5">
-            {(
-              [
-                { label: "Mechanism", text: twoBond.mechanism },
-                { label: "Consequence", text: twoBond.consequence },
-                { label: "Hazard", text: twoBond.hazard },
-              ] as const
-            ).map((point) => (
-              <li
-                key={point.label}
-                className="flex gap-3 text-[14px] leading-[1.55] text-text-muted"
-              >
-                <span className="font-semibold text-text-strong shrink-0 w-[6.5rem]">
-                  {point.label}
-                </span>
-                <span>{point.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <div className="flex gap-3 p-4 bg-surface-muted rounded-2xl">
-          <div className="w-[3px] bg-brand rounded-sm flex-shrink-0" />
-          <p
-            className="text-[14px] leading-[1.55] text-text-muted"
+
+          <div
+            className="flex flex-col gap-3 p-4 bg-surface-muted rounded-2xl"
             aria-live="polite"
           >
-            {oneBond}
-          </p>
-        </div>
+            <div className="text-[11px] uppercase tracking-[0.08em] text-text-strong font-semibold">
+              What changed?
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              {(
+                [
+                  { label: "Mechanism", text: twoBond.mechanism },
+                  { label: "Consequence", text: twoBond.consequence },
+                  { label: "Hazard", text: twoBond.hazard },
+                ] as const
+              ).map((point) => (
+                <li
+                  key={point.label}
+                  className="flex gap-3 text-[14px] leading-[1.55] text-text-muted"
+                >
+                  <span className="font-semibold text-text-strong shrink-0 w-[6.5rem]">
+                    {point.label}
+                  </span>
+                  <span>{point.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
 
       <button

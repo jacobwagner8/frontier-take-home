@@ -14,12 +14,15 @@ describe("SimulationScreen toggle behavior", () => {
     expect(screen.queryByText(/≈ 5 V/)).toBeNull();
   });
 
-  it("swaps caption and reveals the second-bond visual when toggled", async () => {
+  it("retains the one-bond caption and appends the second-bond delta when toggled", async () => {
     const user = userEvent.setup();
     render(<SimulationScreen onAdvance={() => {}} />);
 
     await user.click(screen.getByRole("checkbox"));
 
+    expect(
+      screen.getByText(curriculum.simulationCaptions.oneBond),
+    ).toBeInTheDocument();
     expect(screen.getByText(/What changed\?/i)).toBeInTheDocument();
     expect(
       screen.getByText(curriculum.simulationCaptions.twoBond.mechanism),
