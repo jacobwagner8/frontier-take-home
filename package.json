@@ -8,12 +8,16 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:experimental": "vitest run --config vitest.experimental.config.ts --exclude '**/live.eval.test.ts' --passWithNoTests",
+    "test:eval": "vitest run --config vitest.experimental.config.ts"
   },
   "dependencies": {
     "next": "16.2.6",
+    "openai": "^4.104.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -28,6 +32,7 @@
     "eslint-config-next": "16.2.6",
     "jsdom": "^27.0.1",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5",
     "vitest": "^3.2.4"
   }
