@@ -7,14 +7,16 @@ import { LessonFooter } from "./LessonFooter";
 interface Props {
   onDone: () => void;
   onBack?: () => void;
+  onUserSent?: () => void;
 }
 
-export function TextRecapChat({ onDone, onBack }: Props) {
+export function TextRecapChat({ onDone, onBack, onUserSent }: Props) {
   const { messages, input, setInput, busy, send } = useChat({
     buildBody: (msgs) => ({
       context: "voice_fallback",
       messages: msgs,
     }),
+    onUserSent,
   });
   const inputRef = useRef<HTMLInputElement>(null);
 
