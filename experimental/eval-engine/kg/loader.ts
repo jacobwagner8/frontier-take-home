@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { z, ZodSchema } from "zod";
+import { z } from "zod";
 import {
   LearningGoalSchema,
   AtomicFactSchema,
@@ -41,7 +41,7 @@ export function toRawInput(input: {
   };
 }
 
-function parseAll<T>(nodes: NamedRawNode[], schema: ZodSchema<T>): T[] {
+function parseAll<S extends z.ZodTypeAny>(nodes: NamedRawNode[], schema: S): z.infer<S>[] {
   return nodes.map(({ content, sourcePath }) => {
     const result = schema.safeParse(content);
     if (!result.success) {
