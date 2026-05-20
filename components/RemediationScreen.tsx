@@ -7,9 +7,14 @@ import { FollowUpChat } from "./FollowUpChat";
 interface Props {
   wrongOption: MCQOption;
   onAdvance: () => void;
+  frozen?: boolean;
 }
 
-export function RemediationScreen({ wrongOption, onAdvance }: Props) {
+export function RemediationScreen({
+  wrongOption,
+  onAdvance,
+  frozen = false,
+}: Props) {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
@@ -22,24 +27,26 @@ export function RemediationScreen({ wrongOption, onAdvance }: Props) {
           {wrongOption.remediation}
         </p>
       </div>
-      <div className="flex gap-2 justify-end">
-        {wrongOption.misconceptionTag && (
+      {!frozen && (
+        <div className="flex gap-2 justify-end">
+          {wrongOption.misconceptionTag && (
+            <button
+              type="button"
+              onClick={() => setChatOpen(true)}
+              className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+            >
+              Ask a follow-up
+            </button>
+          )}
           <button
             type="button"
-            onClick={() => setChatOpen(true)}
-            className="px-4 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+            onClick={onAdvance}
+            className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
           >
-            Ask a follow-up
+            Try again
           </button>
-        )}
-        <button
-          type="button"
-          onClick={onAdvance}
-          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-        >
-          Try again
-        </button>
-      </div>
+        </div>
+      )}
       {chatOpen && wrongOption.misconceptionTag && (
         <FollowUpChat
           misconceptionTag={wrongOption.misconceptionTag}

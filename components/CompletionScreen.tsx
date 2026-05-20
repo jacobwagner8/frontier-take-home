@@ -2,9 +2,10 @@ import { BrandMark } from "./BrandMark";
 
 interface Props {
   onRestart: () => void;
+  frozen?: boolean;
 }
 
-export function CompletionScreen({ onRestart }: Props) {
+export function CompletionScreen({ onRestart, frozen = false }: Props) {
   return (
     <section className="flex-1 flex flex-col justify-center items-start gap-5 max-w-md">
       <BrandMark size={36} />
@@ -18,13 +19,15 @@ export function CompletionScreen({ onRestart }: Props) {
         and bonded metal, putting load current and touch voltage where they
         should never be.
       </p>
-      <button
-        type="button"
-        onClick={onRestart}
-        className="px-5 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
-      >
-        Restart lesson
-      </button>
+      {!frozen && (
+        <button
+          type="button"
+          onClick={onRestart}
+          className="px-5 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
+        >
+          Restart lesson
+        </button>
+      )}
     </section>
   );
 }
