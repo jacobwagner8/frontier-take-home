@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { Curriculum } from "@/lib/curriculum.types";
 import { callJudge, type CallJudgeRequest, type CallJudgeOptions } from "@/experimental/eval-engine/judge/openaiJudge";
+import { majorityVote } from "@/experimental/eval-engine/judge/majorityVote";
 import type { KGContext } from "@/experimental/eval-engine/kg";
 import type { Evaluator, EvaluatorOptions, EvaluatorResult, PerItemVerdict } from "./types";
 import { studentFacingSlots } from "./slots";
@@ -189,7 +190,14 @@ export const learningGoalCoverageEvaluator: Evaluator<CoverageVerdict> = {
       schemaName: "CoverageResponse",
     };
     const judge = internal.__judge ?? callJudge;
-    const { parsed } = await judge(req, { model });
+    const doCall = () => judge(req, { model }).then((r) => r.parsed);
+    const parsed =
+      runs > 1
+        ? await majorityVote<z.infer<typeof coverageResponseSchema>>(doCall, {
+            n: runs,
+            keyOf: (r) => JSON.stringify(r),
+          })
+        : await doCall();
     return aggregate(parsed, criteria, model, runs);
   },
 };

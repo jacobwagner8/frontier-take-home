@@ -70,7 +70,7 @@ export function renderMarkdownReport(report: EvaluationReport): string {
     "# Evaluation Report",
     "",
     `**Learning Goal:** ${report.learningGoalId}`,
-    `**Curriculum:** "${report.curriculumSummary.readingTitle}" (${report.curriculumSummary.mcqCount} MCQ${report.curriculumSummary.mcqCount === 1 ? "" : "s"})`,
+    `**Curriculum:** "${report.curriculumSummary.readingTitle}" (MCQs: ${report.curriculumSummary.mcqIds.join(", ")})`,
     `**Overall: ${report.overallVerdict.pass ? "PASS" : "FAIL"}** (min rating: ${report.overallVerdict.minRating}; ${report.overallVerdict.needsHumanReview} item(s) need human review)`,
     `**Generated:** ${report.generatedAt}`,
     "",

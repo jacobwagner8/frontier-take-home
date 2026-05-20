@@ -71,6 +71,12 @@ describe("computeOverallVerdict", () => {
     expect(v.pass).toBe(false);
   });
 
+  it("hard-fails on empty evaluator list (misconfiguration safety)", () => {
+    const v = computeOverallVerdict([]);
+    expect(v.pass).toBe(false);
+    expect(v.summary).toMatch(/no evaluators/i);
+  });
+
   it("does NOT fail solely because of unsureItems (decision-support)", () => {
     const v = computeOverallVerdict([
       makeResult({ id: "a", rating: 4, unexpectedContradictions: 0, unsureCount: 3 }),

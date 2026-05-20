@@ -4,7 +4,7 @@ import type { EvaluationReport } from "@/experimental/eval-engine/orchestrator/r
 
 const passingReport: EvaluationReport = {
   learningGoalId: "lg.test",
-  curriculumSummary: { readingTitle: "Bonding 101", mcqCount: 2 },
+  curriculumSummary: { readingTitle: "Bonding 101", mcqIds: ["m1", "m2"] },
   evaluatorResults: [
     {
       evaluatorId: "factual-accuracy",
@@ -22,7 +22,7 @@ const passingReport: EvaluationReport = {
 
 const failingReport: EvaluationReport = {
   learningGoalId: "lg.test",
-  curriculumSummary: { readingTitle: "Bonding 101", mcqCount: 2 },
+  curriculumSummary: { readingTitle: "Bonding 101", mcqIds: ["m1", "m2"] },
   evaluatorResults: [
     {
       evaluatorId: "factual-accuracy",

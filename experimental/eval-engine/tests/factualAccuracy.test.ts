@@ -167,6 +167,31 @@ describe("factualAccuracyEvaluator aggregation", () => {
     expect(result.rating).toBe(4);
   });
 
+  it("calls the judge N times when runs > 1 (majority vote)", async () => {
+    const judge = vi.fn(async () => ({
+      parsed: {
+        items: [
+          {
+            slot_kind: "reading",
+            slot_detail: "body",
+            claim_text: "x",
+            verdict: "supported" as const,
+            reasoning: "y",
+            cited_kg_ids: [],
+            confidence: "high" as const,
+          },
+        ],
+      },
+      raw: {},
+    }));
+    await factualAccuracyEvaluator.evaluate(minimalCurriculum, ctx, {
+      model: "test",
+      runs: 2,
+      __judge: judge,
+    } as any);
+    expect(judge).toHaveBeenCalledTimes(2);
+  });
+
   it("surfaces unsupported claims into unsureItems but does not auto-fail", async () => {
     const judge = mockJudgeWith({
       items: [

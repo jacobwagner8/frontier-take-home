@@ -8,6 +8,15 @@ export interface OverallVerdict {
 }
 
 export function computeOverallVerdict(results: EvaluatorResult<string>[]): OverallVerdict {
+  if (results.length === 0) {
+    return {
+      pass: false,
+      minRating: 1,
+      summary: "FAIL — no evaluators registered.",
+      needsHumanReview: 0,
+    };
+  }
+
   const minRating = (results.length === 0
     ? 1
     : Math.min(...results.map((r) => r.rating))) as RubricLevel;

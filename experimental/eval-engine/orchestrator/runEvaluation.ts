@@ -1,12 +1,12 @@
 import type { Curriculum } from "@/lib/curriculum.types";
-import type { Evaluator, EvaluatorResult, RubricLevel } from "@/experimental/eval-engine/evaluators/types";
+import type { Evaluator, EvaluatorResult } from "@/experimental/eval-engine/evaluators/types";
 import { registeredEvaluators } from "@/experimental/eval-engine/evaluators/registry";
 import { loadKGFromDisk, type LoadedKG } from "@/experimental/eval-engine/kg";
 import { computeOverallVerdict, type OverallVerdict } from "./verdict";
 
 export interface EvaluationReport {
   learningGoalId: string;
-  curriculumSummary: { readingTitle: string; mcqCount: number };
+  curriculumSummary: { readingTitle: string; mcqIds: string[] };
   evaluatorResults: EvaluatorResult<string>[];
   overallVerdict: OverallVerdict;
   generatedAt: string;
@@ -35,7 +35,7 @@ export async function runEvaluation(
     learningGoalId,
     curriculumSummary: {
       readingTitle: curriculum.reading1.title,
-      mcqCount: [curriculum.mcq1, curriculum.mcq2].length,
+      mcqIds: [curriculum.mcq1.id, curriculum.mcq2.id],
     },
     evaluatorResults,
     overallVerdict,

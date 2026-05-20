@@ -111,6 +111,27 @@ describe("learningGoalCoverageEvaluator aggregation", () => {
     expect(result.rating).toBe(1);
   });
 
+  it("calls the judge N times when runs > 1 (majority vote)", async () => {
+    const judge = vi.fn(async () => ({
+      parsed: {
+        criteria: [
+          { criterion_id: "summary", verdict: "met" as const, reasoning: "s", evidence_excerpts: ["x"] },
+          { criterion_id: "teaches:fact.a", verdict: "met" as const, reasoning: "a", evidence_excerpts: [] },
+          { criterion_id: "teaches:fact.b", verdict: "met" as const, reasoning: "b", evidence_excerpts: [] },
+          { criterion_id: "addresses:misc.x", verdict: "met" as const, reasoning: "x", evidence_excerpts: [] },
+          { criterion_id: "addresses:misc.y", verdict: "met" as const, reasoning: "y", evidence_excerpts: [] },
+        ],
+      },
+      raw: {},
+    }));
+    await learningGoalCoverageEvaluator.evaluate(minimalCurriculum, ctx, {
+      model: "test",
+      runs: 2,
+      __judge: judge,
+    } as any);
+    expect(judge).toHaveBeenCalledTimes(2);
+  });
+
   it("rates 3 / Adequate when teaches are met-or-partial and 50%+ misconceptions covered", async () => {
     const judge = mockJudgeWith({
       criteria: [
