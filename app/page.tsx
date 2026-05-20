@@ -36,7 +36,10 @@ export default function Home() {
           >
             {STUDENT_INITIALS}
           </span>
-          <span className="text-sm text-text-muted">{STUDENT_FULL_NAME}</span>
+          <span className="text-sm text-text-muted">
+            <span className="sr-only">Signed in as </span>
+            {STUDENT_FULL_NAME}
+          </span>
         </div>
       </header>
 
@@ -88,9 +91,9 @@ export default function Home() {
           </Link>
         </section>
 
-        <div className="max-w-md text-sm text-text-subtle">
+        <p className="max-w-md text-sm text-text-subtle">
           Up next: {NEXT_LESSON_LABEL}
-        </div>
+        </p>
       </main>
     </div>
   );
