@@ -29,7 +29,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "At every panel and subpanel",
         isCorrect: false,
         misconceptionTag: "more_bonding_is_safer",
-        remediation: `It's tempting to think more bonding equals more safety, but the opposite is true downstream of the main panel. A second bond gives normal return current a parallel path through the EGC — exactly the hazard the single-bond rule (NEC 250.24(A)) prevents. The result is continuous current on bare ground wires, metal boxes, raceways, and water pipes, none of which were sized or insulated for that job.`,
+        remediation: `It's tempting to think more bonding equals more safety, but the opposite is true downstream of the main panel. A second bond gives normal return current a parallel path through the EGC — exactly what NEC 250.142 prohibits on the load side of the service disconnect. The result is continuous current on bare ground wires, metal boxes, raceways, and water pipes, none of which were sized or insulated for that job.`,
       },
       {
         id: "mcq1_b",
@@ -87,7 +87,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "All current flows through the ground rod into the earth",
         isCorrect: false,
         misconceptionTag: "earth_is_return_path",
-        remediation: `A ground rod typically presents tens to hundreds of ohms to remote earth — far too much resistance for the hundreds of amps that returning load current would demand. Current always returns to the source it came from: the utility transformer's neutral. With a single bond, that path is the neutral wire only. With a second bond, that path is the neutral wire AND the EGC in parallel — not the earth.`,
+        remediation: `A ground rod typically presents tens to hundreds of ohms to remote earth — far too much resistance compared to the copper neutral that runs all the way back to the transformer. Current returns to the source it came from on the wire, not through the dirt: that source is the utility transformer's neutral. With a single bond, that path is the neutral wire only. With a second bond, that path is the neutral wire AND the EGC in parallel — not the earth.`,
       },
       {
         id: "mcq2_d",
