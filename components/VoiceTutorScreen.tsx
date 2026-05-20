@@ -11,6 +11,7 @@ import { TextRecapChat } from "./TextRecapChat";
 interface Props {
   onAdvance: () => void;
   onBack?: () => void;
+  onChatTurn?: () => void;
 }
 
 type Status = "idle" | "connecting" | "live" | "error" | "stopped";
@@ -21,7 +22,7 @@ interface TranscriptLine {
   text: string;
 }
 
-export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
+export function VoiceTutorScreen({ onAdvance, onBack, onChatTurn }: Props) {
   const [mode, setMode] = useState<Mode>("voice");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -117,10 +118,15 @@ export function VoiceTutorScreen({ onAdvance, onBack }: Props) {
       {mode === "text" ? (
         <TextRecapChat
           onDone={onAdvance}
-          onBack={onBack ? () => {
-            stopCall();
-            onBack();
-          } : undefined}
+          onBack={
+            onBack
+              ? () => {
+                  stopCall();
+                  onBack();
+                }
+              : undefined
+          }
+          onUserSent={onChatTurn}
         />
       ) : (
         <>

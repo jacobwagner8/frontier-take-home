@@ -6,15 +6,17 @@ import { useChat } from "@/lib/useChat";
 interface Props {
   misconceptionTag: string;
   onClose: () => void;
+  onUserSent?: () => void;
 }
 
-export function FollowUpChat({ misconceptionTag, onClose }: Props) {
+export function FollowUpChat({ misconceptionTag, onClose, onUserSent }: Props) {
   const { messages, input, setInput, busy, send } = useChat({
     buildBody: (msgs) => ({
       context: "follow_up",
       misconceptionTag,
       messages: msgs,
     }),
+    onUserSent,
   });
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);

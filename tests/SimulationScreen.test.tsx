@@ -99,3 +99,17 @@ describe("SimulationScreen continue gating", () => {
     expect(onAdvance).not.toHaveBeenCalled();
   });
 });
+
+describe("SimulationScreen analytics callbacks", () => {
+  it("calls onToggle each time the toggle is clicked", async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    render(
+      <SimulationScreen onAdvance={() => {}} onToggle={onToggle} />,
+    );
+    const toggle = screen.getByRole("checkbox");
+    await user.click(toggle);
+    await user.click(toggle);
+    expect(onToggle).toHaveBeenCalledTimes(2);
+  });
+});
