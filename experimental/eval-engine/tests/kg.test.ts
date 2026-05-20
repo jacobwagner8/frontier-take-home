@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { loadKG, type LoadedKG } from "@/experimental/eval-engine/kg";
+import { mkdtempSync, writeFileSync, mkdirSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { loadKG, loadKGFromDisk, type LoadedKG } from "@/experimental/eval-engine/kg";
 
 describe("KG loader", () => {
   it("loads and validates a minimal in-memory KG", () => {
@@ -90,6 +93,18 @@ describe("KG loader", () => {
         sources: [],
       }),
     ).toThrow(/statement/);
+  });
+
+  it("includes the filename in error messages when loading from disk", () => {
+    const tmpRoot = mkdtempSync(path.join(tmpdir(), "kg-test-"));
+    const lgDir = path.join(tmpRoot, "learning-goals");
+    mkdirSync(lgDir);
+    // Write a bad JSON file missing required fields
+    writeFileSync(
+      path.join(lgDir, "bad-goal.json"),
+      JSON.stringify({ type: "LearningGoal", id: "lg.bad" /* missing question, summary, etc. */ }),
+    );
+    expect(() => loadKGFromDisk(tmpRoot)).toThrow(/learning-goals[/\\]bad-goal\.json/);
   });
 
   it("resolveContext returns the full subgraph for a learning goal", () => {

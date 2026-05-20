@@ -12,20 +12,44 @@ import {
   type SourceExcerpt,
 } from "./schemas";
 
+export interface NamedRawNode {
+  content: unknown;
+  sourcePath: string;
+}
+
 export interface RawKGInput {
+  learningGoals: NamedRawNode[];
+  atomicFacts: NamedRawNode[];
+  misconceptions: NamedRawNode[];
+  sources: NamedRawNode[];
+}
+
+/** Wraps a plain unknown[] input with synthetic <inline>[i] source paths. */
+export function toRawInput(input: {
   learningGoals: unknown[];
   atomicFacts: unknown[];
   misconceptions: unknown[];
   sources: unknown[];
+}): RawKGInput {
+  const wrap = (items: unknown[], label: string): NamedRawNode[] =>
+    items.map((content, i) => ({ content, sourcePath: `<inline:${label}>[${i}]` }));
+  return {
+    learningGoals: wrap(input.learningGoals, "learningGoals"),
+    atomicFacts: wrap(input.atomicFacts, "atomicFacts"),
+    misconceptions: wrap(input.misconceptions, "misconceptions"),
+    sources: wrap(input.sources, "sources"),
+  };
 }
 
-function parseAll<T>(items: unknown[], schema: ZodSchema<T>, label: string): T[] {
-  return items.map((item, i) => {
-    const result = schema.safeParse(item);
+function parseAll<T>(nodes: NamedRawNode[], schema: ZodSchema<T>): T[] {
+  return nodes.map(({ content, sourcePath }) => {
+    const result = schema.safeParse(content);
     if (!result.success) {
-      const issue = result.error.issues[0];
+      const issues = result.error.issues;
+      const first = issues[0];
+      const extra = issues.length > 1 ? ` (and ${issues.length - 1} more issue${issues.length - 1 === 1 ? "" : "s"})` : "";
       throw new Error(
-        `KG validation error in ${label}[${i}] at path '${issue.path.join(".")}': ${issue.message}`,
+        `KG validation error in ${sourcePath} at path '${first.path.join(".")}': ${first.message}${extra}`,
       );
     }
     return result.data;
@@ -41,20 +65,26 @@ export interface ParsedKG {
 
 export function parseKG(input: RawKGInput): ParsedKG {
   return {
-    learningGoals: parseAll(input.learningGoals, LearningGoalSchema, "learningGoals"),
-    atomicFacts: parseAll(input.atomicFacts, AtomicFactSchema, "atomicFacts"),
-    misconceptions: parseAll(input.misconceptions, MisconceptionSchema, "misconceptions"),
-    sources: parseAll(input.sources, SourceExcerptSchema, "sources"),
+    learningGoals: parseAll(input.learningGoals, LearningGoalSchema),
+    atomicFacts: parseAll(input.atomicFacts, AtomicFactSchema),
+    misconceptions: parseAll(input.misconceptions, MisconceptionSchema),
+    sources: parseAll(input.sources, SourceExcerptSchema),
   };
 }
 
 export function readKGFromDisk(rootDir: string): RawKGInput {
-  const readDir = (sub: string): unknown[] => {
+  const readDir = (sub: string): NamedRawNode[] => {
     const dir = path.join(rootDir, sub);
     try {
       return readdirSync(dir)
         .filter((f) => f.endsWith(".json"))
-        .map((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")));
+        .map((f) => {
+          const filePath = path.join(dir, f);
+          return {
+            content: JSON.parse(readFileSync(filePath, "utf8")),
+            sourcePath: path.join(sub, f),
+          };
+        });
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
       throw err;

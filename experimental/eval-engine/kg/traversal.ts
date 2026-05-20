@@ -44,15 +44,27 @@ export function buildLoadedKG(parsed: ParsedKG): LoadedKG {
   };
 
   const factsTaughtBy = (id: LearningGoalId): AtomicFact[] =>
-    getLearningGoal(id).teaches.map((fid) => atomicFacts.get(fid)!);
+    getLearningGoal(id).teaches.map((fid) => {
+      const f = atomicFacts.get(fid);
+      if (!f) throw new Error(`Internal KG inconsistency: '${id}' teaches '${fid}' but no such fact is loaded. Run validateReferences before buildLoadedKG.`);
+      return f;
+    });
 
   const misconceptionsAddressedBy = (id: LearningGoalId): Misconception[] =>
-    getLearningGoal(id).addresses.map((mid) => misconceptions.get(mid)!);
+    getLearningGoal(id).addresses.map((mid) => {
+      const m = misconceptions.get(mid);
+      if (!m) throw new Error(`Internal KG inconsistency: '${id}' addresses '${mid}' but no such misconception is loaded. Run validateReferences before buildLoadedKG.`);
+      return m;
+    });
 
   const excerptsCitedBy = (factId: AtomicFactId): SourceExcerpt[] => {
     const fact = atomicFacts.get(factId);
     if (!fact) throw new Error(`Unknown fact '${factId}'`);
-    return fact.cites.map((sid) => sources.get(sid)!);
+    return fact.cites.map((sid) => {
+      const s = sources.get(sid);
+      if (!s) throw new Error(`Internal KG inconsistency: fact '${factId}' cites '${sid}' but no such source is loaded. Run validateReferences before buildLoadedKG.`);
+      return s;
+    });
   };
 
   const resolveContext = (id: LearningGoalId): KGContext => {
@@ -61,7 +73,11 @@ export function buildLoadedKG(parsed: ParsedKG): LoadedKG {
     const addressedMisconceptions = misconceptionsAddressedBy(id);
     const excerptIds = new Set<string>();
     for (const f of taughtFacts) for (const sid of f.cites) excerptIds.add(sid);
-    const sourceExcerpts = [...excerptIds].map((sid) => sources.get(sid)!);
+    const sourceExcerpts = [...excerptIds].map((sid) => {
+      const s = sources.get(sid);
+      if (!s) throw new Error(`Internal KG inconsistency: source '${sid}' referenced in context for '${id}' but no such source is loaded. Run validateReferences before buildLoadedKG.`);
+      return s;
+    });
     return { learningGoal, taughtFacts, addressedMisconceptions, sourceExcerpts };
   };
 
