@@ -64,6 +64,12 @@ export function SessionMetrics({ snapshot }: Props) {
       className="flex flex-col gap-4 p-4 bg-surface-muted rounded-2xl w-full"
     >
       <GroupHeading>Session metrics</GroupHeading>
+      <p className="text-[12px] leading-[1.5] text-text-muted italic">
+        Shown here to illustrate a few metrics we could easily track. Students
+        wouldn&apos;t see this panel in production — these events would be piped
+        to dashboarding tools and analytics infrastructure on the Frontier
+        backend.
+      </p>
 
       <Row label="Total active time" value={formatMs(snapshot.totalActiveMs)} />
 
