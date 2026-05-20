@@ -29,7 +29,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "At every panel and subpanel",
         isCorrect: false,
         misconceptionTag: "more_bonding_is_safer",
-        remediation: `It's tempting to think more bonding equals more safety, but the opposite is true downstream of the main panel. A second bond gives normal return current a parallel path through the EGC — exactly what NEC 250.142 prohibits. The result is continuous current on bare ground wires, metal boxes, raceways, and water pipes, none of which were sized or insulated for that job.`,
+        remediation: `It's tempting to think more bonding equals more safety, but the opposite is true downstream of the main panel. A second bond gives normal return current a parallel path through the EGC — exactly what NEC 250.142 prohibits on the load side of the service disconnect. The result is continuous current on bare ground wires, metal boxes, raceways, and water pipes, none of which were sized or insulated for that job.`,
       },
       {
         id: "mcq1_b",
@@ -41,7 +41,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "Wherever the ground rod connects",
         isCorrect: false,
         misconceptionTag: "ground_rod_is_the_bond",
-        remediation: `The ground rod and the N-G bond happen at the same place — the main panel — but they are different things. The bond is the screw or strap that ties the neutral bus to the equipment-ground bus inside the panel. The rod just provides a connection to earth for lightning and stray voltage. Earth itself is far too high-resistance to be a normal return path; current returns to the source through the utility neutral, not the dirt.`,
+        remediation: `The ground rod and the N-G bond happen at the same place — the main panel — but they are different things. The bond is the screw or strap that ties the neutral bus to the equipment-ground bus inside the panel. The rod is just the connection from that bus down to earth — and earth itself is far too high-resistance to be a normal return path. A ground rod typically presents tens to hundreds of ohms to remote earth, so current returns to the source through the utility neutral, not the dirt.`,
       },
       {
         id: "mcq1_d",
@@ -75,7 +75,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "Nothing — the second bond is redundant",
         isCorrect: false,
         misconceptionTag: "redundancy_is_harmless",
-        remediation: `Redundant paths in a circuit aren't passive — they're parallel. Two conductors tied at both ends share current proportional to their conductance. The moment the second bond is in, every bonded metal raceway and EGC starts carrying continuous load current — what the NEC calls "objectionable current" (250.6). They were never sized or insulated for that, and the voltage drops they produce show up as touch voltage on appliance cases and water pipes.`,
+        remediation: `Redundant paths in a circuit aren't passive — they're parallel. Two conductors tied at both ends share current proportional to their conductance. The moment the second bond is in, every bonded metal raceway and EGC starts carrying continuous load current — current the EGC was meant to carry only briefly during a fault, long enough to trip a breaker. They were never sized or insulated for that, and the voltage drops they produce show up as touch voltage on appliance cases and water pipes.`,
       },
       {
         id: "mcq2_b",
@@ -87,7 +87,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         text: "All current flows through the ground rod into the earth",
         isCorrect: false,
         misconceptionTag: "earth_is_return_path",
-        remediation: `Earth has roughly 25 ohms or more at a typical ground rod — far too much resistance to carry significant current. Current always returns to the source it came from: the utility transformer's neutral. With a single bond, that path is the neutral wire only. With a second bond, that path is the neutral wire AND the EGC in parallel — not the earth.`,
+        remediation: `A ground rod typically presents tens to hundreds of ohms to remote earth — far too much resistance compared to the copper neutral that runs all the way back to the transformer. Current returns to the source it came from on the wire, not through the dirt: that source is the utility transformer's neutral. With a single bond, that path is the neutral wire only. With a second bond, that path is the neutral wire AND the EGC in parallel — not the earth.`,
       },
       {
         id: "mcq2_d",
