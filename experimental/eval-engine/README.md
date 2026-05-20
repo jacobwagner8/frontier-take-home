@@ -48,16 +48,20 @@ Exit codes:
 
 ## Using the engine from a content generator
 
-The eval engine is a pure consumer-facing library: a generator hands it a `Curriculum` and a `learningGoalId`, and gets back a structured `EvaluationReport` that's actionable per-slot (which MCQ option, which reading body, which grounding fact failed and why).
+The eval engine is a pure consumer-facing library: a generator hands it a `Curriculum` and a `learningGoalId`, and gets back a structured `EvaluationReport` whose verdicts are actionable per-item (which MCQ option, which reading body, which coverage criterion failed and why).
 
 The intended generation loop:
 
 ```ts
-import { runEvaluation } from "@/experimental/eval-engine/orchestrator/runEvaluation";
+import {
+  runEvaluation,
+  type EvaluationReport,
+} from "@/experimental/eval-engine/orchestrator/runEvaluation";
 import { loadKGFromDisk } from "@/experimental/eval-engine/kg";
 
 const kg = loadKGFromDisk(); // load once, reuse across attempts
 const goalId = "lg.ng-bonding-one-point";
+let lastReport: EvaluationReport | undefined; // undefined on the first attempt
 
 for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
   const curriculum = await generateCurriculum(goalId, { feedback: lastReport });
@@ -67,7 +71,7 @@ for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     return curriculum; // ship it
   }
 
-  // Failed: per-slot verdicts point at exactly what to regenerate
+  // Failed: per-item verdicts point at what to regenerate (see below)
   lastReport = report;
 }
 throw new Error(`Could not produce a passing lesson for ${goalId} in ${MAX_ATTEMPTS} attempts`);
@@ -76,7 +80,9 @@ throw new Error(`Could not produce a passing lesson for ${goalId} in ${MAX_ATTEM
 What the generator gets to act on:
 
 - **`report.overallVerdict.pass`** — single boolean go/no-go. `pass` requires every evaluator rating ≥ 3 *and* zero `contradicted-unexpected` items.
-- **`report.evaluatorResults[i].perItem`** — each entry is a `{ target, verdict, reasoning, citedKGNodeIds, confidence }`. `target` is a structured `SlotInstance` (see `evaluators/types.ts:CurriculumSlotId`) identifying the exact field — e.g. `{ kind: "mcqOption", mcqId, optionId, isCorrect, field }` — so the regenerator can rewrite just that slot instead of the whole lesson.
+- **`report.evaluatorResults[i].perItem`** — each entry is a `{ target, verdict, reasoning, citedKGNodeIds, confidence }`. `target` is a union of `SlotInstance | { criterion: string }` (see `evaluators/types.ts:SlotInstance`):
+  - **`SlotInstance`** — `{ slot: { kind, ... }, excerpt }` — the `kind` discriminant lives under `.slot`, *not* at the top level. E.g. `{ slot: { kind: "mcqOption", mcqId, optionId, isCorrect, field }, excerpt: "..." }`. `factualAccuracy` returns this whenever the judge's slot reference resolves to a real slot, so the regenerator can rewrite just that field instead of the whole lesson.
+  - **`{ criterion: string }`** — `learningGoalCoverage` always returns this arm (the entry names a coverage criterion the lesson missed, not a slot). `factualAccuracy` also falls back to it when the judge cites a slot the matcher can't resolve. A consumer that blindly reads `target.slot.kind` will crash on these — narrow on `"slot" in target` first.
 - **`report.evaluatorResults[i].unsureItems`** — claims the judge couldn't verify against the KG. These do *not* fail the lesson; they're a queue for a human (or a separate "extend the KG" agent) to choose between adding a cited fact or removing the claim.
 - **`citedKGNodeIds`** — the AtomicFacts / SourceExcerpts the judge based each verdict on, so the regenerator can stay grounded in the same sources rather than drifting.
 
