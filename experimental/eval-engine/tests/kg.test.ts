@@ -165,7 +165,7 @@ describe("KG seeded data on disk", () => {
     const ctx = kg.resolveContext("lg.ng-bonding-one-point");
     expect(ctx.learningGoal.summary).toMatch(/single.*bond.*service disconnect/i);
     expect(ctx.taughtFacts.length).toBeGreaterThanOrEqual(5);
-    expect(ctx.addressedMisconceptions.map((m) => m.id)).toContain("misc.subpanels-need-own-bond");
+    expect(ctx.addressedMisconceptions.map((m) => m.id)).toContain("misc.more_bonding_is_safer");
     expect(ctx.sourceExcerpts.some((s) => s.citation.includes("250.24"))).toBe(true);
   });
 });

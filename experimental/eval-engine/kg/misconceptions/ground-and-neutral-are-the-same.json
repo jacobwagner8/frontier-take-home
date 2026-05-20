@@ -1,8 +1,0 @@
-{
-  "type": "Misconception",
-  "id": "misc.ground-and-neutral-are-the-same",
-  "name": "Neutral and ground are the same conductor",
-  "statement": "Since neutral and ground are bonded at the panel, they're effectively the same wire and can be swapped.",
-  "correction": "They are bonded at exactly one point (the service disconnect) but carry fundamentally different currents: the neutral carries normal load return current, while the EGC carries fault current only and briefly. They are kept electrically separate everywhere downstream.",
-  "correctedBy": ["fact.nec-250-24a-single-bond", "fact.nec-250-142-subpanel-isolation"]
-}

@@ -58,7 +58,10 @@ function buildSystemMessage(ctx: KGContext): string {
     .map((s) => `- ${s.id} (${s.citation}): ${s.text}`)
     .join("\n");
   const misconceptions = ctx.addressedMisconceptions
-    .map((m) => `- ${m.id} "${m.name}": ${m.statement} (correction: ${m.correction})`)
+    .map((m) => {
+      const tag = m.id.startsWith("misc.") ? m.id.slice("misc.".length) : m.id;
+      return `- ${m.id} (curriculum tag: "${tag}"): "${m.name}" — wrong belief: ${m.statement}. Correction: ${m.correction}.`;
+    })
     .join("\n");
   return [
     "You are evaluating factual claims in an electrical-engineering lesson about residential N-G bonding.",
@@ -76,6 +79,8 @@ function buildSystemMessage(ctx: KGContext): string {
     "",
     "Addressed misconceptions (for use with contradicted-expected on wrong MCQ options):",
     misconceptions || "(none)",
+    "",
+    "For `contradicted-expected` verdicts on wrong MCQ options: the slot will include a `misconceptionTag` field (e.g., \"more_bonding_is_safer\"). Match it against the \"curriculum tag\" form of an addressed misconception. If the tag matches, the option IS baiting that misconception — verdict is `contradicted-expected`. If no listed misconception's tag matches, fall back to semantic comparison.",
     "",
     "Extract every atomic factual claim from each excerpt. Use claim_text to record the exact claim you judged. Cite KG node ids (facts, sources, or misconceptions) you used in cited_kg_ids. Use a 'low' confidence label for unsupported claims that may be true but lie outside the KG's scope.",
   ].join("\n");

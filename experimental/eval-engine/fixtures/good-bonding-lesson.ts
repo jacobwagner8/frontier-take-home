@@ -24,7 +24,7 @@ export const curriculum: Curriculum = {
         isCorrect: false,
         remediation:
           "Per NEC 250.142 the neutral bus and the EGC bus must be kept electrically isolated downstream of the service disconnect. A second bond at a subpanel creates a parallel return path through the EGC.",
-        misconceptionTag: "misc.subpanels-need-own-bond",
+        misconceptionTag: "more_bonding_is_safer",
       },
       {
         id: "anywhere",
@@ -32,7 +32,7 @@ export const curriculum: Curriculum = {
         isCorrect: false,
         remediation:
           "NEC 250.24(A) is explicit: the bond is at the service disconnect. Multiple bonds violate 250.142 and 250.6.",
-        misconceptionTag: "misc.more-bonds-is-safer",
+        misconceptionTag: "more_bonding_is_safer",
       },
     ],
   },
@@ -63,7 +63,7 @@ export const curriculum: Curriculum = {
         isCorrect: false,
         remediation:
           "Source voltage does not change. The problem is current redistribution: load return current now divides between the neutral and the EGC.",
-        misconceptionTag: "misc.ground-and-neutral-are-the-same",
+        misconceptionTag: "redundancy_is_harmless",
       },
     ],
   },

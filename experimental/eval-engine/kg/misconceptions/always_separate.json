@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.always_separate",
+  "name": "Neutral and ground are always separate",
+  "statement": "Neutral and ground are never connected — they are kept fully separate throughout the system.",
+  "correction": "Neutral and ground ARE bonded — just at exactly one point: the service disconnect. That single bond is what makes a ground fault clear: when a hot wire touches a metal case, current flows hot → EGC → main bond → neutral → back to the utility transformer, fast and high enough to trip the breaker. With no bond at all, a fault would energize the case and sit there waiting for someone to touch it.",
+  "correctedBy": ["fact.nec-250-24a-single-bond", "fact.fault-current-path-via-mbj"]
+}

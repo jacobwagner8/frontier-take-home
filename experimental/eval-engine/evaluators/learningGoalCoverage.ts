@@ -50,11 +50,12 @@ export function buildCoverageCriteria(ctx: KGContext): CoverageCriterion[] {
     });
   }
   for (const m of ctx.addressedMisconceptions) {
+    const tag = m.id.startsWith("misc.") ? m.id.slice("misc.".length) : m.id;
     out.push({
       id: `addresses:${m.id}`,
       kind: "addresses",
       targetId: m.id,
-      description: `Lesson explicitly surfaces the misconception "${m.name}" (e.g. as a wrong MCQ option text: "${m.statement}") AND addresses it (e.g. in the linked remediation: "${m.correction}"). 'met' requires BOTH halves; 'partial' if only one.`,
+      description: `Lesson explicitly surfaces the misconception "${m.name}" (curriculum tag: "${tag}") AND addresses it. 'met' requires BOTH halves (surfaced as a wrong MCQ option matching the tag, AND addressed in the linked remediation). 'partial' if only one half is present.`,
     });
   }
   return out;

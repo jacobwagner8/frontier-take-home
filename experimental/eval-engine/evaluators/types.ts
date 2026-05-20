@@ -23,6 +23,7 @@ export type CurriculumSlotId =
       optionId: string;
       isCorrect: boolean;
       field: "text" | "remediation";
+      misconceptionTag?: string;
     }
   | { kind: "tutorGroundingFact"; index: number }
   | { kind: "tutorOpeningPrompt" }

@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.ground_rod_is_the_bond",
+  "name": "Ground rod IS the bond",
+  "statement": "The neutral-to-ground bond happens where the ground rod connects — the rod is the bond.",
+  "correction": "The bond and the ground rod happen at the same place (the service disconnect) but they are different things. The bond is the main bonding jumper — a screw or strap inside the panel that ties the neutral bus to the EGC bus. The ground rod is the connection from that bus down to earth. Earth is not a normal return path: a ground rod typically presents tens to hundreds of ohms — far too high for the hundreds of amps a breaker needs to trip. Current returns to the utility transformer through the metallic neutral.",
+  "correctedBy": ["fact.main-bonding-jumper-ties", "fact.ground-rod-resistance", "fact.fault-current-path-via-mbj"]
+}

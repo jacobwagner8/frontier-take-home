@@ -21,7 +21,7 @@ const minimalCurriculum: Curriculum = {
         text: "Subpanels need their own bond.",
         isCorrect: false,
         remediation: "No.",
-        misconceptionTag: "misc.subpanels-need-own-bond",
+        misconceptionTag: "more_bonding_is_safer",
       },
     ],
   },
@@ -39,7 +39,7 @@ const kg = loadKG({
       summary: "S",
       prerequisites: [],
       teaches: ["fact.a"],
-      addresses: ["misc.subpanels-need-own-bond"],
+      addresses: ["misc.more_bonding_is_safer"],
     },
   ],
   atomicFacts: [
@@ -55,8 +55,8 @@ const kg = loadKG({
   misconceptions: [
     {
       type: "Misconception",
-      id: "misc.subpanels-need-own-bond",
-      name: "Subpanels need their own bond",
+      id: "misc.more_bonding_is_safer",
+      name: "More bonding is safer",
       statement: "wrong",
       correction: "right",
       correctedBy: ["fact.a"],
@@ -145,8 +145,8 @@ describe("factualAccuracyEvaluator aggregation", () => {
           slot_detail: "m1.b.text",
           claim_text: "Subpanels need their own bond.",
           verdict: "contradicted-expected",
-          reasoning: "matches misc.subpanels-need-own-bond",
-          cited_kg_ids: ["misc.subpanels-need-own-bond"],
+          reasoning: "matches misc.more_bonding_is_safer",
+          cited_kg_ids: ["misc.more_bonding_is_safer"],
           confidence: "high",
         },
         {

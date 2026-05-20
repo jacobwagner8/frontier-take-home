@@ -39,8 +39,10 @@ describe("enumerateSlots", () => {
       (s) => s.slot.kind === "mcqOption" && s.slot.field === "text" && s.slot.isCorrect === false,
     );
     expect(wrongOption?.excerpt).toBe("wrong answer");
+    expect(wrongOption?.slot.kind === "mcqOption" && wrongOption.slot.misconceptionTag).toBe("misc.x");
     const remed = slots.find((s) => s.slot.kind === "mcqOption" && s.slot.field === "remediation");
     expect(remed?.excerpt).toBe("remed");
+    expect(remed?.slot.kind === "mcqOption" && remed.slot.misconceptionTag).toBe("misc.x");
   });
 });
 

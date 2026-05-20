@@ -6,7 +6,7 @@ import type { SlotInstance } from "./types";
  *
  * Intentionally NOT emitted:
  * - reading1.title, reading1.imageAlt — titles and alt-text are navigation aids, not factual assertions
- * - mcq.options[i].misconceptionTag — internal taxonomy; the tag is threaded into the judge prompt separately (see factualAccuracy.ts)
+ * (mcq.options[i].misconceptionTag IS now threaded into mcqOption slots — see types.ts)
  *
  * A future Curriculum field that holds factual content must be added here explicitly.
  */
@@ -23,6 +23,7 @@ export function enumerateSlots(c: Curriculum): SlotInstance[] {
           optionId: opt.id,
           isCorrect: opt.isCorrect,
           field: "text",
+          misconceptionTag: opt.misconceptionTag,
         },
         excerpt: opt.text,
       });
@@ -34,6 +35,7 @@ export function enumerateSlots(c: Curriculum): SlotInstance[] {
             optionId: opt.id,
             isCorrect: opt.isCorrect,
             field: "remediation",
+            misconceptionTag: opt.misconceptionTag,
           },
           excerpt: opt.remediation,
         });

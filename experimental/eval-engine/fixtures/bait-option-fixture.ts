@@ -15,7 +15,7 @@ export const curriculum: Curriculum = {
         isCorrect: false,
         remediation:
           "Subpanels keep N and EGC isolated; a second bond creates a parallel return path through the EGC and bonded metal.",
-        misconceptionTag: "misc.subpanels-need-own-bond",
+        misconceptionTag: "more_bonding_is_safer",
       },
     ],
   },

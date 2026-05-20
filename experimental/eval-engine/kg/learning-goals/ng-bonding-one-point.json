@@ -17,8 +17,11 @@
     "fact.gfci-imbalance-confusion"
   ],
   "addresses": [
-    "misc.subpanels-need-own-bond",
-    "misc.ground-and-neutral-are-the-same",
-    "misc.more-bonds-is-safer"
+    "misc.more_bonding_is_safer",
+    "misc.ground_rod_is_the_bond",
+    "misc.always_separate",
+    "misc.redundancy_is_harmless",
+    "misc.earth_is_return_path",
+    "misc.double_bond_trips_breaker"
   ]
 }
