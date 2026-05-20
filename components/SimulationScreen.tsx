@@ -494,7 +494,7 @@ export function SimulationScreen({ onAdvance }: Props) {
           onClick={onAdvance}
           disabled={!hasToggled}
           aria-describedby={!hasToggled ? "continue-hint" : undefined}
-          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-surface-muted disabled:text-text-muted disabled:shadow-none disabled:cursor-not-allowed"
+          className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)] disabled:bg-border disabled:text-text-subtle disabled:shadow-none disabled:cursor-not-allowed"
         >
           Continue
         </button>
