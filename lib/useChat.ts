@@ -10,6 +10,8 @@ export interface ChatMessage {
 interface UseChatOptions {
   /** Returns the body to POST to /api/chat for a given conversation. */
   buildBody: (messages: ChatMessage[]) => unknown;
+  /** Fires once per accepted user send, after input/busy guards pass. */
+  onUserSent?: () => void;
 }
 
 interface UseChatResult {
@@ -20,13 +22,14 @@ interface UseChatResult {
   send: () => Promise<void>;
 }
 
-export function useChat({ buildBody }: UseChatOptions): UseChatResult {
+export function useChat({ buildBody, onUserSent }: UseChatOptions): UseChatResult {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function send() {
     if (!input.trim() || busy) return;
+    onUserSent?.();
     const next: ChatMessage[] = [
       ...messages,
       { role: "user", content: input.trim() },
