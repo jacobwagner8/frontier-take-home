@@ -13,10 +13,12 @@ import {
   lessonReducer,
   progressFor,
 } from "@/lib/lessonMachine";
+import { useLessonAnalytics } from "@/lib/useLessonAnalytics";
 import { curriculum } from "@/lib/curriculum";
 
 export default function LessonPage() {
   const [state, dispatch] = useReducer(lessonReducer, initialLessonState);
+  const analytics = useLessonAnalytics(state.step);
   const progress = progressFor(state.step);
   const goBack = () => dispatch({ type: "GO_BACK" });
 
@@ -48,9 +50,10 @@ export default function LessonPage() {
       {state.step === "mcq1" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1}
-          onAnswer={(opt) =>
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id })
-          }
+          onAnswer={(opt) => {
+            analytics.recordMcqAttempt("mcq1", opt.isCorrect);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id });
+          }}
           onBack={goBack}
         />
       )}
@@ -63,6 +66,7 @@ export default function LessonPage() {
             )!
           }
           onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onChatTurn={() => analytics.recordChatTurn("remediation1")}
         />
       )}
 
@@ -70,15 +74,17 @@ export default function LessonPage() {
         <SimulationScreen
           onAdvance={() => dispatch({ type: "ADVANCE" })}
           onBack={goBack}
+          onToggle={analytics.recordToggle}
         />
       )}
 
       {state.step === "mcq2" && (
         <MCQuestionScreen
           mcq={curriculum.mcq2}
-          onAnswer={(opt) =>
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id })
-          }
+          onAnswer={(opt) => {
+            analytics.recordMcqAttempt("mcq2", opt.isCorrect);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id });
+          }}
           onBack={goBack}
         />
       )}
@@ -91,6 +97,7 @@ export default function LessonPage() {
             )!
           }
           onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onChatTurn={() => analytics.recordChatTurn("remediation2")}
         />
       )}
 
@@ -98,12 +105,14 @@ export default function LessonPage() {
         <VoiceTutorScreen
           onAdvance={() => dispatch({ type: "ADVANCE" })}
           onBack={goBack}
+          onChatTurn={() => analytics.recordChatTurn("finalRecap")}
         />
       )}
 
       {state.step === "done" && (
         <CompletionScreen
           onRestart={() => dispatch({ type: "RESTART_LESSON" })}
+          snapshot={analytics.snapshot}
         />
       )}
     </LessonShell>
