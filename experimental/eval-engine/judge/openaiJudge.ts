@@ -3,14 +3,16 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import type { ZodSchema } from "zod";
 
 export interface OpenAIClientLike {
-  chat: {
-    completions: {
-      parse: (req: unknown) => Promise<{
-        choices: Array<{
-          message: { parsed: unknown; refusal: string | null };
-          finish_reason: string;
+  beta: {
+    chat: {
+      completions: {
+        parse: (req: unknown) => Promise<{
+          choices: Array<{
+            message: { parsed: unknown; refusal: string | null };
+            finish_reason: string;
+          }>;
         }>;
-      }>;
+      };
     };
   };
 }
@@ -49,7 +51,7 @@ export async function callJudge<T>(
   const responseFormat = zodResponseFormat(req.responseSchema, req.schemaName);
 
   const doCall = async () =>
-    client.chat.completions.parse({
+    client.beta.chat.completions.parse({
       model: opts.model,
       messages: [
         { role: "system", content: req.systemMessage },

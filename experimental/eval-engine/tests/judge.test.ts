@@ -7,11 +7,13 @@ const Schema = z.object({ verdict: z.enum(["yes", "no"]), reason: z.string() });
 
 function makeMockClient(parsed: unknown): OpenAIClientLike {
   return {
-    chat: {
-      completions: {
-        parse: vi.fn(async () => ({
-          choices: [{ message: { parsed, refusal: null }, finish_reason: "stop" }],
-        })),
+    beta: {
+      chat: {
+        completions: {
+          parse: vi.fn(async () => ({
+            choices: [{ message: { parsed, refusal: null }, finish_reason: "stop" }],
+          })),
+        },
       },
     },
   };
@@ -29,11 +31,13 @@ describe("callJudge", () => {
 
   it("throws a clear error when the model refuses", async () => {
     const client: OpenAIClientLike = {
-      chat: {
-        completions: {
-          parse: vi.fn(async () => ({
-            choices: [{ message: { parsed: null, refusal: "I cannot." }, finish_reason: "stop" }],
-          })),
+      beta: {
+        chat: {
+          completions: {
+            parse: vi.fn(async () => ({
+              choices: [{ message: { parsed: null, refusal: "I cannot." }, finish_reason: "stop" }],
+            })),
+          },
         },
       },
     };
@@ -48,13 +52,15 @@ describe("callJudge", () => {
   it("retries once on parse failure and succeeds the second time", async () => {
     let n = 0;
     const client: OpenAIClientLike = {
-      chat: {
-        completions: {
-          parse: vi.fn(async () => {
-            n++;
-            if (n === 1) throw new Error("zod parse failed");
-            return { choices: [{ message: { parsed: { verdict: "no", reason: "x" }, refusal: null }, finish_reason: "stop" }] };
-          }),
+      beta: {
+        chat: {
+          completions: {
+            parse: vi.fn(async () => {
+              n++;
+              if (n === 1) throw new Error("zod parse failed");
+              return { choices: [{ message: { parsed: { verdict: "no", reason: "x" }, refusal: null }, finish_reason: "stop" }] };
+            }),
+          },
         },
       },
     };
