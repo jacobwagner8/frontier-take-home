@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.open-neutral-hazard",
+  "statement": "Residential 120/240 V service uses a center-tapped transformer winding with the neutral as the midpoint, so each leg sits at 120 V relative to neutral. If the service neutral is lost (broken or loose connection), the 240 V across the two legs no longer divides evenly: a heavily loaded leg collapses toward 80 V while the lightly loaded leg spikes toward 160 V, damaging equipment on the rising leg. The neutral-to-ground bond at the service provides a backup return path through the grounding electrode system that partially stabilizes the system when the service neutral is compromised.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.mike-holt-open-neutral", "src.nec-2023-250-4-a"]
+}

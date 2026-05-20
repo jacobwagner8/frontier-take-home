@@ -1,0 +1,8 @@
+{
+  "type": "SourceExcerpt",
+  "id": "src.mike-holt-open-neutral",
+  "sourceType": "MikeHolt",
+  "citation": "Mike Holt — Open-Neutral Hazard on 120/240 V Services",
+  "text": "On a residential 120/240 V split-phase service, the two ungrounded conductors share a common grounded (neutral) conductor as the midpoint of the center-tapped transformer winding. Each phase-to-neutral leg measures 120 V. If the service neutral is lost (a broken or loose connection between the meter, the service drop, or the utility transformer), the 240 V across the two ungrounded legs no longer divides evenly across the loads on each leg. A heavily loaded leg sees voltage collapse toward 80 V or lower; the lightly loaded leg sees voltage rise toward 160 V or higher. Equipment on the rising leg can be destroyed. The neutral-to-ground bond at the service disconnect provides a backup return path through the grounding electrode system, partially stabilizing the system when the service neutral is compromised.",
+  "url": null
+}

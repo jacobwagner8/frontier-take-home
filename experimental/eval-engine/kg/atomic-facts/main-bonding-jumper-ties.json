@@ -1,0 +1,8 @@
+{
+  "type": "AtomicFact",
+  "id": "fact.main-bonding-jumper-ties",
+  "statement": "Inside the main service panel the main bonding jumper (a screw or strap supplied by the manufacturer) ties together the neutral bus, the equipment grounding conductor bus, the metal panel enclosure, and the grounding electrode conductor that runs to the grounding electrode system (ground rod and/or water-pipe ground). This single bond is where the neutral-to-ground connection physically occurs.",
+  "scope": "nec-bonding",
+  "confidence": "high",
+  "cites": ["src.nec-2023-250-24a"]
+}

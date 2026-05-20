@@ -9,7 +9,12 @@
     "fact.nec-250-142-subpanel-isolation",
     "fact.parallel-return-mechanism",
     "fact.fault-clearing-impairment",
-    "fact.objectionable-current-on-egc"
+    "fact.objectionable-current-on-egc",
+    "fact.ground-rod-resistance",
+    "fact.fault-current-path-via-mbj",
+    "fact.main-bonding-jumper-ties",
+    "fact.open-neutral-hazard",
+    "fact.gfci-imbalance-confusion"
   ],
   "addresses": [
     "misc.subpanels-need-own-bond",

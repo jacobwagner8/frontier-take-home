@@ -1,0 +1,8 @@
+{
+  "type": "SourceExcerpt",
+  "id": "src.nec-2023-250-53",
+  "sourceType": "NEC",
+  "citation": "NEC 2023 Article 250.53(A)(2) Supplemental Electrode Required",
+  "text": "A single rod, pipe, or plate electrode that does not have a resistance to ground of 25 ohms or less shall be augmented by one additional electrode. The 25-ohm reference is what the code uses as the threshold above which a single rod is insufficient; in practice ground rods commonly present resistances in the tens to hundreds of ohms depending on soil conditions.",
+  "url": null
+}
