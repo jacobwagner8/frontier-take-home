@@ -5,7 +5,7 @@ const STUDENT_FIRST_NAME = "Jake";
 const STUDENT_FULL_NAME = "Jake Wagner";
 const STUDENT_INITIALS = "JW";
 
-const COURSE_NAME = "Residential Electrician Track";
+const COURSE_NAME = "Electrical Fundamentals";
 const DAY_NUMBER = 4;
 const LESSONS_COMPLETED = 3;
 const LESSONS_TOTAL = 30;
@@ -22,24 +22,26 @@ export default function Home() {
 
   return (
     <div className="min-h-dvh flex flex-col bg-canvas text-text">
-      <header className="px-4 pt-5 pb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <BrandMark />
-          <span className="text-base font-semibold text-text-strong tracking-[-0.01em]">
-            Frontier
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            aria-hidden="true"
-            className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand text-white text-[11px] font-semibold"
-          >
-            {STUDENT_INITIALS}
-          </span>
-          <span className="text-sm text-text-muted">
-            <span className="sr-only">Signed in as </span>
-            {STUDENT_FULL_NAME}
-          </span>
+      <header className="px-4 pt-5 pb-3">
+        <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BrandMark />
+            <span className="text-base font-semibold text-text-strong tracking-[-0.01em]">
+              Frontier
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand text-white text-[11px] font-semibold"
+            >
+              {STUDENT_INITIALS}
+            </span>
+            <span className="text-sm text-text-muted">
+              <span className="sr-only">Signed in as </span>
+              {STUDENT_FULL_NAME}
+            </span>
+          </div>
         </div>
       </header>
 
@@ -49,7 +51,7 @@ export default function Home() {
             {COURSE_NAME}
           </div>
           <h1 className="text-2xl font-semibold text-text-strong leading-tight tracking-[-0.01em]">
-            Good morning, {STUDENT_FIRST_NAME}.
+            Hello again, {STUDENT_FIRST_NAME}.
           </h1>
           <div className="mt-1 flex items-center gap-3 text-xs text-text-subtle tabular-nums">
             <span>Day {DAY_NUMBER}</span>
