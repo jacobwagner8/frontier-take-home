@@ -8,9 +8,10 @@ import { Toggle } from "./Toggle";
 interface Props {
   onAdvance: () => void;
   onBack?: () => void;
+  onToggle?: () => void;
 }
 
-export function SimulationScreen({ onAdvance, onBack }: Props) {
+export function SimulationScreen({ onAdvance, onBack, onToggle }: Props) {
   const [secondBond, setSecondBond] = useState(false);
   const [hasToggled, setHasToggled] = useState(false);
   const { oneBond, twoBond } = curriculum.simulationCaptions;
@@ -18,6 +19,7 @@ export function SimulationScreen({ onAdvance, onBack }: Props) {
   const handleToggle = (next: boolean) => {
     setSecondBond(next);
     setHasToggled(true);
+    onToggle?.();
   };
 
   return (
