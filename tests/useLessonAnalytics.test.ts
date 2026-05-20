@@ -76,6 +76,40 @@ describe("useLessonAnalytics — counters", () => {
       firstTryCorrect: false,
     });
   });
+
+  it("clears all counters and timing buckets when reset() is called", () => {
+    const { result, rerender } = renderHook(
+      ({ step }) => useLessonAnalytics(step),
+      { initialProps: { step: "mcq1" as const } },
+    );
+    act(() => {
+      result.current.recordMcqAttempt("mcq1", false);
+      result.current.recordMcqAttempt("mcq1", true);
+      result.current.recordToggle();
+      result.current.recordChatTurn("finalRecap");
+    });
+    rerender({ step: "mcq1" });
+    expect(result.current.snapshot.mcq1.attempts).toBe(2);
+    expect(result.current.snapshot.simulationToggles).toBe(1);
+    expect(result.current.snapshot.chatTurns.finalRecap).toBe(1);
+
+    act(() => {
+      result.current.reset();
+    });
+
+    expect(result.current.snapshot.mcq1).toEqual({
+      attempts: 0,
+      wrongAttempts: 0,
+      firstTryCorrect: false,
+    });
+    expect(result.current.snapshot.simulationToggles).toBe(0);
+    expect(result.current.snapshot.chatTurns).toEqual({
+      remediation1: 0,
+      remediation2: 0,
+      finalRecap: 0,
+    });
+    expect(result.current.snapshot.perStep).toEqual([]);
+  });
 });
 
 function setVisibility(state: "visible" | "hidden") {

@@ -96,6 +96,7 @@ export interface UseLessonAnalyticsResult {
   recordToggle: () => void;
   recordChatTurn: (surface: ChatSurface) => void;
   recordMcqAttempt: (mcqId: "mcq1" | "mcq2", isCorrect: boolean) => void;
+  reset: () => void;
 }
 
 export function useLessonAnalytics(
@@ -110,7 +111,7 @@ export function useLessonAnalytics(
       : document.visibilityState !== "hidden",
   );
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot>(() =>
-    snapshotFrom(stateRef.current),
+    snapshotFrom(emptyMutable()),
   );
 
   const flush = useCallback(() => {
@@ -196,5 +197,12 @@ export function useLessonAnalytics(
     [flush],
   );
 
-  return { snapshot, recordToggle, recordChatTurn, recordMcqAttempt };
+  const reset = useCallback(() => {
+    stateRef.current = emptyMutable();
+    activeStepRef.current = null;
+    segmentStartRef.current = null;
+    flush();
+  }, [flush]);
+
+  return { snapshot, recordToggle, recordChatTurn, recordMcqAttempt, reset };
 }
