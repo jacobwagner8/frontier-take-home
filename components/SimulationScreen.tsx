@@ -418,6 +418,14 @@ export function SimulationScreen({ onAdvance }: Props) {
         </svg>
       </div>
 
+      <div className="rounded-2xl border border-border bg-surface px-4 py-2">
+        <Toggle
+          checked={secondBond}
+          onChange={setSecondBond}
+          label="Add a second N-G bond at the subpanel"
+        />
+      </div>
+
       {secondBond && (
         <div
           role="alert"
@@ -427,14 +435,6 @@ export function SimulationScreen({ onAdvance }: Props) {
           <span>Current now flowing on the EGC</span>
         </div>
       )}
-
-      <div className="rounded-2xl border border-border bg-surface px-4 py-2">
-        <Toggle
-          checked={secondBond}
-          onChange={setSecondBond}
-          label="Add a second N-G bond at the subpanel"
-        />
-      </div>
 
       {secondBond ? (
         <div
