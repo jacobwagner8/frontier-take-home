@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.earth_absorbs_fault",
+  "name": "Fault current dissipates into the earth",
+  "statement": "When metal is bonded to a ground rod, any fault current that energizes that metal drains harmlessly into the earth through the rod.",
+  "correction": "Earth doesn't absorb or dissipate current — current returns to its source. In a residential service, that source is the utility transformer's center-tapped winding, not the soil. A ground rod is roughly 25 ohms or more to remote earth, so even a full 120 V across it would push only a few amps — far below any breaker's trip point. What actually clears a fault is the metallic copper path from EGC → main bonding jumper → service neutral → transformer, with low enough impedance to draw hundreds or thousands of amps. The ground rod's role is lightning protection and voltage reference, not fault clearing.",
+  "correctedBy": ["fact.ground-rod-resistance", "fact.fault-current-path-via-mbj", "fact.main-bonding-jumper-ties"]
+}

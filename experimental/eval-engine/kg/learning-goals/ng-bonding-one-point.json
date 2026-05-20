@@ -22,6 +22,12 @@
     "misc.always_separate",
     "misc.redundancy_is_harmless",
     "misc.earth_is_return_path",
-    "misc.double_bond_trips_breaker"
+    "misc.double_bond_trips_breaker",
+    "misc.ground_rod_clears_fault",
+    "misc.gfci_clears_all_faults",
+    "misc.earth_absorbs_fault",
+    "misc.egc_is_second_neutral",
+    "misc.egc_carries_normal_leakage",
+    "misc.egc_shares_return_with_neutral"
   ]
 }

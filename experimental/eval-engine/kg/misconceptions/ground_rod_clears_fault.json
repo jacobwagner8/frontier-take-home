@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.ground_rod_clears_fault",
+  "name": "The ground rod clears a ground fault",
+  "statement": "When a hot conductor faults to a metal enclosure, the ground rod carries the fault current safely into the earth and the breaker trips because of that.",
+  "correction": "A ground rod typically presents 25 to 100+ ohms to remote earth. At 120 V that drives only a few amps through the rod — far below the trip threshold of a 15 or 20 A breaker. Earth is not a low-enough-impedance path to clear a fault. What actually clears it is the metallic path from faulted case → EGC → main bonding jumper → service neutral → utility transformer, which draws hundreds or thousands of amps and trips the breaker in milliseconds. The rod's job is lightning and voltage reference, not fault clearing.",
+  "correctedBy": ["fact.fault-current-path-via-mbj", "fact.ground-rod-resistance", "fact.main-bonding-jumper-ties"]
+}

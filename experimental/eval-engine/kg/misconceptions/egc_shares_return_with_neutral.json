@@ -1,0 +1,8 @@
+{
+  "type": "Misconception",
+  "id": "misc.egc_shares_return_with_neutral",
+  "name": "The EGC shares the return path with the neutral by design",
+  "statement": "Under normal operation, the equipment grounding conductor carries roughly half the load current, sharing the return path with the neutral as a redundant backup.",
+  "correction": "That outcome is exactly what a second N-G bond would cause — and exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current cannot split onto it. Adding a second bond at a subpanel creates that parallel path; the EGC then starts carrying continuous load current it was never sized or insulated for, the voltage drops along it show up as touch voltage on grounded metal, and GFCI imbalance detection becomes confused.",
+  "correctedBy": ["fact.nec-250-142-subpanel-isolation", "fact.parallel-return-mechanism", "fact.objectionable-current-on-egc"]
+}
