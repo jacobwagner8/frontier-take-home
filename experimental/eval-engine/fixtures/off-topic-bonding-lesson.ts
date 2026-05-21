@@ -22,6 +22,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "misc.gfci-amps",
       },
     ],
+    rationale: "GFCIs are set to trip at approximately 5 mA, below the let-go threshold for most adults.",
   },
   mcq1b: {
     id: "mcq-gfci-button-purpose",
@@ -36,6 +37,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "misc.gfci-test-button",
       },
     ],
+    rationale: "The TEST button injects a small imbalance to verify the GFCI can detect and trip on a leakage current.",
   },
   mcq1c: {
     id: "mcq-gfci-reset",
@@ -50,6 +52,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "misc.gfci-auto-reset",
       },
     ],
+    rationale: "Standard GFCI receptacles require manual RESET after tripping; they do not auto-reset.",
   },
   simulationCaptions: {
     oneBond: "Healthy circuit: current in equals current out.",
@@ -66,6 +69,7 @@ export const curriculum: Curriculum = {
       { id: "monthly", text: "Monthly.", isCorrect: true },
       { id: "yearly", text: "Once per year.", isCorrect: false, remediation: "Manufacturers and the NEC commentary recommend monthly testing.", misconceptionTag: "misc.gfci-frequency" },
     ],
+    rationale: "Manufacturers and NEC commentary recommend monthly testing to confirm the GFCI trips reliably.",
   },
   voiceTutor: {
     groundingFacts: [

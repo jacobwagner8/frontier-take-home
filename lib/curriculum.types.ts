@@ -20,6 +20,7 @@ export interface MCQ {
   id: string;
   prompt: string;
   options: MCQOption[];
+  rationale: string;
 }
 
 export interface Curriculum {

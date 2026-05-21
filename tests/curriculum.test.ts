@@ -33,6 +33,13 @@ describe("curriculum integrity", () => {
     }
   });
 
+  it("every MCQ has a non-empty rationale", () => {
+    for (const mcq of allMcqs) {
+      expect(mcq.rationale, `${mcq.id}`).toBeTruthy();
+      expect(mcq.rationale.length, `${mcq.id}`).toBeGreaterThan(20);
+    }
+  });
+
   it("grounding facts list is non-empty", () => {
     expect(curriculum.voiceTutor.groundingFacts.length).toBeGreaterThan(0);
   });
