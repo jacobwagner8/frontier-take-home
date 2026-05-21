@@ -54,6 +54,9 @@ export async function startRealtimeSession({
     for (const track of mic.getTracks()) pc.addTrack(track, mic);
 
     dataChannel = pc.createDataChannel("oai-events");
+    dataChannel.addEventListener("open", () => {
+      dataChannel.send(JSON.stringify({ type: "response.create" }));
+    });
     dataChannel.addEventListener("message", (e) => {
       try {
         const msg = JSON.parse(e.data);
