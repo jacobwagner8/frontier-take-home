@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -39,6 +39,10 @@ yarn-error.log*
 
 # superpowers visual companion (mockups; local only)
 .superpowers/
+
+# claude code worktree state (local only)
+.claude/
+.claire/
 
 # typescript
 *.tsbuildinfo
