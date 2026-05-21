@@ -39,7 +39,7 @@ describe("useLessonAnalytics — counters", () => {
   });
 
   it("increments chatTurns by surface", () => {
-    const { result } = renderHook(() => useLessonAnalytics("remediation1"));
+    const { result } = renderHook(() => useLessonAnalytics("mcq1"));
     act(() => {
       result.current.recordChatTurn("remediation1");
       result.current.recordChatTurn("remediation1");
@@ -148,29 +148,6 @@ describe("useLessonAnalytics — timing", () => {
       result.current.snapshot.perStep.find((s) => s.step === "reading1")
         ?.activeMs,
     ).toBe(5_000);
-  });
-
-  it("rolls remediation1 time into mcq1", () => {
-    const { result, rerender } = renderHook(
-      ({ step }) => useLessonAnalytics(step),
-      { initialProps: { step: "mcq1" as "mcq1" | "remediation1" } },
-    );
-    act(() => {
-      vi.advanceTimersByTime(2_000);
-    });
-    rerender({ step: "remediation1" });
-    act(() => {
-      vi.advanceTimersByTime(3_000);
-    });
-    rerender({ step: "mcq1" });
-    act(() => {
-      vi.advanceTimersByTime(1_000);
-    });
-    rerender({ step: "simulation" as never });
-
-    expect(
-      result.current.snapshot.perStep.find((s) => s.step === "mcq1")?.activeMs,
-    ).toBe(6_000);
   });
 
   it("pauses accumulation when the tab is hidden", () => {

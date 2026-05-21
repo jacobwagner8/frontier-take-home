@@ -80,7 +80,6 @@ describe("KG loader", () => {
       loadKG({
         learningGoals: [],
         atomicFacts: [
-          // @ts-expect-error intentionally missing `statement`
           {
             type: "AtomicFact",
             id: "fact.bad",

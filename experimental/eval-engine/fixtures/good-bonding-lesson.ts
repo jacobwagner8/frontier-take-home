@@ -35,6 +35,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "more_bonding_is_safer",
       },
     ],
+    rationale: "NEC 250.24(A) requires the bond at exactly one point: the service disconnect.",
   },
   mcq1b: {
     id: "mcq-fault-current-path",
@@ -55,6 +56,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "ground_rod_clears_fault",
       },
     ],
+    rationale: "The metallic path from EGC to main bonding jumper to transformer turns a hot-to-case fault into a short circuit that trips the breaker.",
   },
   mcq1c: {
     id: "mcq-egc-normal-current",
@@ -74,6 +76,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "egc_shares_return_with_neutral",
       },
     ],
+    rationale: "With a single bond at the service disconnect, the EGC has no downstream connection to the neutral and carries zero current under normal load.",
   },
   simulationCaptions: {
     oneBond:
@@ -105,6 +108,7 @@ export const curriculum: Curriculum = {
         misconceptionTag: "redundancy_is_harmless",
       },
     ],
+    rationale: "A second bond creates a parallel return path so load current divides onto the EGC, which was never sized for continuous current.",
   },
   voiceTutor: {
     groundingFacts: [

@@ -4,7 +4,6 @@ import { useReducer } from "react";
 import { LessonShell } from "@/components/LessonShell";
 import { ReadingScreen } from "@/components/ReadingScreen";
 import { MCQuestionScreen } from "@/components/MCQuestionScreen";
-import { RemediationScreen } from "@/components/RemediationScreen";
 import { SimulationScreen } from "@/components/SimulationScreen";
 import { VoiceTutorScreen } from "@/components/VoiceTutorScreen";
 import { CompletionScreen } from "@/components/CompletionScreen";
@@ -35,69 +34,39 @@ export default function LessonPage() {
       {state.step === "mcq1" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1}
-          onAnswer={(opt) => {
-            analytics.recordMcqAttempt("mcq1", opt.isCorrect);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id });
+          onAdvance={() => {
+            analytics.recordMcqAttempt("mcq1", true);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1" });
           }}
-          onBack={goBack}
-        />
-      )}
-
-      {state.step === "remediation1" && state.lastWrongOptionId && (
-        <RemediationScreen
-          wrongOption={
-            curriculum.mcq1.options.find(
-              (o) => o.id === state.lastWrongOptionId,
-            )!
-          }
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onWrongAttempt={() => analytics.recordMcqAttempt("mcq1", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1")}
+          onBack={goBack}
         />
       )}
 
       {state.step === "mcq1b" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1b}
-          onAnswer={(opt) => {
-            analytics.recordMcqAttempt("mcq1b", opt.isCorrect);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b", optionId: opt.id });
+          onAdvance={() => {
+            analytics.recordMcqAttempt("mcq1b", true);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b" });
           }}
-          onBack={goBack}
-        />
-      )}
-
-      {state.step === "remediation1b" && state.lastWrongOptionId && (
-        <RemediationScreen
-          wrongOption={
-            curriculum.mcq1b.options.find(
-              (o) => o.id === state.lastWrongOptionId,
-            )!
-          }
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onWrongAttempt={() => analytics.recordMcqAttempt("mcq1b", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1b")}
+          onBack={goBack}
         />
       )}
 
       {state.step === "mcq1c" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1c}
-          onAnswer={(opt) => {
-            analytics.recordMcqAttempt("mcq1c", opt.isCorrect);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c", optionId: opt.id });
+          onAdvance={() => {
+            analytics.recordMcqAttempt("mcq1c", true);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c" });
           }}
-          onBack={goBack}
-        />
-      )}
-
-      {state.step === "remediation1c" && state.lastWrongOptionId && (
-        <RemediationScreen
-          wrongOption={
-            curriculum.mcq1c.options.find(
-              (o) => o.id === state.lastWrongOptionId,
-            )!
-          }
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onWrongAttempt={() => analytics.recordMcqAttempt("mcq1c", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1c")}
+          onBack={goBack}
         />
       )}
 
@@ -112,23 +81,13 @@ export default function LessonPage() {
       {state.step === "mcq2" && (
         <MCQuestionScreen
           mcq={curriculum.mcq2}
-          onAnswer={(opt) => {
-            analytics.recordMcqAttempt("mcq2", opt.isCorrect);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id });
+          onAdvance={() => {
+            analytics.recordMcqAttempt("mcq2", true);
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2" });
           }}
-          onBack={goBack}
-        />
-      )}
-
-      {state.step === "remediation2" && state.lastWrongOptionId && (
-        <RemediationScreen
-          wrongOption={
-            curriculum.mcq2.options.find(
-              (o) => o.id === state.lastWrongOptionId,
-            )!
-          }
-          onAdvance={() => dispatch({ type: "ADVANCE" })}
+          onWrongAttempt={() => analytics.recordMcqAttempt("mcq2", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation2")}
+          onBack={goBack}
         />
       )}
 

@@ -51,6 +51,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         remediation: `Neutral and ground ARE bonded — just at exactly one point. That single connection is what makes a ground fault clear: when a hot wire touches a metal case, current flows hot → EGC → main bond → neutral → back to the utility transformer, fast and high enough to trip the breaker. With no bond at all, a fault would energize the case and sit there waiting for someone to touch it.`,
       },
     ],
+    rationale: `Exactly one bond, at the service disconnect — that's NEC 250.24(A). That single point gives every fault one defined low-impedance path back to the utility transformer, and keeps normal return current entirely on the neutral. Anywhere else (or everywhere), and the EGC starts carrying load current it was never sized for — exactly what NEC 250.142 prohibits.`,
   },
 
   mcq1b: {
@@ -85,6 +86,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         remediation: `Earth doesn't absorb or dissipate current — current returns to its source. In a residential service, that source is the utility transformer's center-tapped winding, not the soil. A ground rod is roughly 25 ohms or more to remote earth, so even a full 120 V across it would push only a few amps — well below any breaker's trip point. What clears the fault is the copper path from EGC to main bonding jumper to neutral to transformer, with low enough impedance to draw hundreds or thousands of amps. The ground rod's job is lightning and voltage reference, not fault clearing.`,
       },
     ],
+    rationale: `The metallic path from faulted case → EGC → main bonding jumper → service neutral → utility transformer is what turns a hot-to-case fault into a short circuit. That low-impedance return drives hundreds or thousands of amps and trips a 15 or 20 A breaker in milliseconds. The bond is what makes the breaker effective for ground faults; without it, even an intact breaker can't see the fault.`,
   },
 
   mcq1c: {
@@ -119,6 +121,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         remediation: `This is exactly what a second N-G bond would cause — and exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current has no way to split onto it. Adding a second bond at a subpanel creates that parallel path, and the EGC starts carrying continuous load current it was never sized or insulated for. The simulation on the next screen shows that exact failure mode.`,
       },
     ],
+    rationale: `Under normal load the EGC carries no current at all. With the system bonded only at the service disconnect, downstream neutral and EGC are kept on separate buses, so return current has no electrical path onto the EGC. It comes alive only when a hot conductor accidentally touches grounded metal — briefly, long enough to trip the breaker — and then returns to zero.`,
   },
 
   simulationCaptions: {
@@ -165,6 +168,7 @@ Downstream of the main panel — at every subpanel, junction, and device — the
         remediation: `Overcurrent breakers trip on overload or short circuit, not on a wiring mistake. A second N-G bond just splits the normal return current across two conductors; the total current is unchanged and well below the trip threshold. The breaker has no way to see the problem. The danger is invisible until a fault occurs or someone touches two bonded surfaces at different potentials.`,
       },
     ],
+    rationale: `A second bond creates a parallel return path: load current can now return either through the neutral or through the EGC plus every bonded raceway and metal box. It divides between the two by their relative impedances, so the EGC carries continuous current it wasn't sized or insulated for. Voltage drops along that grounded metal show up as touch voltage between surfaces that should all sit at the same potential — the exact hazard the single-bond rule prevents.`,
   },
 
   voiceTutor: {

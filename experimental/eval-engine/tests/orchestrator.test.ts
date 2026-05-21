@@ -7,11 +7,11 @@ import type { Curriculum } from "@/lib/curriculum.types";
 
 const baseCurriculum: Curriculum = {
   reading1: { id: "r1", title: "T", body: "B" },
-  mcq1: { id: "m1", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
-  mcq1b: { id: "m1b", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
-  mcq1c: { id: "m1c", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
+  mcq1: { id: "m1", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }], rationale: "Rationale for m1 test fixture — explains the correct answer." },
+  mcq1b: { id: "m1b", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }], rationale: "Rationale for m1b test fixture — explains the correct answer." },
+  mcq1c: { id: "m1c", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }], rationale: "Rationale for m1c test fixture — explains the correct answer." },
   simulationCaptions: { oneBond: "o", twoBond: { mechanism: "m", consequence: "c", hazard: "h" } },
-  mcq2: { id: "m2", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }] },
+  mcq2: { id: "m2", prompt: "P", options: [{ id: "a", text: "x", isCorrect: true }], rationale: "Rationale for m2 test fixture — explains the correct answer." },
   voiceTutor: { groundingFacts: [], openingPrompt: "open" },
 };
 
