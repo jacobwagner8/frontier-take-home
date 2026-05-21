@@ -7,7 +7,6 @@ export type TimedStep =
   | "reading1"
   | "mcq1"
   | "mcq1b"
-  | "mcq1c"
   | "simulation"
   | "mcq2"
   | "voiceTutor";
@@ -17,7 +16,6 @@ export type TimedStep =
 export type ChatSurface =
   | "remediation1"
   | "remediation1b"
-  | "remediation1c"
   | "remediation2"
   | "finalRecap";
 
@@ -37,7 +35,6 @@ export interface AnalyticsSnapshot {
   perStep: StepTime[];
   mcq1: McqStats;
   mcq1b: McqStats;
-  mcq1c: McqStats;
   mcq2: McqStats;
   simulationToggles: number;
   chatTurns: Record<ChatSurface, number>;
@@ -47,7 +44,6 @@ interface MutableAnalytics {
   perStepMs: Partial<Record<TimedStep, number>>;
   mcq1: McqStats;
   mcq1b: McqStats;
-  mcq1c: McqStats;
   mcq2: McqStats;
   simulationToggles: number;
   chatTurns: Record<ChatSurface, number>;
@@ -62,13 +58,11 @@ function emptyMutable(): MutableAnalytics {
     perStepMs: {},
     mcq1: emptyMcqStats(),
     mcq1b: emptyMcqStats(),
-    mcq1c: emptyMcqStats(),
     mcq2: emptyMcqStats(),
     simulationToggles: 0,
     chatTurns: {
       remediation1: 0,
       remediation1b: 0,
-      remediation1c: 0,
       remediation2: 0,
       finalRecap: 0,
     },
@@ -79,7 +73,6 @@ const TIMED_STEP_ORDER: TimedStep[] = [
   "reading1",
   "mcq1",
   "mcq1b",
-  "mcq1c",
   "simulation",
   "mcq2",
   "voiceTutor",
@@ -102,7 +95,6 @@ function snapshotFrom(m: MutableAnalytics): AnalyticsSnapshot {
     perStep,
     mcq1: { ...m.mcq1 },
     mcq1b: { ...m.mcq1b },
-    mcq1c: { ...m.mcq1c },
     mcq2: { ...m.mcq2 },
     simulationToggles: m.simulationToggles,
     chatTurns: { ...m.chatTurns },

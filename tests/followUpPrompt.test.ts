@@ -9,7 +9,6 @@ import { curriculum } from "@/lib/curriculum";
 const ALL_WRONG_TAGS = [
   curriculum.mcq1,
   curriculum.mcq1b,
-  curriculum.mcq1c,
   curriculum.mcq2,
 ].flatMap((m) =>
   m.options.filter((o) => !o.isCorrect && o.misconceptionTag).map(

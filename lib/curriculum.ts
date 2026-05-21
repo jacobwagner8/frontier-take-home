@@ -87,41 +87,6 @@ Downstream of the main panel — at every subpanel, junction, and device — the
     rationale: `The metallic path from faulted case → EGC → main bonding jumper → service neutral → utility transformer is what turns a hot-to-case fault into a short circuit. That low-impedance return drives hundreds or thousands of amps and trips a 15 or 20 A breaker in milliseconds. The bond is what makes the breaker effective for ground faults; without it, even an intact breaker can't see the fault.`,
   },
 
-  mcq1c: {
-    id: "mcq1c",
-    prompt:
-      "Under normal operation — no faults — how much current does the equipment grounding conductor (EGC) carry?",
-    options: [
-      {
-        id: "mcq1c_a",
-        text: "The same as the neutral, since both return current to the source.",
-        isCorrect: false,
-        misconceptionTag: "egc_is_second_neutral",
-        remediation: `The neutral and the EGC look alike — both copper conductors ending at bonded buses in the main panel — but they have opposite jobs. The neutral is the planned return path: under normal operation, all load current goes out a hot and comes back on the neutral. The EGC is a fault-only path: it sits at zero current until a hot conductor accidentally touches grounded metal, then briefly carries fault current long enough to trip the breaker. That's why downstream of the main bond, the two are kept on separate buses — so normal current has no way onto the EGC.`,
-      },
-      {
-        id: "mcq1c_b",
-        text: "None — it only carries current briefly during a fault, long enough to trip the breaker.",
-        isCorrect: true,
-      },
-      {
-        id: "mcq1c_c",
-        text: "A small leakage current from connected appliances flows continuously through the EGC.",
-        isCorrect: false,
-        misconceptionTag: "egc_carries_normal_leakage",
-        remediation: `Healthy appliances shouldn't leak any meaningful current to their bonded cases — that's what insulation is for. A few microamps of capacitive coupling exist on some equipment, but those are far below anything a breaker or GFCI reacts to. If you actually measure continuous current on an EGC in the field, it's almost always a wiring fault: a downstream N-G bond, a swapped neutral and ground, or compromised insulation. Designed behavior is zero EGC current under normal load.`,
-      },
-      {
-        id: "mcq1c_d",
-        text: "Roughly half the load current, sharing the return path with the neutral for redundancy.",
-        isCorrect: false,
-        misconceptionTag: "egc_shares_return_with_neutral",
-        remediation: `This is exactly what a second N-G bond would cause — and exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current has no way to split onto it. Adding a second bond at a subpanel creates that parallel path, and the EGC starts carrying continuous load current it was never sized or insulated for. The simulation on the next screen shows that exact failure mode.`,
-      },
-    ],
-    rationale: `Under normal load the EGC carries no current at all. With the system bonded only at the service disconnect, downstream neutral and EGC are kept on separate buses, so return current has no electrical path onto the EGC. It comes alive only when a hot conductor accidentally touches grounded metal — briefly, long enough to trip the breaker — and then returns to zero.`,
-  },
-
   simulationCaptions: {
     oneBond: `With a single bond at the service, normal load current returns to the source through the neutral. The EGC and every bonded metal part — boxes, raceways, the appliance case — sit at the same potential as the panel's ground bus. Touching the case is safe because there's no voltage difference between it and anything else you might touch.`,
     twoBond: {

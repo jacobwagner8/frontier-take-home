@@ -58,26 +58,6 @@ export const curriculum: Curriculum = {
     ],
     rationale: "The metallic path from EGC to main bonding jumper to transformer turns a hot-to-case fault into a short circuit that trips the breaker.",
   },
-  mcq1c: {
-    id: "mcq-egc-normal-current",
-    prompt: "Under normal operation — no faults — how much current does the EGC carry?",
-    options: [
-      {
-        id: "none",
-        text: "None — it only carries current briefly during a fault, long enough to trip the breaker.",
-        isCorrect: true,
-      },
-      {
-        id: "shares-with-neutral",
-        text: "Roughly half the load current, sharing the return path with the neutral for redundancy.",
-        isCorrect: false,
-        remediation:
-          "That outcome is exactly what NEC 250.142 prohibits. With the system bonded only at the service disconnect, the EGC has no electrical connection to the neutral downstream, so return current cannot split onto it.",
-        misconceptionTag: "egc_shares_return_with_neutral",
-      },
-    ],
-    rationale: "With a single bond at the service disconnect, the EGC has no downstream connection to the neutral and carries zero current under normal load.",
-  },
   simulationCaptions: {
     oneBond:
       "With one bond at the service disconnect, normal load return current flows on the neutral. The EGC carries no current.",

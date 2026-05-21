@@ -27,7 +27,6 @@ const minimalCurriculum: Curriculum = {
     rationale: "Rationale for m1 test fixture — explains the correct answer.",
   },
   mcq1b: { id: "m1b", prompt: "Q1b?", options: [{ id: "a", text: "ok", isCorrect: true }], rationale: "Rationale for m1b test fixture — explains the correct answer." },
-  mcq1c: { id: "m1c", prompt: "Q1c?", options: [{ id: "a", text: "ok", isCorrect: true }], rationale: "Rationale for m1c test fixture — explains the correct answer." },
   simulationCaptions: { oneBond: "o", twoBond: { mechanism: "m", consequence: "c", hazard: "h" } },
   mcq2: { id: "m2", prompt: "Q2?", options: [{ id: "a", text: "ok", isCorrect: true }], rationale: "Rationale for m2 test fixture — explains the correct answer." },
   voiceTutor: { groundingFacts: ["fact1"], openingPrompt: "open" },

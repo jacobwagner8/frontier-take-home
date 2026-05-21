@@ -4,7 +4,6 @@ import { curriculum } from "@/lib/curriculum";
 const allMcqs = [
   curriculum.mcq1,
   curriculum.mcq1b,
-  curriculum.mcq1c,
   curriculum.mcq2,
 ];
 

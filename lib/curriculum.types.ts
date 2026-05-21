@@ -27,7 +27,6 @@ export interface Curriculum {
   reading1: ReadingSection;
   mcq1: MCQ;
   mcq1b: MCQ;
-  mcq1c: MCQ;
   simulationCaptions: {
     oneBond: string;
     twoBond: {
