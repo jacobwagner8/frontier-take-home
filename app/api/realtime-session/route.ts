@@ -35,9 +35,11 @@ export async function POST() {
             model: REALTIME_MODEL,
             instructions: buildTutorSystemPrompt(),
             audio: {
+              input: {
+                turn_detection: { type: "semantic_vad", eagerness: "low" },
+              },
               output: { voice: REALTIME_VOICE },
             },
-            turn_detection: { type: "semantic_vad", eagerness: "low" },
           },
         }),
         signal: controller.signal,
