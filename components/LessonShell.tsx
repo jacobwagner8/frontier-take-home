@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 import { BrandMark } from "./BrandMark";
 
 interface LessonShellProps {
@@ -11,12 +12,16 @@ export function LessonShell({ children, progress }: LessonShellProps) {
     <div className="min-h-dvh flex flex-col bg-canvas text-text">
       <header className="px-4 pt-5 pb-3">
         <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            aria-label="Back to home"
+            className="flex items-center gap-2 -mx-1 -my-1 px-1 py-1 rounded-md hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+          >
             <BrandMark />
-            <div className="text-[11px] uppercase tracking-[0.06em] text-text-subtle font-semibold">
+            <span className="text-[11px] uppercase tracking-[0.06em] text-text-subtle font-semibold">
               Electrical Fundamentals
-            </div>
-          </div>
+            </span>
+          </Link>
           {progress && (
             <div className="text-[11px] text-text-subtle tabular-nums">
               {progress.current} / {progress.total}
