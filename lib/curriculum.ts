@@ -181,6 +181,6 @@ Downstream of the main panel — at every subpanel, junction, and device — the
       "Earth is not a normal return path. A ground rod is roughly 25 ohms or more — far too high to carry load current. Current returns to the utility transformer's neutral.",
     ],
     openingPrompt:
-      "Nice work finishing the lesson. In your own words, what's the rule about where neutral and ground get bonded in a residential system — and what physically goes wrong if there's a second bond downstream of the service?",
+      "Nice work finishing the lesson. In a sentence or two, what's the main thing you're taking away?",
   },
 };
