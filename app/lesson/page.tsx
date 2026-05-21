@@ -156,13 +156,7 @@ export default function LessonPage() {
       )}
 
       {state.step === "done" && (
-        <CompletionScreen
-          onRestart={() => {
-            analytics.reset();
-            dispatch({ type: "RESTART_LESSON" });
-          }}
-          snapshot={analytics.snapshot}
-        />
+        <CompletionScreen snapshot={analytics.snapshot} />
       )}
     </LessonShell>
   );

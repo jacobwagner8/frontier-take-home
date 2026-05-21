@@ -1,13 +1,13 @@
+import Link from "next/link";
 import { BrandMark } from "./BrandMark";
 import { SessionMetrics } from "./SessionMetrics";
 import type { AnalyticsSnapshot } from "@/lib/useLessonAnalytics";
 
 interface Props {
-  onRestart: () => void;
   snapshot?: AnalyticsSnapshot;
 }
 
-export function CompletionScreen({ onRestart, snapshot }: Props) {
+export function CompletionScreen({ snapshot }: Props) {
   return (
     <section className="flex-1 flex flex-col justify-start items-start gap-5 max-w-md">
       <BrandMark size={36} />
@@ -22,13 +22,12 @@ export function CompletionScreen({ onRestart, snapshot }: Props) {
         should never be.
       </p>
       {snapshot && <SessionMetrics snapshot={snapshot} />}
-      <button
-        type="button"
-        onClick={onRestart}
+      <Link
+        href="/"
         className="px-5 py-3 rounded-2xl border border-border text-text-strong font-medium hover:bg-canvas"
       >
-        Restart lesson
-      </button>
+        Return home
+      </Link>
     </section>
   );
 }
