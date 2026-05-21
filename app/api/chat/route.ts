@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { buildTutorSystemPrompt } from "@/lib/tutorPrompt";
-import { buildFollowUpSystemPrompt } from "@/lib/followUpPrompt";
+import {
+  buildFollowUpSystemPrompt,
+  findMcqByMisconceptionTag,
+} from "@/lib/followUpPrompt";
 
 export const runtime = "nodejs";
 
@@ -48,11 +51,18 @@ export async function POST(req: Request) {
     );
   }
 
-  let systemPrompt: string | null = null;
-  if (body.context === "follow_up" && body.misconceptionTag) {
+  let systemPrompt: string;
+  if (body.context === "follow_up") {
+    if (
+      body.misconceptionTag &&
+      !findMcqByMisconceptionTag(body.misconceptionTag)
+    ) {
+      console.warn(
+        `[chat] follow_up tag "${body.misconceptionTag}" did not match any MCQ option; using generic follow-up prompt`,
+      );
+    }
     systemPrompt = buildFollowUpSystemPrompt(body.misconceptionTag);
-  }
-  if (!systemPrompt) {
+  } else {
     systemPrompt = buildTutorSystemPrompt();
   }
 
