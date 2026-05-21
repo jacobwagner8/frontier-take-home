@@ -83,17 +83,8 @@ const TIMED_STEP_ORDER: TimedStep[] = [
   "voiceTutor",
 ];
 
-const REMEDIATION_PARENT: Partial<Record<LessonStep, TimedStep>> = {
-  remediation1: "mcq1",
-  remediation1b: "mcq1b",
-  remediation1c: "mcq1c",
-  remediation2: "mcq2",
-};
-
 function timedStepFor(step: LessonStep): TimedStep | null {
   if (step === "intro" || step === "done") return null;
-  const rolled = REMEDIATION_PARENT[step];
-  if (rolled) return rolled;
   return (TIMED_STEP_ORDER as readonly LessonStep[]).includes(step)
     ? (step as TimedStep)
     : null;
