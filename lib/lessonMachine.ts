@@ -1,7 +1,6 @@
 import { curriculum } from "./curriculum";
 
 export type LessonStep =
-  | "intro"
   | "reading1"
   | "mcq1"
   | "remediation1"
@@ -29,10 +28,9 @@ export type LessonAction =
   | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string };
 
 /** Steps that expose a Back affordance, with their explicit destinations.
- * Non-linear cases (remediation, intro, done) are intentionally omitted —
- * see the Back UX decisions in the PR description. */
+ * reading1 is the first content step and has no back target. Remediation
+ * and `done` are also intentionally omitted. */
 const backTargets: Partial<Record<LessonStep, LessonStep>> = {
-  reading1: "intro",
   mcq1: "reading1",
   mcq1b: "mcq1",
   mcq1c: "mcq1b",
@@ -41,10 +39,9 @@ const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   voiceTutor: "mcq2",
 };
 
-export const initialLessonState: LessonState = { step: "intro" };
+export const initialLessonState: LessonState = { step: "reading1" };
 
 const linearOrder: LessonStep[] = [
-  "intro",
   "reading1",
   "mcq1",
   "mcq1b",
@@ -111,8 +108,8 @@ export function lessonReducer(
 }
 
 /** Convenience: where does a given step sit in the linear progress bar?
- * Remediation steps collapse onto their parent MCQ. `intro` is 0/total
- * (lesson not started), `done` is total/total (lesson complete). */
+ * Remediation steps collapse onto their parent MCQ.
+ * `done` is total/total (lesson complete). */
 export function progressFor(step: LessonStep): {
   current: number;
   total: number;
