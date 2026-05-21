@@ -90,6 +90,12 @@ describe("buildFollowUpSystemPrompt (matched tag)", () => {
     expect(p).toContain("do not invent");
   });
 
+  it("forbids ending the reply with a trailing engagement question", () => {
+    const p = buildFollowUpSystemPrompt(sampleTag).toLowerCase();
+    expect(p).toMatch(/end every reply with a statement, not a question/);
+    expect(p).toMatch(/does that make sense|want me to explain/);
+  });
+
   it("does not label any option as correct in the prompt body", () => {
     const p = buildFollowUpSystemPrompt(sampleTag);
     expect(p).not.toMatch(/\[CORRECT\]/i);
