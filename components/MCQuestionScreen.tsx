@@ -64,9 +64,11 @@ export function MCQuestionScreen({
         {mcq.options.map((opt) => {
           const isSelected = selectedId === opt.id;
           const isSubmitted = submittedId === opt.id;
-          let visual = "border-border bg-surface hover:bg-canvas";
-          if (phase === "picking" && isSelected) {
-            visual = "border-brand bg-brand-soft/40";
+          let visual = "border-border bg-surface";
+          if (phase === "picking") {
+            visual = isSelected
+              ? "border-brand bg-brand-soft/40"
+              : "border-border bg-surface hover:bg-canvas";
           } else if (isSubmitted && phase === "wrong") {
             visual = "border-danger bg-danger/5";
           } else if (isSubmitted && phase === "correct") {
