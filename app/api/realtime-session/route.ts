@@ -37,6 +37,7 @@ export async function POST() {
             audio: {
               output: { voice: REALTIME_VOICE },
             },
+            turn_detection: { type: "semantic_vad", eagerness: "low" },
           },
         }),
         signal: controller.signal,
