@@ -16,13 +16,11 @@ describe("useLessonAnalytics — counters", () => {
     };
     expect(s.mcq1).toEqual(emptyStats);
     expect(s.mcq1b).toEqual(emptyStats);
-    expect(s.mcq1c).toEqual(emptyStats);
     expect(s.mcq2).toEqual(emptyStats);
     expect(s.simulationToggles).toBe(0);
     expect(s.chatTurns).toEqual({
       remediation1: 0,
       remediation1b: 0,
-      remediation1c: 0,
       remediation2: 0,
       finalRecap: 0,
     });
@@ -48,7 +46,6 @@ describe("useLessonAnalytics — counters", () => {
     expect(result.current.snapshot.chatTurns).toEqual({
       remediation1: 2,
       remediation1b: 0,
-      remediation1c: 0,
       remediation2: 0,
       finalRecap: 1,
     });
@@ -109,7 +106,6 @@ describe("useLessonAnalytics — counters", () => {
     expect(result.current.snapshot.chatTurns).toEqual({
       remediation1: 0,
       remediation1b: 0,
-      remediation1c: 0,
       remediation2: 0,
       finalRecap: 0,
     });

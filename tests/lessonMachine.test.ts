@@ -24,15 +24,9 @@ describe("lessonReducer", () => {
     expect(next.step).toBe("mcq1b");
   });
 
-  it("mcq1b correct → mcq1c", () => {
+  it("mcq1b correct → simulation", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq1b" };
     const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq1b" });
-    expect(next.step).toBe("mcq1c");
-  });
-
-  it("mcq1c correct → simulation", () => {
-    const state: LessonState = { ...initialLessonState, step: "mcq1c" };
-    const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq1c" });
     expect(next.step).toBe("simulation");
   });
 
@@ -59,8 +53,7 @@ describe("lessonReducer GO_BACK", () => {
   const backCases: Array<[LessonStep, LessonStep]> = [
     ["mcq1", "reading1"],
     ["mcq1b", "mcq1"],
-    ["mcq1c", "mcq1b"],
-    ["simulation", "mcq1c"],
+    ["simulation", "mcq1b"],
     ["mcq2", "simulation"],
     ["voiceTutor", "mcq2"],
   ];
@@ -81,27 +74,23 @@ describe("lessonReducer GO_BACK", () => {
 });
 
 describe("progressFor", () => {
-  it("returns 1/7 for reading1", () => {
-    expect(progressFor("reading1")).toEqual({ current: 1, total: 7 });
+  it("returns 1/6 for reading1", () => {
+    expect(progressFor("reading1")).toEqual({ current: 1, total: 6 });
   });
 
-  it("returns 2/7 for mcq1", () => {
-    expect(progressFor("mcq1")).toEqual({ current: 2, total: 7 });
+  it("returns 2/6 for mcq1", () => {
+    expect(progressFor("mcq1")).toEqual({ current: 2, total: 6 });
   });
 
-  it("returns 3/7 for mcq1b", () => {
-    expect(progressFor("mcq1b")).toEqual({ current: 3, total: 7 });
+  it("returns 3/6 for mcq1b", () => {
+    expect(progressFor("mcq1b")).toEqual({ current: 3, total: 6 });
   });
 
-  it("returns 4/7 for mcq1c", () => {
-    expect(progressFor("mcq1c")).toEqual({ current: 4, total: 7 });
+  it("returns 5/6 for mcq2", () => {
+    expect(progressFor("mcq2")).toEqual({ current: 5, total: 6 });
   });
 
-  it("returns 6/7 for mcq2", () => {
-    expect(progressFor("mcq2")).toEqual({ current: 6, total: 7 });
-  });
-
-  it("returns 7/7 for done (lesson complete)", () => {
-    expect(progressFor("done")).toEqual({ current: 7, total: 7 });
+  it("returns 6/6 for done (lesson complete)", () => {
+    expect(progressFor("done")).toEqual({ current: 6, total: 6 });
   });
 });

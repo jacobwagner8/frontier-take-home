@@ -20,7 +20,6 @@ const sample: Curriculum = {
     rationale: "Rationale for m1 test fixture — explains the correct answer.",
   },
   mcq1b: { id: "m1b", prompt: "P1b", options: [{ id: "a", text: "t", isCorrect: true }], rationale: "Rationale for m1b test fixture — explains the correct answer." },
-  mcq1c: { id: "m1c", prompt: "P1c", options: [{ id: "a", text: "t", isCorrect: true }], rationale: "Rationale for m1c test fixture — explains the correct answer." },
   simulationCaptions: {
     oneBond: "cap1",
     twoBond: { mechanism: "m", consequence: "c", hazard: "h" },

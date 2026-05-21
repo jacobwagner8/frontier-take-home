@@ -39,21 +39,6 @@ export const curriculum: Curriculum = {
     ],
     rationale: "The TEST button injects a small imbalance to verify the GFCI can detect and trip on a leakage current.",
   },
-  mcq1c: {
-    id: "mcq-gfci-reset",
-    prompt: "After a GFCI trips, what restores power?",
-    options: [
-      { id: "press-reset", text: "Pressing the RESET button on the device.", isCorrect: true },
-      {
-        id: "wait-it-out",
-        text: "Waiting a few minutes — the device auto-resets.",
-        isCorrect: false,
-        remediation: "Standard GFCI receptacles do not auto-reset; the RESET button must be pressed.",
-        misconceptionTag: "misc.gfci-auto-reset",
-      },
-    ],
-    rationale: "Standard GFCI receptacles require manual RESET after tripping; they do not auto-reset.",
-  },
   simulationCaptions: {
     oneBond: "Healthy circuit: current in equals current out.",
     twoBond: {

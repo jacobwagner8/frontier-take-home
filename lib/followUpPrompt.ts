@@ -5,7 +5,6 @@ import type { MCQ, MCQOption } from "./curriculum.types";
 const COMPREHENSION_MCQS: readonly MCQ[] = [
   curriculum.mcq1,
   curriculum.mcq1b,
-  curriculum.mcq1c,
   curriculum.mcq2,
 ];
 

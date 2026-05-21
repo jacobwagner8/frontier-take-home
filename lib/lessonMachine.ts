@@ -2,13 +2,12 @@ export type LessonStep =
   | "reading1"
   | "mcq1"
   | "mcq1b"
-  | "mcq1c"
   | "simulation"
   | "mcq2"
   | "voiceTutor"
   | "done";
 
-export type ReadingMcqId = "mcq1" | "mcq1b" | "mcq1c";
+export type ReadingMcqId = "mcq1" | "mcq1b";
 export type McqId = ReadingMcqId | "mcq2";
 
 export interface LessonState {
@@ -26,8 +25,7 @@ export type LessonAction =
 const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   mcq1: "reading1",
   mcq1b: "mcq1",
-  mcq1c: "mcq1b",
-  simulation: "mcq1c",
+  simulation: "mcq1b",
   mcq2: "simulation",
   voiceTutor: "mcq2",
 };
@@ -38,7 +36,6 @@ const linearOrder: LessonStep[] = [
   "reading1",
   "mcq1",
   "mcq1b",
-  "mcq1c",
   "simulation",
   "mcq2",
   "voiceTutor",
@@ -79,7 +76,6 @@ export function progressFor(step: LessonStep): {
     "reading1",
     "mcq1",
     "mcq1b",
-    "mcq1c",
     "simulation",
     "mcq2",
     "voiceTutor",

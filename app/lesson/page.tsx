@@ -57,19 +57,6 @@ export default function LessonPage() {
         />
       )}
 
-      {state.step === "mcq1c" && (
-        <MCQuestionScreen
-          mcq={curriculum.mcq1c}
-          onAdvance={() => {
-            analytics.recordMcqAttempt("mcq1c", true);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c" });
-          }}
-          onWrongAttempt={() => analytics.recordMcqAttempt("mcq1c", false)}
-          onChatTurn={() => analytics.recordChatTurn("remediation1c")}
-          onBack={goBack}
-        />
-      )}
-
       {state.step === "simulation" && (
         <SimulationScreen
           onAdvance={() => dispatch({ type: "ADVANCE" })}
