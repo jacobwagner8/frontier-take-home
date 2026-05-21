@@ -7,7 +7,10 @@ import { FollowUpChat } from "./FollowUpChat";
 
 interface Props {
   mcq: MCQ;
-  onAnswer: (option: MCQOption) => void;
+  /** Fired only when the learner advances past a correctly-answered MCQ
+   * (i.e., the Next click in the correct phase). Wrong attempts never
+   * reach this — they're reported via `onWrongAttempt`. */
+  onAdvance: () => void;
   onWrongAttempt?: (option: MCQOption) => void;
   onChatTurn?: () => void;
   onBack?: () => void;
@@ -15,7 +18,7 @@ interface Props {
 
 export function MCQuestionScreen({
   mcq,
-  onAnswer,
+  onAdvance,
   onWrongAttempt,
   onChatTurn,
   onBack,
@@ -45,7 +48,7 @@ export function MCQuestionScreen({
   }
 
   function handleNext() {
-    if (submitted && submitted.isCorrect) onAnswer(submitted);
+    if (submitted && submitted.isCorrect) onAdvance();
   }
 
   return (

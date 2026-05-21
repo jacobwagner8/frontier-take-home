@@ -49,7 +49,7 @@ export default function LessonPage() {
       {state.step === "mcq1" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1}
-          onAnswer={() => {
+          onAdvance={() => {
             analytics.recordMcqAttempt("mcq1", true);
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1" });
           }}
@@ -62,7 +62,7 @@ export default function LessonPage() {
       {state.step === "mcq1b" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1b}
-          onAnswer={() => {
+          onAdvance={() => {
             analytics.recordMcqAttempt("mcq1b", true);
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b" });
           }}
@@ -75,7 +75,7 @@ export default function LessonPage() {
       {state.step === "mcq1c" && (
         <MCQuestionScreen
           mcq={curriculum.mcq1c}
-          onAnswer={() => {
+          onAdvance={() => {
             analytics.recordMcqAttempt("mcq1c", true);
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c" });
           }}
@@ -96,7 +96,7 @@ export default function LessonPage() {
       {state.step === "mcq2" && (
         <MCQuestionScreen
           mcq={curriculum.mcq2}
-          onAnswer={() => {
+          onAdvance={() => {
             analytics.recordMcqAttempt("mcq2", true);
             dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2" });
           }}

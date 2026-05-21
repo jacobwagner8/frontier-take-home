@@ -3,21 +3,22 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MCQuestionScreen } from "@/components/MCQuestionScreen";
 import { curriculum } from "@/lib/curriculum";
+import type { MCQ } from "@/lib/curriculum.types";
 
 describe("MCQuestionScreen Back button", () => {
   it("does not render Back when no onBack is provided", () => {
-    render(<MCQuestionScreen mcq={curriculum.mcq1} onAnswer={() => {}} />);
+    render(<MCQuestionScreen mcq={curriculum.mcq1} onAdvance={() => {}} />);
     expect(screen.queryByRole("button", { name: /back/i })).toBeNull();
   });
 
   it("invokes onBack when clicked with no option selected", async () => {
     const user = userEvent.setup();
     const onBack = vi.fn();
-    const onAnswer = vi.fn();
+    const onAdvance = vi.fn();
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={onAnswer}
+        onAdvance={onAdvance}
         onBack={onBack}
       />,
     );
@@ -25,17 +26,17 @@ describe("MCQuestionScreen Back button", () => {
     await user.click(screen.getByRole("button", { name: /back/i }));
 
     expect(onBack).toHaveBeenCalledTimes(1);
-    expect(onAnswer).not.toHaveBeenCalled();
+    expect(onAdvance).not.toHaveBeenCalled();
   });
 
   it("invokes onBack regardless of selection (does not submit)", async () => {
     const user = userEvent.setup();
     const onBack = vi.fn();
-    const onAnswer = vi.fn();
+    const onAdvance = vi.fn();
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={onAnswer}
+        onAdvance={onAdvance}
         onBack={onBack}
       />,
     );
@@ -45,7 +46,7 @@ describe("MCQuestionScreen Back button", () => {
     await user.click(screen.getByRole("button", { name: /back/i }));
 
     expect(onBack).toHaveBeenCalledTimes(1);
-    expect(onAnswer).not.toHaveBeenCalled();
+    expect(onAdvance).not.toHaveBeenCalled();
   });
 });
 
@@ -55,7 +56,7 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
       />,
     );
@@ -71,14 +72,14 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls onWrongAttempt with the chosen option and does NOT call onAnswer", async () => {
+  it("calls onWrongAttempt with the chosen option and does NOT call onAdvance", async () => {
     const user = userEvent.setup();
-    const onAnswer = vi.fn();
+    const onAdvance = vi.fn();
     const onWrongAttempt = vi.fn();
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={onAnswer}
+        onAdvance={onAdvance}
         onWrongAttempt={onWrongAttempt}
       />,
     );
@@ -90,7 +91,7 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     expect(onWrongAttempt).toHaveBeenCalledWith(
       expect.objectContaining({ id: wrong.id }),
     );
-    expect(onAnswer).not.toHaveBeenCalled();
+    expect(onAdvance).not.toHaveBeenCalled();
   });
 
   it("disables radios after a wrong submit until Try again is clicked", async () => {
@@ -98,7 +99,7 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
       />,
     );
@@ -125,7 +126,7 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
       />,
     );
@@ -140,13 +141,44 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     ).toBeInTheDocument();
   });
 
+  it("does NOT render Ask a follow-up when the wrong option lacks a misconceptionTag", async () => {
+    const user = userEvent.setup();
+    const untaggedMcq: MCQ = {
+      id: "test_untagged",
+      prompt: "Test question",
+      rationale: "Test rationale.",
+      options: [
+        {
+          id: "test_a",
+          text: "A wrong option without a tag",
+          isCorrect: false,
+          remediation: "Test remediation copy.",
+        },
+        { id: "test_b", text: "The correct option", isCorrect: true },
+      ],
+    };
+    render(
+      <MCQuestionScreen
+        mcq={untaggedMcq}
+        onAdvance={() => {}}
+        onWrongAttempt={() => {}}
+      />,
+    );
+    await user.click(screen.getByLabelText("A wrong option without a tag"));
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(
+      screen.queryByRole("button", { name: /ask a follow-up/i }),
+    ).not.toBeInTheDocument();
+  });
+
   it("keeps Back visible after a wrong submit", async () => {
     const user = userEvent.setup();
     const onBack = vi.fn();
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
         onBack={onBack}
       />,
@@ -167,7 +199,7 @@ describe("MCQuestionScreen correct-answer inline flow", () => {
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
       />,
     );
@@ -186,26 +218,23 @@ describe("MCQuestionScreen correct-answer inline flow", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("does NOT call onAnswer on the Submit click; calls it only on Next", async () => {
+  it("does NOT call onAdvance on the Submit click; calls it only on Next", async () => {
     const user = userEvent.setup();
-    const onAnswer = vi.fn();
+    const onAdvance = vi.fn();
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={onAnswer}
+        onAdvance={onAdvance}
         onWrongAttempt={() => {}}
       />,
     );
     const correct = curriculum.mcq1.options.find((o) => o.isCorrect)!;
     await user.click(screen.getByLabelText(correct.text));
     await user.click(screen.getByRole("button", { name: /submit/i }));
-    expect(onAnswer).not.toHaveBeenCalled();
+    expect(onAdvance).not.toHaveBeenCalled();
 
     await user.click(screen.getByRole("button", { name: /next/i }));
-    expect(onAnswer).toHaveBeenCalledTimes(1);
-    expect(onAnswer).toHaveBeenCalledWith(
-      expect.objectContaining({ id: correct.id, isCorrect: true }),
-    );
+    expect(onAdvance).toHaveBeenCalledTimes(1);
   });
 
   it("hides Back after a correct submit", async () => {
@@ -213,7 +242,7 @@ describe("MCQuestionScreen correct-answer inline flow", () => {
     render(
       <MCQuestionScreen
         mcq={curriculum.mcq1}
-        onAnswer={() => {}}
+        onAdvance={() => {}}
         onWrongAttempt={() => {}}
         onBack={() => {}}
       />,
