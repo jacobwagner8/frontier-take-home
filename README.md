@@ -4,6 +4,8 @@ A 5-10 minute, mobile-first lesson on why a US residential electrical system bon
 
 **Live demo:** https://frontier-take-home.vercel.app
 
+**Loom Video:** https://www.loom.com/share/43886580a04841ca863282af8a9f374d
+
 ## Stack
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS 4
 - OpenAI Realtime API (GA, `gpt-realtime`, WebRTC) for the voice tutor
