@@ -26,8 +26,7 @@ export interface LessonState {
 export type LessonAction =
   | { type: "ADVANCE" }
   | { type: "GO_BACK" }
-  | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string }
-  | { type: "RESTART_LESSON" };
+  | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string };
 
 /** Steps that expose a Back affordance, with their explicit destinations.
  * Non-linear cases (remediation, intro, done) are intentionally omitted —
@@ -73,9 +72,6 @@ export function lessonReducer(
   action: LessonAction,
 ): LessonState {
   switch (action.type) {
-    case "RESTART_LESSON":
-      return initialLessonState;
-
     case "ADVANCE": {
       const remediationRetry: Partial<Record<LessonStep, McqId>> = {
         remediation1: "mcq1",

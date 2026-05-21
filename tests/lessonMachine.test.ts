@@ -156,12 +156,6 @@ describe("lessonReducer", () => {
     const next = lessonReducer(state, { type: "ADVANCE" });
     expect(next.step).toBe("done");
   });
-
-  it("RESTART_LESSON returns to intro from any step", () => {
-    const state: LessonState = { ...initialLessonState, step: "done" };
-    const next = lessonReducer(state, { type: "RESTART_LESSON" });
-    expect(next.step).toBe("intro");
-  });
 });
 
 describe("lessonReducer GO_BACK", () => {
