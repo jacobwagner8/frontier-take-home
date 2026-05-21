@@ -140,3 +140,51 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("MCQuestionScreen correct-answer inline flow", () => {
+  it("renders the MCQ's rationale and a Next button when correct is submitted", async () => {
+    const user = userEvent.setup();
+    render(
+      <MCQuestionScreen
+        mcq={curriculum.mcq1}
+        onAnswer={() => {}}
+        onWrongAttempt={() => {}}
+      />,
+    );
+    const correct = curriculum.mcq1.options.find((o) => o.isCorrect)!;
+    await user.click(screen.getByLabelText(correct.text));
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(
+      screen.getByText(curriculum.mcq1.rationale, { exact: false }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /next/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /submit/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("does NOT call onAnswer on the Submit click; calls it only on Next", async () => {
+    const user = userEvent.setup();
+    const onAnswer = vi.fn();
+    render(
+      <MCQuestionScreen
+        mcq={curriculum.mcq1}
+        onAnswer={onAnswer}
+        onWrongAttempt={() => {}}
+      />,
+    );
+    const correct = curriculum.mcq1.options.find((o) => o.isCorrect)!;
+    await user.click(screen.getByLabelText(correct.text));
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+    expect(onAnswer).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: /next/i }));
+    expect(onAnswer).toHaveBeenCalledTimes(1);
+    expect(onAnswer).toHaveBeenCalledWith(
+      expect.objectContaining({ id: correct.id, isCorrect: true }),
+    );
+  });
+});
