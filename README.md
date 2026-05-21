@@ -1,6 +1,6 @@
 # Frontier Take-Home — N-G Bonding Teaching Tool
 
-A 5-10 minute, mobile-first lesson on why a US residential electrical system bonds neutral and ground at exactly one point — and what physically goes wrong if there's more than one. Hand-authored reading + comprehension questions with per-misconception remediation, a single-toggle SVG simulation of current flow, and an OpenAI Realtime voice tutor for a Socratic recap.
+A 5-10 minute, mobile-first lesson on why a US residential electrical system bonds neutral and ground at exactly one point — and what physically goes wrong if there's more than one. AI-generated, eval-validated reading + comprehension questions with per-misconception remediation, a single-toggle SVG simulation of current flow, and an OpenAI Realtime voice tutor for a Socratic recap.
 
 **Live demo:** https://frontier-take-home.vercel.app
 
@@ -28,17 +28,13 @@ npm run lint
 
 ## Design decisions
 
-1. **Hand-authored curriculum, not AI-generated.** Subject-matter accuracy is the highest-risk failure mode for a teaching tool. The reading, MCQ options, remediation paragraphs, and the grounding facts the voice tutor uses are all written by hand against NEC 2023 (250.24(A), 250.142, 250.6). A curriculum integrity test (`tests/curriculum.test.ts`) enforces structural invariants — every MCQ has exactly one correct option, every wrong option has a remediation paragraph and a misconception tag, etc.
+1. **AI-generated curriculum, validated through an in-house eval engine and hand-checked.** Subject-matter accuracy is the highest-risk failure mode for a teaching tool, but writing everything by hand doesn't scale to a 30-lesson course. The reading, MCQ options, remediation paragraphs, and the tutor's grounding facts are all model-generated, then run through the experimental eval engine in `experimental/eval-engine/` (factual-accuracy and learning-goal coverage against an atomic-fact knowledge base) and hand-validated alongside it against NEC 2023 (250.24(A), 250.142, 250.6). The eval engine is built to point at where this goes — automated, personalized lesson generation with structured grounding instead of on-the-fly model prose — but at this stage, with no production exposure and only a small validation corpus, the safe path is still human-in-the-loop on every fact. A curriculum integrity test (`tests/curriculum.test.ts`) enforces the structural invariants the eval engine relies on — exactly one correct option per MCQ, remediation paragraph and misconception tag on every wrong option, etc.
 2. **AI is used where it shines: open-ended dialogue.** The voice tutor performs Socratic recap with the curriculum baked into its system prompt server-side, so the student can never see or shape the prompt. The "Ask a follow-up" button that appears beneath a wrong MCQ answer uses the same grounding, and the system prompt extends with the specific misconception the student picked so the chat picks up the thread directly. If voice fails (mic denied, network, model error), "Type instead" swaps to a text-chat fallback in place.
 3. **Simulation is one toggle, not a sandbox.** The lesson is about one physical concept (parallel return paths through the EGC). The SVG isolates exactly that: a checkbox adds a second bond at the subpanel, the EGC's current arrows start animating, and a "current now flowing on the EGC" warning appears alongside a caption swap. No load slider, no fault scenarios — those would split attention away from the concept.
 
 ## What I'd build next
-- Multi-lesson curriculum spine — this is lesson 1 of a roughly 30-lesson introductory electrician course. The shell + state machine pattern generalize.
 - Per-student progress + spaced repetition, so retention is measured, not just first-pass completion.
 - A telemetry layer recording which wrong MC options students pick most often, so the curriculum team can refine remediation paragraphs against real evidence.
-- RAG over NEC + Mike Holt corpus for the follow-up chat, so the tutor can cite specific code articles safely instead of being limited to the six grounding facts.
-- Native bottom-sheet behavior for the follow-up modal on phones — the switch to native `<dialog>` for real focus-trap semantics traded the previous mobile bottom-sheet layout for a centered card on all viewports.
-- Real-device QA matrix (iOS Safari + Android Chrome + desktop) automated via Playwright + BrowserStack, instead of the current manual pass.
 
 ## Files of note
 
