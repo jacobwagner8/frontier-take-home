@@ -126,7 +126,7 @@ export function MCQuestionScreen({
         </div>
       )}
 
-      <LessonFooter onBack={phase === "picking" ? onBack : undefined}>
+      <LessonFooter onBack={phase !== "correct" ? onBack : undefined}>
         {phase === "picking" && (
           <button
             type="button"

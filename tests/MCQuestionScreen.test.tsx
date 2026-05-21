@@ -139,6 +139,26 @@ describe("MCQuestionScreen wrong-answer inline flow", () => {
       screen.getByRole("button", { name: /ask a follow-up/i }),
     ).toBeInTheDocument();
   });
+
+  it("keeps Back visible after a wrong submit", async () => {
+    const user = userEvent.setup();
+    const onBack = vi.fn();
+    render(
+      <MCQuestionScreen
+        mcq={curriculum.mcq1}
+        onAnswer={() => {}}
+        onWrongAttempt={() => {}}
+        onBack={onBack}
+      />,
+    );
+    const wrong = curriculum.mcq1.options.find((o) => !o.isCorrect)!;
+    await user.click(screen.getByLabelText(wrong.text));
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+
+    const backBtn = screen.getByRole("button", { name: /back/i });
+    await user.click(backBtn);
+    expect(onBack).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("MCQuestionScreen correct-answer inline flow", () => {
@@ -186,5 +206,24 @@ describe("MCQuestionScreen correct-answer inline flow", () => {
     expect(onAnswer).toHaveBeenCalledWith(
       expect.objectContaining({ id: correct.id, isCorrect: true }),
     );
+  });
+
+  it("hides Back after a correct submit", async () => {
+    const user = userEvent.setup();
+    render(
+      <MCQuestionScreen
+        mcq={curriculum.mcq1}
+        onAnswer={() => {}}
+        onWrongAttempt={() => {}}
+        onBack={() => {}}
+      />,
+    );
+    const correct = curriculum.mcq1.options.find((o) => o.isCorrect)!;
+    await user.click(screen.getByLabelText(correct.text));
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(
+      screen.queryByRole("button", { name: /back/i }),
+    ).not.toBeInTheDocument();
   });
 });
