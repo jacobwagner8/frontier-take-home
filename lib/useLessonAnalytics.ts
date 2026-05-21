@@ -91,7 +91,7 @@ const REMEDIATION_PARENT: Partial<Record<LessonStep, TimedStep>> = {
 };
 
 function timedStepFor(step: LessonStep): TimedStep | null {
-  if (step === "intro" || step === "done") return null;
+  if (step === "done") return null;
   const rolled = REMEDIATION_PARENT[step];
   if (rolled) return rolled;
   return (TIMED_STEP_ORDER as readonly LessonStep[]).includes(step)

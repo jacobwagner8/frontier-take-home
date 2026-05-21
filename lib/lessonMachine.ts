@@ -1,7 +1,6 @@
 import { curriculum } from "./curriculum";
 
 export type LessonStep =
-  | "intro"
   | "reading1"
   | "mcq1"
   | "remediation1"
@@ -29,10 +28,9 @@ export type LessonAction =
   | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string };
 
 /** Steps that expose a Back affordance, with their explicit destinations.
- * Non-linear cases (remediation, intro, done) are intentionally omitted —
- * see the Back UX decisions in the PR description. */
+ * reading1 is the first content step and has no back target. Remediation
+ * and `done` are also intentionally omitted. */
 const backTargets: Partial<Record<LessonStep, LessonStep>> = {
-  reading1: "intro",
   mcq1: "reading1",
   mcq1b: "mcq1",
   mcq1c: "mcq1b",
@@ -41,10 +39,9 @@ const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   voiceTutor: "mcq2",
 };
 
-export const initialLessonState: LessonState = { step: "intro" };
+export const initialLessonState: LessonState = { step: "reading1" };
 
 const linearOrder: LessonStep[] = [
-  "intro",
   "reading1",
   "mcq1",
   "mcq1b",

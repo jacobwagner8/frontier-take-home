@@ -9,13 +9,8 @@ import {
 import { curriculum } from "@/lib/curriculum";
 
 describe("lessonReducer", () => {
-  it("starts at intro", () => {
-    expect(initialLessonState.step).toBe("intro");
-  });
-
-  it("intro → reading1 on ADVANCE", () => {
-    const next = lessonReducer(initialLessonState, { type: "ADVANCE" });
-    expect(next.step).toBe("reading1");
+  it("starts at reading1", () => {
+    expect(initialLessonState.step).toBe("reading1");
   });
 
   it("reading1 → mcq1 on ADVANCE", () => {
@@ -160,7 +155,6 @@ describe("lessonReducer", () => {
 
 describe("lessonReducer GO_BACK", () => {
   const backCases: Array<[LessonStep, LessonStep]> = [
-    ["reading1", "intro"],
     ["mcq1", "reading1"],
     ["mcq1b", "mcq1"],
     ["mcq1c", "mcq1b"],
@@ -186,7 +180,7 @@ describe("lessonReducer GO_BACK", () => {
   });
 
   const noBackSteps: LessonStep[] = [
-    "intro",
+    "reading1",
     "remediation1",
     "remediation1b",
     "remediation1c",
@@ -202,10 +196,6 @@ describe("lessonReducer GO_BACK", () => {
 });
 
 describe("progressFor", () => {
-  it("returns 0/7 for intro (lesson not started)", () => {
-    expect(progressFor("intro")).toEqual({ current: 0, total: 7 });
-  });
-
   it("returns 1/7 for reading1", () => {
     expect(progressFor("reading1")).toEqual({ current: 1, total: 7 });
   });
