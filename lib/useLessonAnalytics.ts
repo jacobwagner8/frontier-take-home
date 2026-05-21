@@ -86,7 +86,7 @@ const TIMED_STEP_ORDER: TimedStep[] = [
 ];
 
 function timedStepFor(step: LessonStep): TimedStep | null {
-  if (step === "intro" || step === "done") return null;
+  if (step === "done") return null;
   return (TIMED_STEP_ORDER as readonly LessonStep[]).includes(step)
     ? (step as TimedStep)
     : null;

@@ -23,21 +23,6 @@ export default function LessonPage() {
 
   return (
     <LessonShell progress={progress}>
-      {state.step === "intro" && (
-        <div className="flex-1 flex flex-col justify-center items-start gap-5 max-w-md">
-          <p className="text-base leading-relaxed text-text-muted">
-            Let&apos;s get started. This will take about 5-10 minutes.
-          </p>
-          <button
-            type="button"
-            onClick={() => dispatch({ type: "ADVANCE" })}
-            className="px-5 py-3 rounded-2xl bg-brand text-white font-semibold shadow-[0_1px_2px_rgba(15,118,110,0.2)]"
-          >
-            Begin
-          </button>
-        </div>
-      )}
-
       {state.step === "reading1" && (
         <ReadingScreen
           section={curriculum.reading1}

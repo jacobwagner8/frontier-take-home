@@ -4,7 +4,7 @@ import { useLessonAnalytics } from "@/lib/useLessonAnalytics";
 
 describe("useLessonAnalytics — counters", () => {
   it("starts with a zeroed snapshot", () => {
-    const { result } = renderHook(() => useLessonAnalytics("intro"));
+    const { result } = renderHook(() => useLessonAnalytics("done"));
     const s = result.current.snapshot;
 
     expect(s.totalActiveMs).toBe(0);
@@ -169,15 +169,11 @@ describe("useLessonAnalytics — timing", () => {
     ).toBe(3_000);
   });
 
-  it("excludes intro and done from perStep", () => {
+  it("excludes done from perStep", () => {
     const { result, rerender } = renderHook(
       ({ step }) => useLessonAnalytics(step),
-      { initialProps: { step: "intro" as const } },
+      { initialProps: { step: "reading1" as const } },
     );
-    act(() => {
-      vi.advanceTimersByTime(4_000);
-    });
-    rerender({ step: "reading1" as never });
     act(() => {
       vi.advanceTimersByTime(2_000);
     });
@@ -185,7 +181,6 @@ describe("useLessonAnalytics — timing", () => {
     act(() => {
       vi.advanceTimersByTime(5_000);
     });
-    rerender({ step: "done" });
 
     expect(result.current.snapshot.perStep.map((s) => s.step)).toEqual([
       "reading1",

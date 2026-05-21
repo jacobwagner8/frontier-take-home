@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { buildTutorSystemPrompt } from "@/lib/tutorPrompt";
-import { curriculum } from "@/lib/curriculum";
+import {
+  buildFollowUpSystemPrompt,
+  findMcqByMisconceptionTag,
+} from "@/lib/followUpPrompt";
 
 export const runtime = "nodejs";
 
@@ -48,21 +51,19 @@ export async function POST(req: Request) {
     );
   }
 
-  let systemPrompt = buildTutorSystemPrompt();
-  if (body.context === "follow_up" && body.misconceptionTag) {
-    const tag = body.misconceptionTag;
-    const target = [
-      ...curriculum.mcq1.options,
-      ...curriculum.mcq1b.options,
-      ...curriculum.mcq1c.options,
-      ...curriculum.mcq2.options,
-    ].find((o) => !o.isCorrect && o.misconceptionTag === tag);
-    if (target) {
-      systemPrompt += `\n\n# Current student context
-The student answered a comprehension question incorrectly, picking: "${target.text}".
-The remediation they just read: "${target.remediation}"
-Their follow-up question is below. Answer it briefly (1-3 sentences), using only the grounding facts above.`;
+  let systemPrompt: string;
+  if (body.context === "follow_up") {
+    if (
+      body.misconceptionTag &&
+      !findMcqByMisconceptionTag(body.misconceptionTag)
+    ) {
+      console.warn(
+        `[chat] follow_up tag "${body.misconceptionTag}" did not match any MCQ option; using generic follow-up prompt`,
+      );
     }
+    systemPrompt = buildFollowUpSystemPrompt(body.misconceptionTag);
+  } else {
+    systemPrompt = buildTutorSystemPrompt();
   }
 
   const controller = new AbortController();
