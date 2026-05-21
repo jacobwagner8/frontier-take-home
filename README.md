@@ -1,6 +1,6 @@
 # Frontier Take-Home — N-G Bonding Teaching Tool
 
-A 5-10 minute, mobile-first lesson on why a US residential electrical system bonds neutral and ground at exactly one point — and what physically goes wrong if there's more than one. Hand-authored reading + comprehension questions with per-misconception remediation, a single-toggle SVG simulation of current flow, and an OpenAI Realtime voice tutor for a Socratic recap.
+A 5-10 minute, mobile-first lesson on why a US residential electrical system bonds neutral and ground at exactly one point — and what physically goes wrong if there's more than one. AI-generated, eval-validated reading + comprehension questions with per-misconception remediation, a single-toggle SVG simulation of current flow, and an OpenAI Realtime voice tutor for a Socratic recap.
 
 **Live demo:** https://frontier-take-home.vercel.app
 
