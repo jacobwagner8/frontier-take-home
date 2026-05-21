@@ -19,7 +19,7 @@ export interface LessonState {
 export type LessonAction =
   | { type: "ADVANCE" }
   | { type: "GO_BACK" }
-  | { type: "ANSWER_MCQ"; mcqId: McqId; optionId: string };
+  | { type: "ANSWER_MCQ"; mcqId: McqId };
 
 const backTargets: Partial<Record<LessonStep, LessonStep>> = {
   reading1: "intro",

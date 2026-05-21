@@ -6,7 +6,6 @@ import {
   LessonStep,
   progressFor,
 } from "@/lib/lessonMachine";
-import { curriculum } from "@/lib/curriculum";
 
 describe("lessonReducer", () => {
   it("starts at intro", () => {
@@ -26,34 +25,19 @@ describe("lessonReducer", () => {
 
   it("mcq1 → mcq1b when answered correctly", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq1" };
-    const correctId = curriculum.mcq1.options.find((o) => o.isCorrect)!.id;
-    const next = lessonReducer(state, {
-      type: "ANSWER_MCQ",
-      mcqId: "mcq1",
-      optionId: correctId,
-    });
+    const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq1" });
     expect(next.step).toBe("mcq1b");
   });
 
   it("mcq1b correct → mcq1c", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq1b" };
-    const correctId = curriculum.mcq1b.options.find((o) => o.isCorrect)!.id;
-    const next = lessonReducer(state, {
-      type: "ANSWER_MCQ",
-      mcqId: "mcq1b",
-      optionId: correctId,
-    });
+    const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq1b" });
     expect(next.step).toBe("mcq1c");
   });
 
   it("mcq1c correct → simulation", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq1c" };
-    const correctId = curriculum.mcq1c.options.find((o) => o.isCorrect)!.id;
-    const next = lessonReducer(state, {
-      type: "ANSWER_MCQ",
-      mcqId: "mcq1c",
-      optionId: correctId,
-    });
+    const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq1c" });
     expect(next.step).toBe("simulation");
   });
 
@@ -65,12 +49,7 @@ describe("lessonReducer", () => {
 
   it("mcq2 correct → voiceTutor", () => {
     const state: LessonState = { ...initialLessonState, step: "mcq2" };
-    const correctId = curriculum.mcq2.options.find((o) => o.isCorrect)!.id;
-    const next = lessonReducer(state, {
-      type: "ANSWER_MCQ",
-      mcqId: "mcq2",
-      optionId: correctId,
-    });
+    const next = lessonReducer(state, { type: "ANSWER_MCQ", mcqId: "mcq2" });
     expect(next.step).toBe("voiceTutor");
   });
 

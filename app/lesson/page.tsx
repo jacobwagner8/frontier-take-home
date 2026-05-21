@@ -51,7 +51,7 @@ export default function LessonPage() {
           mcq={curriculum.mcq1}
           onAnswer={(opt) => {
             analytics.recordMcqAttempt("mcq1", true);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1", optionId: opt.id });
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1" });
           }}
           onWrongAttempt={() => analytics.recordMcqAttempt("mcq1", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1")}
@@ -64,7 +64,7 @@ export default function LessonPage() {
           mcq={curriculum.mcq1b}
           onAnswer={(opt) => {
             analytics.recordMcqAttempt("mcq1b", true);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b", optionId: opt.id });
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1b" });
           }}
           onWrongAttempt={() => analytics.recordMcqAttempt("mcq1b", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1b")}
@@ -77,7 +77,7 @@ export default function LessonPage() {
           mcq={curriculum.mcq1c}
           onAnswer={(opt) => {
             analytics.recordMcqAttempt("mcq1c", true);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c", optionId: opt.id });
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq1c" });
           }}
           onWrongAttempt={() => analytics.recordMcqAttempt("mcq1c", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation1c")}
@@ -98,7 +98,7 @@ export default function LessonPage() {
           mcq={curriculum.mcq2}
           onAnswer={(opt) => {
             analytics.recordMcqAttempt("mcq2", true);
-            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2", optionId: opt.id });
+            dispatch({ type: "ANSWER_MCQ", mcqId: "mcq2" });
           }}
           onWrongAttempt={() => analytics.recordMcqAttempt("mcq2", false)}
           onChatTurn={() => analytics.recordChatTurn("remediation2")}

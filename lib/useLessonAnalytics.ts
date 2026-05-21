@@ -12,6 +12,8 @@ export type TimedStep =
   | "mcq2"
   | "voiceTutor";
 
+/** Stable telemetry keys for MCQ follow-up chats; the "remediation*" naming
+ * is historical (the inline-MCQ flow replaced the old RemediationScreen). */
 export type ChatSurface =
   | "remediation1"
   | "remediation1b"
