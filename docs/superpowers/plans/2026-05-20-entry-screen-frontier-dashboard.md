@@ -8,6 +8,8 @@
 
 **Tech Stack:** Next 16 (App Router, `next/link`), React 19, Tailwind 4 (existing `@theme` tokens), no new dependencies.
 
+> **Post-implementation note.** PR #43 review produced revisions that diverged from the embedded source below. Shipped state: course eyebrow reads "Electrical Fundamentals" (not "Residential Electrician Track"); greeting reads "Hello again, Jake." (time-of-day-neutral); header inner row wraps in `max-w-5xl mx-auto` for wide-viewport alignment; profile-chip visible name carries an `sr-only "Signed in as"` prefix; "Up next" line uses `<p>` instead of `<div>`; metadata title reads "Frontier — Electrical Fundamentals". The embedded code blocks below are left at planning-time intent — see the commit history on the branch for the final form.
+
 ---
 
 ## File Structure Overview
@@ -207,7 +209,7 @@ Stop the dev server when done (Ctrl-C).
 - [ ] **Step 3: Run tests and build**
 
 Run: `npm run test:run`
-Expected: PASS, 80 / 80 (no test files were touched, and no production code outside `app/page.tsx` and `app/layout.tsx` was touched).
+Expected: PASS, 90 / 90 (no test files were touched, and no production code outside `app/page.tsx` and `app/layout.tsx` was touched).
 
 Run: `npm run build`
 Expected: build + typecheck succeed.
@@ -231,7 +233,7 @@ git commit -m "Reframe entry screen as Frontier dashboard"
 - [ ] **Step 1: Re-run the full test suite**
 
 Run: `npm run test:run`
-Expected: 80 / 80 PASS.
+Expected: 90 / 90 PASS.
 
 - [ ] **Step 2: Re-run build and lint**
 
