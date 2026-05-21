@@ -21,7 +21,7 @@ The lesson works fully without an API key — only the voice tutor and the "Ask 
 
 ## Tests
 ```bash
-npm run test:run    # 27 tests: state machine, curriculum integrity, tutor prompt, simulation toggle
+npm run test:run    # 113 tests: state machine, curriculum integrity, tutor prompt, MCQ phase machine, simulation toggle, analytics, chat surfaces, eval engine
 npm run build       # production build + typecheck
 npm run lint
 ```
@@ -29,9 +29,9 @@ npm run lint
 ## Design decisions
 
 1. **Hand-authored curriculum, not AI-generated.** Subject-matter accuracy is the highest-risk failure mode for a teaching tool. The reading, MCQ options, remediation paragraphs, and the grounding facts the voice tutor uses are all written by hand against NEC 2023 (250.24(A), 250.142, 250.6). A curriculum integrity test (`tests/curriculum.test.ts`) enforces structural invariants — every MCQ has exactly one correct option, every wrong option has a remediation paragraph and a misconception tag, etc.
-2. **AI is used where it shines: open-ended dialogue.** The voice tutor performs Socratic recap with the curriculum baked into its system prompt server-side, so the student can never see or shape the prompt. The "Ask a follow-up" button on remediation screens uses the same grounding, and the system prompt extends with the specific misconception the student picked so the chat picks up the thread directly. If voice fails (mic denied, network, model error), "Type instead" swaps to a text-chat fallback in place.
+2. **AI is used where it shines: open-ended dialogue.** The voice tutor performs Socratic recap with the curriculum baked into its system prompt server-side, so the student can never see or shape the prompt. The "Ask a follow-up" button that appears beneath a wrong MCQ answer uses the same grounding, and the system prompt extends with the specific misconception the student picked so the chat picks up the thread directly. If voice fails (mic denied, network, model error), "Type instead" swaps to a text-chat fallback in place.
 3. **Simulation is one toggle, not a sandbox.** The lesson is about one physical concept (parallel return paths through the EGC). The SVG isolates exactly that: a checkbox adds a second bond at the subpanel, the EGC's current arrows start animating, and a "current now flowing on the EGC" warning appears alongside a caption swap. No load slider, no fault scenarios — those would split attention away from the concept.
-4. **No DB, no auth, no persistence.** Per the brief; the lesson resets on refresh. State lives in a `useReducer` lesson machine (`lib/lessonMachine.ts`) with explicit `intro → reading → mcq1 → (remediation → retry)? → simulation → mcq2 → (remediation → retry)? → voiceTutor → done` transitions and 16 unit tests.
+4. **No DB, no auth, no persistence.** Per the brief; the lesson resets on refresh. State lives in a `useReducer` lesson machine (`lib/lessonMachine.ts`) with explicit `reading1 → mcq1 → mcq1b → mcq1c → simulation → mcq2 → voiceTutor → done` transitions and 22 unit tests. Wrong-answer remediation and the per-MCQ rationale render inline within `MCQuestionScreen` (phase-derived `picking | wrong | correct`) rather than as separate states, so the learner reads the explanation without losing the question's context.
 
 ## What I'd build next
 - Multi-lesson curriculum spine — this is lesson 1 of a roughly 30-lesson introductory electrician course. The shell + state machine pattern generalize.
@@ -52,6 +52,7 @@ npm run lint
 | `lib/realtimeClient.ts` | WebRTC peer / SDP exchange / transcript event handling |
 | `app/api/realtime-session/route.ts` | Mints ephemeral OpenAI Realtime tokens (GA `/v1/realtime/client_secrets`) |
 | `app/api/chat/route.ts` | Grounded chat completions for follow-up + voice fallback |
+| `components/MCQuestionScreen.tsx` | Multiple-choice screen with inline wrong-answer remediation, per-MCQ rationale, and the follow-up chat trigger |
 | `components/SimulationScreen.tsx` | Interactive panel + animated current arrows |
 | `components/VoiceTutorScreen.tsx` | Voice/text mode switch, status + transcript live regions |
 | `components/FollowUpChat.tsx` | Native `<dialog>` modal scoped to a specific misconception |
